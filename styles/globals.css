@@ -77,3 +77,12 @@ select {
     scroll-behavior: auto !important;
   }
 }
+
+:root {
+  --bg-01: "white";
+  --bg-02: "rgb(243, 246, 249)";
+  --color-01: "#007FFF";
+  --text-01: "#20262D";
+  --text-02: "##7F8E9D";
+  --hover-01: "#F0F7FF";
+}

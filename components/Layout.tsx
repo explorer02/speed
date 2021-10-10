@@ -6,7 +6,7 @@ import { Header } from "./Header";
 
 export const Layout = ({ children }: { children: React.ReactChildren }) => (
   <Box>
-    <Header />
+    <Header containerStyles={{ height: 80 }} />
     <Box>{children}</Box>
   </Box>
 );

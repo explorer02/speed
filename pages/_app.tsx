@@ -1,7 +1,7 @@
 import React from "react";
 
 // styles
-import "../styles/globals.css";
+import "styles/globals.css";
 import "fontsource-roboto";
 
 // components
