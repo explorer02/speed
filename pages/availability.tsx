@@ -7,6 +7,6 @@ import { Box } from "@mui/material";
 //types
 import { NextPage } from "next";
 
-const Home: NextPage = () => <Box>Home</Box>;
+const Availability: NextPage = () => <Box>Availability</Box>;
 
-export default Home;
+export default Availability;
