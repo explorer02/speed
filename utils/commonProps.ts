@@ -5,3 +5,8 @@ export const centerAll = {
   justifyContent: "center",
   alignItems: "center",
 };
+
+export const expandXY = {
+  height: "100%",
+  width: "100%",
+};

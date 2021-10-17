@@ -36,6 +36,11 @@ html:focus-within {
 }
 
 /* Set core body defaults */
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
 body {
   min-height: 100vh;
   text-rendering: optimizeSpeed;
@@ -76,6 +81,12 @@ select {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+#__next {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
 }
 
 :root {

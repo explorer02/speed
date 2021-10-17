@@ -1,5 +1,4 @@
 import * as React from "react";
-import _ from "lodash";
 
 //components
 import { Button, Typography, Box } from "@mui/material";
@@ -21,38 +20,43 @@ import { centerVertically } from "utils/commonProps";
 //types
 import { StringAnyMap } from "types";
 
-const NAV_BUTTONS = {
-  home: {
+const NAV_BUTTONS = [
+  {
+    key: "home",
     title: "Home",
     loginRequired: false,
     path: "/",
     startIcon: <HomeOutlinedIcon />,
   },
-  availability: {
+  {
+    key: "availability",
     title: "Availability",
     loginRequired: false,
     path: "/availability",
     startIcon: <TrendingUpOutlinedIcon />,
   },
-  order: {
+  {
+    key: "order",
     title: "Order",
     loginRequired: true,
     path: "/order",
     startIcon: <NoteAltOutlinedIcon />,
   },
-  profile: {
+  {
+    key: "profile",
     title: "Profile",
     loginRequired: true,
     path: "/profile",
     startIcon: <AccountCircleOutlinedIcon />,
   },
-  locate: {
+  {
+    key: "locate",
     title: "Locate Us",
     loginRequired: false,
     path: "/locate",
     startIcon: <LocationOnOutlinedIcon />,
   },
-};
+];
 
 export const Header = ({
   isLoggedIn = true,
@@ -61,8 +65,9 @@ export const Header = ({
   containerStyles?: StringAnyMap;
   isLoggedIn?: boolean;
 }) => {
-  const { push } = useRouter();
-  const [selected, setSelected] = React.useState("home");
+  const { push, pathname } = useRouter();
+
+  const selected = NAV_BUTTONS.find((btn) => btn.path === pathname)?.key;
 
   return (
     <Box
@@ -80,17 +85,15 @@ export const Header = ({
         </Typography>
       </Box>
       <Box display="flex" gap="16px">
-        {_.map(
-          NAV_BUTTONS,
-          (btn, key) =>
+        {NAV_BUTTONS.map(
+          (btn) =>
             (!btn.loginRequired || isLoggedIn) && (
               <Button
-                key={key}
-                variant={key === selected ? "contained" : "outlined"}
+                key={btn.key}
+                variant={btn.key === selected ? "contained" : "outlined"}
                 startIcon={btn.startIcon}
                 onClick={() => {
                   push(btn.path);
-                  setSelected(key);
                 }}
               >
                 {btn.title}
