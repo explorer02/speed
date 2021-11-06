@@ -1,0 +1,11 @@
+Login page
+
+1) Create Title and Input field
+2) Create variation for signup and Login
+3) Setup firebase
+4) Connect login to firebase
+5) Test login and signup
+
+
+
+todo:

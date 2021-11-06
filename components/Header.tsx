@@ -16,6 +16,13 @@ import { useRouter } from "next/dist/client/router";
 
 //constants
 import { centerVertically } from "utils/commonProps";
+import {
+  AVAILABILITY_PATH,
+  HOME_PATH,
+  LOCATE_PATH,
+  ORDER_PATH,
+  PROFILE_PATH,
+} from "constants/paths";
 
 //types
 import { StringAnyMap } from "types";
@@ -25,35 +32,35 @@ const NAV_BUTTONS = [
     key: "home",
     title: "Home",
     loginRequired: false,
-    path: "/",
+    path: HOME_PATH,
     startIcon: <HomeOutlinedIcon />,
   },
   {
     key: "availability",
     title: "Availability",
     loginRequired: false,
-    path: "/availability",
+    path: AVAILABILITY_PATH,
     startIcon: <TrendingUpOutlinedIcon />,
   },
   {
     key: "order",
     title: "Order",
     loginRequired: true,
-    path: "/order",
+    path: ORDER_PATH,
     startIcon: <NoteAltOutlinedIcon />,
   },
   {
     key: "profile",
     title: "Profile",
     loginRequired: true,
-    path: "/profile",
+    path: PROFILE_PATH,
     startIcon: <AccountCircleOutlinedIcon />,
   },
   {
     key: "locate",
     title: "Locate Us",
     loginRequired: false,
-    path: "/locate",
+    path: LOCATE_PATH,
     startIcon: <LocationOnOutlinedIcon />,
   },
 ];
