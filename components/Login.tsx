@@ -3,8 +3,11 @@ import * as React from 'react';
 import { signInWithPhoneNumber } from '@firebase/auth';
 
 // components
-import { Typography, Box, TextField, InputAdornment } from '@mui/material';
+import { Typography, Box, TextField, InputAdornment, Alert } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
+
+// contexts
+import { PhoneContext } from 'contexts/UserContext';
 
 // icons
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
@@ -13,14 +16,12 @@ import DoneAllOutlinedIcon from '@mui/icons-material/DoneAllOutlined';
 import DialpadOutlinedIcon from '@mui/icons-material/DialpadOutlined';
 
 // hooks
-import { useRouter } from 'next/dist/client/router';
 import { useValidateInput } from 'hooks/useValidateInput';
 import { useSignInRecaptcha } from 'hooks/useSignInRecaptcha';
 
 // constants
 import { centerAll } from 'utils/commonProps';
 import { auth } from 'firebaseConfig';
-import { AVAILABILITY_PATH } from 'constants/paths';
 
 const LOGIN_PHASES = {
   IDLE: 0,
@@ -58,9 +59,9 @@ export const Login = () => {
     regex: /\d/g,
   });
 
-  const [loginState, setLoginState] = React.useState<LoginState>(INITIAL_LOGIN_STATE);
+  const { setPhone } = React.useContext(PhoneContext);
 
-  const { replace } = useRouter();
+  const [loginState, setLoginState] = React.useState<LoginState>(INITIAL_LOGIN_STATE);
 
   const isValidPhoneNumber = phoneNumber.length === 10;
   const isValidOTP = otp.length === 6;
@@ -111,9 +112,7 @@ export const Login = () => {
           phase: LOGIN_PHASES.OTP_VERIFIED,
           message: 'OTP Verified. Logging In :)',
         });
-        setTimeout(() => {
-          replace(AVAILABILITY_PATH);
-        }, 500);
+        setPhone(phoneNumber);
       },
       () => {
         setLoginState({
@@ -126,7 +125,7 @@ export const Login = () => {
   };
 
   return (
-    <Box height="100%" {...centerAll}>
+    <>
       <div id="sign-in-button" />
       <Box
         minHeight="50%"
@@ -196,9 +195,9 @@ export const Login = () => {
         >
           {loginState.phase === LOGIN_PHASES.OTP_SENT ? 'Verify OTP' : 'Send OTP'}
         </LoadingButton>
-        {loginState.message ? <Typography color="primary">{loginState.message}</Typography> : null}
-        {loginState.error ? <Typography color="error">{loginState.error}</Typography> : null}
+        {loginState.message ? <Alert severity="info">{loginState.message}</Alert> : null}
+        {loginState.error ? <Alert severity="error">loginState.error </Alert> : null}
       </Box>
-    </Box>
+    </>
   );
 };

@@ -1,3 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
+import _noop from 'lodash/noop';
 
-export const UserContext = React.createContext({});
+export const PhoneContext = React.createContext<{
+  phone?: string;
+  setPhone: (phone: string) => void;
+}>({ phone: '', setPhone: _noop });
