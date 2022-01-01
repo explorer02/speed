@@ -11,9 +11,6 @@ import NoteAltOutlinedIcon from '@mui/icons-material/NoteAltOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 
-// helper
-import { isBrowserMode } from 'helper/localStorage';
-
 // hooks
 import { useRouter } from 'next/dist/client/router';
 import { useLoginInfo } from 'contexts/LoginContext';
@@ -34,7 +31,6 @@ const NAV_BUTTONS = [
     title: 'Home',
     loginRequired: false,
     path: HOME_PATH,
-    hideAfterLogin: false,
     startIcon: <HomeOutlinedIcon />,
   },
   {
@@ -70,7 +66,6 @@ const NAV_BUTTONS = [
 export const Header = (): React.ReactElement => {
   const { push, pathname } = useRouter();
   const { isLoggedIn } = useLoginInfo();
-
   const selected = NAV_BUTTONS.find((btn) => btn.path === pathname)?.key;
 
   return (
@@ -97,18 +92,16 @@ export const Header = (): React.ReactElement => {
               variant={btn.key === selected ? 'contained' : 'outlined'}
               startIcon={btn.startIcon}
               onClick={(): void => {
-                push(btn.path);
+                if (btn.key !== selected) push(btn.path);
               }}
             >
               {btn.title}
             </Button>
           );
-          // TODO: find a better solution
-          if (!isBrowserMode()) return null;
-          if (isLoggedIn) {
-            return btn.hideAfterLogin ? null : ButtonComp;
+          if (btn.loginRequired) {
+            return isLoggedIn ? ButtonComp : null;
           }
-          return btn.loginRequired ? null : ButtonComp;
+          return ButtonComp;
         })}
       </Box>
     </Box>

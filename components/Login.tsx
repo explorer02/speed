@@ -146,7 +146,10 @@ export const Login = (): React.ReactElement => {
           type="tel"
           value={phoneNumber}
           onChange={onPhoneNumberChange}
-          disabled={loginState.phase === LOGIN_PHASES.OTP_SENT}
+          disabled={
+            loginState.phase === LOGIN_PHASES.OTP_SENT ||
+            loginState.phase === LOGIN_PHASES.OTP_VERIFICATION_INITIALIZED
+          }
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -166,10 +169,7 @@ export const Login = (): React.ReactElement => {
           type="text"
           value={otp}
           onChange={onOTPChange}
-          disabled={
-            loginState.phase !== LOGIN_PHASES.OTP_SENT ||
-            loginState.phase !== LOGIN_PHASES.OTP_VERIFICATION_INITIALIZED
-          }
+          disabled={loginState.phase !== LOGIN_PHASES.OTP_SENT}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">

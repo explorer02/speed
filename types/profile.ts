@@ -11,9 +11,11 @@ export type Address = {
   pinCode?: string;
 };
 
+export type Location = Pick<GeoPoint, 'latitude' | 'longitude'>;
+
 export type UserProfile = {
   name?: string;
-  location?: GeoPoint;
+  location?: Location;
   address?: Address;
   phone?: string;
 };

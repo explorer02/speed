@@ -12,6 +12,7 @@ export const FormControlInput = ({
   dataSubId,
   helperText,
   disabled = false,
+  type = 'text',
 }: {
   onChange: (ev: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string | number;
@@ -20,6 +21,7 @@ export const FormControlInput = ({
   dataSubId?: string;
   helperText?: string;
   disabled?: boolean;
+  type?: string;
 }): React.ReactElement => (
   <FormControl fullWidth disabled={disabled}>
     <InputLabel htmlFor="component-outlined" disabled={disabled}>
@@ -32,6 +34,7 @@ export const FormControlInput = ({
       onChange={onChange}
       label={label}
       inputProps={{ 'data-id': dataId, 'data-subid': dataSubId }}
+      type={type}
     />
     {helperText && <FormHelperText>{helperText}</FormHelperText>}
   </FormControl>

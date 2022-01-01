@@ -6,70 +6,28 @@ import { useLoginInfo } from 'contexts/LoginContext';
 import { useFireStoreQuery } from 'hooks/firebase';
 
 // helpers
-import { getCurrentUserProfileQuery } from './helper';
+import { getCurrentUserProfileQuery, formValidator } from './helper';
 
 // constants
-import { EMPTY_OBJECT } from 'constants/empty';
+import { Action, ACTION_TYPES } from './actions';
 
 // types
 import { UserProfile } from 'types/profile';
 
-const INITIAL_VALUES: UserProfile = EMPTY_OBJECT;
-
-const ACTION_TYPES = {
-  UPDATE: 'update' as const,
-  BATCH_UPDATE: 'batchUpdate' as const,
-};
-type Action =
-  | {
-      type: typeof ACTION_TYPES.UPDATE;
-      payload: {
-        id: string;
-        subid?: string;
-        value: string | number;
-      };
-    }
-  | {
-      type: typeof ACTION_TYPES.BATCH_UPDATE;
-      payload: Partial<UserProfile>;
-    };
-
-const REGEX_VALUES = {
-  name: /[a-zA-Z ]+/,
+const INITIAL_VALUES: UserProfile = {
+  phone: '',
+  name: '',
   address: {
-    pinCode: /\d+/,
+    houseNumber: '',
+    street: '',
+    locality: '',
+    area: '',
+    landmark: '',
+    city: '',
+    state: '',
+    pinCode: '',
   },
-};
-const validator = ({
-  id,
-  subid,
-  value,
-}: {
-  id: string;
-  subid?: string;
-  value: string;
-}): string | number => {
-  switch (id) {
-    case 'name': {
-      const regexResult = value.match(REGEX_VALUES[id]) ?? [];
-      return regexResult.join('');
-    }
-    case 'location': {
-      return parseFloat(value);
-    }
-    case 'address': {
-      switch (subid) {
-        case 'pinCode': {
-          const regexResult = value.match(REGEX_VALUES[id][subid]) ?? [];
-          return regexResult.join('').substring(0, 6);
-        }
-        default:
-          return value;
-      }
-    }
-    default:
-      return value;
-  }
+  location: { latitude: 0.0, longitude: 0.0 },
 };
 
 const formReducer = (state: UserProfile, action: Action): UserProfile => {
@@ -99,6 +57,7 @@ const formReducer = (state: UserProfile, action: Action): UserProfile => {
 export const useProfileForm = (): {
   value: UserProfile;
   onChange: (ev: React.ChangeEvent<HTMLInputElement>) => void;
+  dispatcher: React.Dispatch<Action>;
 } => {
   const [formValue, onAction] = React.useReducer(formReducer, INITIAL_VALUES);
 
@@ -125,9 +84,9 @@ export const useProfileForm = (): {
       payload: {
         id,
         subid,
-        value: validator({ id, subid, value }),
+        value: formValidator({ id, subid, value }),
       },
     });
   }, []);
-  return { value: formValue, onChange: handleChange };
+  return { value: formValue, onChange: handleChange, dispatcher: onAction };
 };

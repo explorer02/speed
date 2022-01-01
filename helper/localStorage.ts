@@ -1,6 +1,6 @@
 export const isBrowserMode = (): boolean => typeof window !== 'undefined';
 
-export const getFromLocalStorage = (key: string): string | number | undefined => {
+export const getFromLocalStorage = (key: string): any | undefined => {
   if (!isBrowserMode()) return undefined;
   const value = localStorage.getItem(key);
   return value ? JSON.parse(value) : undefined;

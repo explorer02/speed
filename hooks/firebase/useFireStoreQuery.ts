@@ -21,7 +21,7 @@ export const useFireStoreQuery = <T>(
       setState({ loading: true });
       getDocs(query)
         .then((res) => {
-          if (res?.docs?.[0]) {
+          if (res.size > 0) {
             const data = res.docs[0].data() as T;
             setState({ data, loading: false });
           } else {

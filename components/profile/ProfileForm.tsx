@@ -6,29 +6,72 @@ import _noop from 'lodash/noop';
 // icons
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import UpdateIcon from '@mui/icons-material/Update';
+import HomeIcon from '@mui/icons-material/Home';
 
 // components
 import { Box, IconButton, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { FormControlInput } from './FormControlInput';
-import { FormControlGroup } from './FormControlGroup';
+import { FormControlInput, FormControlGroup } from './components';
 
 // hooks
 import { useProfileForm } from './useProfileForm';
 import { useLoginInfo } from 'contexts/LoginContext';
 
+// helpers
+import { getAddressFromLocalStorage, saveAddressToLocalStorage } from './helper';
+
 // constants
 import { centerAll, centerVertically } from 'styles/styleObjects';
+import { ACTION_TYPES } from './actions';
 
 Geocode.setLanguage('en');
 Geocode.setRegion('in');
 Geocode.setApiKey('AIzaSyA5_Ct0wRXssklQETCzxSdlDtd568FIqZA');
 
 export const ProfileForm = (): React.ReactElement => {
-  const { value, onChange } = useProfileForm();
+  const { value, onChange, dispatcher } = useProfileForm();
+
+  const [geoCodeAddress, setGeoCodeAddress] = React.useState<string>();
 
   const { user } = useLoginInfo();
   const phone = user?.phoneNumber as string | undefined;
+
+  const setCurrentLocation = React.useCallback(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((geoLocation) => {
+        dispatcher({
+          type: ACTION_TYPES.BATCH_UPDATE,
+          payload: {
+            location: {
+              latitude: geoLocation.coords.latitude,
+              longitude: geoLocation.coords.longitude,
+            },
+          },
+        });
+      });
+    }
+  }, [dispatcher]);
+
+  const fetchGeoAddress = React.useCallback(async () => {
+    if (value.location) {
+      try {
+        const storedAddress = getAddressFromLocalStorage(value.location);
+        if (storedAddress) {
+          setGeoCodeAddress(storedAddress);
+          return;
+        }
+        const response = await Geocode.fromLatLng(
+          `${value.location.latitude}`,
+          `${value.location.longitude}`,
+        );
+        const address = response?.results?.[0]?.formatted_address;
+        setGeoCodeAddress(address);
+        saveAddressToLocalStorage(value.location, address);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }, [value.location]);
 
   //   React.useEffect(() => {
   //     if (location.lat && location.lng)
@@ -77,28 +120,35 @@ export const ProfileForm = (): React.ReactElement => {
       <FormControlInput value={phone} onChange={_noop} label="Phone Number" dataId="" disabled />
 
       <FormControlGroup title="Location">
-        <Box {...centerAll} gap="20px">
+        <Box {...centerAll} gap="15px">
           <FormControlInput
             value={value.location?.latitude}
             label="Latitude"
             dataId="location"
             dataSubId="latitude"
             onChange={onChange}
+            type="number"
           />
           <FormControlInput
-            value={value.location?.latitude}
+            value={value.location?.longitude}
             label="Longitude"
             dataId="location"
             dataSubId="longitude"
             onChange={onChange}
+            type="number"
           />
-          <IconButton onClick={(): void => {}} color="primary">
+          <IconButton onClick={setCurrentLocation} color="primary">
             <MyLocationIcon />
           </IconButton>
+          <IconButton onClick={fetchGeoAddress} color="primary">
+            <HomeIcon />
+          </IconButton>
         </Box>
-        <Typography variant="subtitle2" mt={2} maxWidth="100%" color="secondary">
-          {'address' || 'Loading...'}
-        </Typography>
+        {geoCodeAddress ? (
+          <Typography variant="subtitle2" mt={2} maxWidth="100%" color="secondary">
+            {geoCodeAddress}
+          </Typography>
+        ) : null}
       </FormControlGroup>
 
       <FormControlGroup title="Address">
