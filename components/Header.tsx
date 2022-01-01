@@ -16,9 +16,10 @@ import { isBrowserMode } from 'helper/localStorage';
 
 // hooks
 import { useRouter } from 'next/dist/client/router';
+import { useLoginInfo } from 'contexts/LoginContext';
 
 // constants
-import { centerVertically } from 'utils/commonProps';
+import { centerVertically, expandXY } from 'styles/styleObjects';
 import {
   AVAILABILITY_PATH,
   HOME_PATH,
@@ -27,17 +28,13 @@ import {
   PROFILE_PATH,
 } from 'constants/paths';
 
-// types
-import { StringAnyMap } from 'types/generic';
-import { PhoneContext } from 'contexts/UserContext';
-
 const NAV_BUTTONS = [
   {
     key: 'home',
     title: 'Home',
     loginRequired: false,
     path: HOME_PATH,
-    hideAfterLogin: true,
+    hideAfterLogin: false,
     startIcon: <HomeOutlinedIcon />,
   },
   {
@@ -70,15 +67,15 @@ const NAV_BUTTONS = [
   },
 ];
 
-export const Header = ({ containerStyles }: { containerStyles?: StringAnyMap }) => {
+export const Header = (): React.ReactElement => {
   const { push, pathname } = useRouter();
-  const isLoggedIn = !!React.useContext(PhoneContext).phone;
+  const { isLoggedIn } = useLoginInfo();
 
   const selected = NAV_BUTTONS.find((btn) => btn.path === pathname)?.key;
 
   return (
     <Box
-      {...containerStyles}
+      {...expandXY}
       borderBottom={1}
       borderColor="silver"
       {...centerVertically}
@@ -99,7 +96,7 @@ export const Header = ({ containerStyles }: { containerStyles?: StringAnyMap }) 
               key={btn.key}
               variant={btn.key === selected ? 'contained' : 'outlined'}
               startIcon={btn.startIcon}
-              onClick={() => {
+              onClick={(): void => {
                 push(btn.path);
               }}
             >

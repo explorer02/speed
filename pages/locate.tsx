@@ -1,11 +1,11 @@
-//lib
-import * as React from "react";
+// lib
+import * as React from 'react';
 
-//components
-import { Box } from "@mui/material";
+// components
+import { Box } from '@mui/material';
 
-//types
-import { NextPage } from "next";
+// types
+import { NextPage } from 'next';
 
 const Locate: NextPage = () => <Box>Locate</Box>;
 

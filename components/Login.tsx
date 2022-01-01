@@ -6,9 +6,6 @@ import { signInWithPhoneNumber } from '@firebase/auth';
 import { Typography, Box, TextField, InputAdornment, Alert } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 
-// contexts
-import { PhoneContext } from 'contexts/UserContext';
-
 // icons
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
@@ -16,12 +13,16 @@ import DoneAllOutlinedIcon from '@mui/icons-material/DoneAllOutlined';
 import DialpadOutlinedIcon from '@mui/icons-material/DialpadOutlined';
 
 // hooks
-import { useValidateInput } from 'hooks/useValidateInput';
-import { useSignInRecaptcha } from 'hooks/useSignInRecaptcha';
+import { useValidateInput, useSignInRecaptcha, useWindow } from 'hooks';
+
+// firebaseConfig
+import { auth } from 'firebaseConfig';
 
 // constants
-import { centerAll } from 'utils/commonProps';
-import { auth } from 'firebaseConfig';
+import { centerAll } from 'styles/styleObjects';
+
+// types
+import { ConfirmationResult } from 'firebase/auth';
 
 const LOGIN_PHASES = {
   IDLE: 0,
@@ -39,6 +40,7 @@ type LoginState = {
   message?: string;
   error?: string;
 };
+
 const INITIAL_LOGIN_STATE: LoginState = {
   loading: false,
   phase: LOGIN_PHASES.IDLE,
@@ -46,20 +48,21 @@ const INITIAL_LOGIN_STATE: LoginState = {
   error: '',
 };
 
-export const Login = () => {
-  useSignInRecaptcha();
+export const Login = (): React.ReactElement => {
+  const appVerifier = useSignInRecaptcha();
+  const [confirmationResult, setConfirmationResult] = React.useState<ConfirmationResult>();
 
-  const [phoneNumber, onPhoneNumberChange] = useValidateInput({
+  const window = useWindow();
+
+  const { input: phoneNumber, handleInputChange: onPhoneNumberChange } = useValidateInput({
     maxLength: 10,
     regex: /\d/g,
   });
 
-  const [otp, onOTPChange] = useValidateInput({
+  const { input: otp, handleInputChange: onOTPChange } = useValidateInput({
     maxLength: 6,
     regex: /\d/g,
   });
-
-  const { setPhone } = React.useContext(PhoneContext);
 
   const [loginState, setLoginState] = React.useState<LoginState>(INITIAL_LOGIN_STATE);
 
@@ -73,16 +76,14 @@ export const Login = () => {
       message: 'Please wait...',
     });
 
-    const appVerifier = (window as any)?.['recaptchaVerifier'];
-
-    signInWithPhoneNumber(auth, `+91${phoneNumber}`, appVerifier).then(
-      (confirmationResult) => {
+    signInWithPhoneNumber(auth, `+91${phoneNumber}`, appVerifier!).then(
+      (_confirmationResult) => {
         setLoginState({
           loading: false,
           phase: LOGIN_PHASES.OTP_SENT,
           message: 'OTP Sent to your mobile number...',
         });
-        (window as any).confirmationResult = confirmationResult;
+        setConfirmationResult(_confirmationResult);
       },
       () => {
         setLoginState({
@@ -90,29 +91,26 @@ export const Login = () => {
           phase: LOGIN_PHASES.OTP_NOT_SENT,
           error: 'Server Error. Please try again in some time... :(',
         });
-        (window as any)?.recaptchaVerifier.render().then((widgetId: string) => {
+        appVerifier?.render().then((widgetId) => {
           (window as any).grecaptcha?.reset(widgetId);
         });
       },
     );
-  }, [phoneNumber]);
+  }, [appVerifier, phoneNumber, window]);
 
-  const onVerifyOTP = () => {
-    const confirmationResult = (window as any)['confirmationResult'];
-
+  const onVerifyOTP = React.useCallback(() => {
     setLoginState({
       loading: true,
       phase: LOGIN_PHASES.OTP_VERIFICATION_INITIALIZED,
       message: 'Please wait while we are verifying OTP...',
     });
-    confirmationResult.confirm(otp).then(
+    confirmationResult?.confirm(otp).then(
       () => {
         setLoginState({
           loading: false,
           phase: LOGIN_PHASES.OTP_VERIFIED,
           message: 'OTP Verified. Logging In :)',
         });
-        setPhone(phoneNumber);
       },
       () => {
         setLoginState({
@@ -122,7 +120,7 @@ export const Login = () => {
         });
       },
     );
-  };
+  }, [confirmationResult, otp]);
 
   return (
     <>
@@ -168,7 +166,10 @@ export const Login = () => {
           type="text"
           value={otp}
           onChange={onOTPChange}
-          disabled={loginState.phase !== LOGIN_PHASES.OTP_SENT}
+          disabled={
+            loginState.phase !== LOGIN_PHASES.OTP_SENT ||
+            loginState.phase !== LOGIN_PHASES.OTP_VERIFICATION_INITIALIZED
+          }
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">

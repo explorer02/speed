@@ -5,3 +5,5 @@ export type StringAnyMap = {
 export type StringTMap<T> = {
   [key: string]: T;
 };
+
+export type Nullable<T> = T | null | undefined;

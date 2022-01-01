@@ -1,0 +1,1 @@
+export { useFireStoreQuery } from './useFireStoreQuery';

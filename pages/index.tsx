@@ -5,9 +5,15 @@ import * as React from 'react';
 import { Box } from '@mui/material';
 import { Login } from 'components/Login';
 
+// hooks
+import { useLoginInfo } from 'contexts/LoginContext';
+
 // types
 import { NextPage } from 'next';
 
-const Home: NextPage = () => (false ? <Box>Home</Box> : <Login />);
+const Home: NextPage = () => {
+  const { isLoggedIn } = useLoginInfo();
+  return isLoggedIn ? <Box>Home</Box> : <Login />;
+};
 
 export default Home;

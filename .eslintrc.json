@@ -18,13 +18,17 @@
     },
     "plugins": [
         "react",
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "react-hooks"
     ],
     "rules": {
         "import/no-extraneous-dependencies": 0,
         "import/extensions": 0,
         "no-use-before-define": 0,
         "import/prefer-default-export": 0,
+        "@typescript-eslint/explicit-function-return-type": 2,
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "error",
         "react/function-component-definition": [
             2,
             {
@@ -48,7 +52,12 @@
         "dot-notation": 1,
         "import/order": 0,
         "react/require-default-props": 0,
-        "import/no-unresolved": 0
+        "import/no-unresolved": 0,
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "error"
+        ],
+        "no-underscore-dangle": 0
     },
     "settings": {
         "import/resolver": {
@@ -65,5 +74,17 @@
                 ]
             }
         }
+    },
+    "globals": {
+        "React": true,
+        "google": true,
+        "mount": true,
+        "mountWithRouter": true,
+        "shallow": true,
+        "shallowWithRouter": true,
+        "context": true,
+        "expect": true,
+        "jsdom": true,
+        "JSX": true
     }
 }

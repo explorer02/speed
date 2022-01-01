@@ -1,19 +1,31 @@
 // lib
 import * as React from 'react';
-import { RecaptchaVerifier } from '@firebase/auth';
+import _noop from 'lodash/noop';
 
-// constants
+// firebaseConfig
 import { auth } from 'firebaseConfig';
 
-export const useSignInRecaptcha = () => {
+// helpers
+import { isBrowserMode } from 'helper/localStorage';
+
+// types
+import { RecaptchaVerifier } from '@firebase/auth';
+
+export const useSignInRecaptcha = (): RecaptchaVerifier | undefined => {
+  const [state, setState] = React.useState<RecaptchaVerifier | undefined>();
   React.useEffect(() => {
-    (window as any).recaptchaVerifier = new RecaptchaVerifier(
-      'sign-in-button',
-      {
-        size: 'invisible',
-        callback: () => {},
-      },
-      auth,
+    setState(
+      isBrowserMode()
+        ? new RecaptchaVerifier(
+            'sign-in-button',
+            {
+              size: 'invisible',
+              callback: _noop,
+            },
+            auth,
+          )
+        : undefined,
     );
   }, []);
+  return state;
 };
