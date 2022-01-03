@@ -1,4 +1,7 @@
 todo:
 fix header style
-fix header icons
 Geocode API key
+Test Firestore add profile
+Crate Reusable components dir infra
+Extract Snackbar to infra
+extract logic to fetch profile in a context

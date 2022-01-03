@@ -1,8 +1,19 @@
 // lib
-import { collection, FirestoreDataConverter, Query, query, where } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  DocumentData,
+  DocumentReference,
+  Query,
+  query,
+  where,
+} from 'firebase/firestore';
 
 // firebaseConfig
 import { fireStore } from 'firebaseConfig';
+
+// converters
+import { profileConverter } from 'converters/userProfile';
 
 // helper
 import { getFromLocalStorage, setToLocalStorage } from 'helper/localStorage';
@@ -13,30 +24,17 @@ import { REGEX_VALUES } from './constants';
 
 // types
 import { Location } from 'types/profile';
-import { UserProfile } from 'firebase/auth';
-
-const profileConverter: FirestoreDataConverter<UserProfile> = {
-  toFirestore: (profile) => {
-    // TODO:
-    console.log(profile);
-    return profile;
-  },
-  fromFirestore: (snapshot, options): UserProfile => {
-    const data = snapshot.data(options);
-    return {
-      ...data,
-      location: {
-        latitude: data?.location?._lat,
-        longitude: data?.location?._long,
-      },
-    };
-  },
-};
 
 export const getCurrentUserProfileQuery = (phone?: string): Query | undefined => {
   const usersRef = collection(fireStore, USER_COLLECTION).withConverter(profileConverter);
   return phone ? query(usersRef, where('phone', '==', phone)) : undefined;
 };
+
+export const getCurrentUserAddProfileDocRef = (): DocumentReference<DocumentData> =>
+  doc(fireStore, USER_COLLECTION).withConverter(profileConverter);
+
+export const getCurrentUserUpdateProfileDocRef = (docId: string): DocumentReference<DocumentData> =>
+  doc(fireStore, USER_COLLECTION, docId).withConverter(profileConverter);
 
 export const formValidator = ({
   id,

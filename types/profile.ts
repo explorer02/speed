@@ -18,4 +18,5 @@ export type UserProfile = {
   location?: Location;
   address?: Address;
   phone?: string;
+  docId?: string;
 };
