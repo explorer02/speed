@@ -1,6 +1,9 @@
 // lib
 import * as React from 'react';
 
+// hooks
+import { useSafeState } from './useSafeState';
+
 export const useToggle = (
   initValue: boolean = false,
 ): {
@@ -8,10 +11,10 @@ export const useToggle = (
   set: () => void;
   unset: () => void;
 } => {
-  const [value, setValue] = React.useState(initValue);
+  const [value, setValue] = useSafeState(initValue);
   return {
     value,
-    set: React.useCallback(() => setValue(true), []),
-    unset: React.useCallback(() => setValue(false), []),
+    set: React.useCallback(() => setValue(true), [setValue]),
+    unset: React.useCallback(() => setValue(false), [setValue]),
   };
 };

@@ -1,40 +1,18 @@
 // lib
-import {
-  collection,
-  doc,
-  DocumentData,
-  DocumentReference,
-  Query,
-  query,
-  where,
-} from 'firebase/firestore';
-
-// firebaseConfig
-import { fireStore } from 'firebaseConfig';
-
-// converters
-import { profileConverter } from 'converters/userProfile';
 
 // helper
 import { getFromLocalStorage, setToLocalStorage } from 'helper/localStorage';
 
 // constants
-import { USER_COLLECTION } from 'constants/collections';
 import { REGEX_VALUES } from './constants';
 
 // types
 import { Location } from 'types/profile';
 
-export const getCurrentUserProfileQuery = (phone?: string): Query | undefined => {
-  const usersRef = collection(fireStore, USER_COLLECTION).withConverter(profileConverter);
-  return phone ? query(usersRef, where('phone', '==', phone)) : undefined;
-};
-
-export const getCurrentUserAddProfileDocRef = (): DocumentReference<DocumentData> =>
-  doc(fireStore, USER_COLLECTION).withConverter(profileConverter);
-
-export const getCurrentUserUpdateProfileDocRef = (docId: string): DocumentReference<DocumentData> =>
-  doc(fireStore, USER_COLLECTION, docId).withConverter(profileConverter);
+// export const getCurrentUserProfileQuery = (phone?: string): Query | undefined => {
+//   const usersRef = collection(fireStore, USER_COLLECTION).withConverter(profileConverter);
+//   return phone ? query(usersRef, where('phone', '==', phone)) : undefined;
+// };
 
 export const formValidator = ({
   id,

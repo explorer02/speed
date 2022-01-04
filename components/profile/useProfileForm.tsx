@@ -1,18 +1,15 @@
 // lib
 import * as React from 'react';
 
-// hooks
-import { useLoginInfo } from 'contexts/LoginContext';
-import { useFireStoreQuery } from 'hooks/firebase';
-
 // helpers
-import { getCurrentUserProfileQuery, formValidator } from './helper';
+import { formValidator } from './helper';
 
 // constants
 import { Action, ACTION_TYPES } from './actions';
 
 // types
 import { UserProfile } from 'types/profile';
+import { useProfileInfo } from 'contexts/ProfileContext';
 
 const INITIAL_VALUES: UserProfile = {
   phone: '',
@@ -58,20 +55,16 @@ export const useProfileForm = (): {
   value: UserProfile;
   onChange: (ev: React.ChangeEvent<HTMLInputElement>) => void;
   dispatcher: React.Dispatch<Action>;
+  loading?: boolean;
 } => {
   const [formValue, onAction] = React.useReducer(formReducer, INITIAL_VALUES);
 
-  const { user } = useLoginInfo();
-  const phone = user?.phoneNumber as string | undefined;
-
-  const query = React.useMemo(() => getCurrentUserProfileQuery(phone), [phone]);
-  const { data } = useFireStoreQuery<UserProfile>(query);
-
+  const { loading, profile } = useProfileInfo();
   React.useEffect(() => {
-    if (data) {
-      onAction({ type: ACTION_TYPES.BATCH_UPDATE, payload: data });
+    if (profile) {
+      onAction({ type: ACTION_TYPES.BATCH_UPDATE, payload: profile });
     }
-  }, [data]);
+  }, [profile]);
 
   const handleChange = React.useCallback((ev: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -88,5 +81,5 @@ export const useProfileForm = (): {
       },
     });
   }, []);
-  return { value: formValue, onChange: handleChange, dispatcher: onAction };
+  return { value: formValue, onChange: handleChange, dispatcher: onAction, loading };
 };

@@ -4,12 +4,12 @@ import * as React from 'react';
 // components
 import { Box, CircularProgress } from '@mui/material';
 
-// constants
-import { HOME_PATH, PROTECTED_PATHS } from 'constants/paths';
-
 // hooks
 import { useLoginInfo } from 'contexts/LoginContext';
 import { useRouter } from 'next/router';
+
+// constants
+import { HOME_PATH, PROTECTED_PATHS } from 'constants/paths';
 
 // styles
 import { centerAll, expandXY } from 'styles/styleObjects';

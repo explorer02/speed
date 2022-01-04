@@ -3,7 +3,7 @@ import * as React from 'react';
 
 // components
 import { Box } from '@mui/material';
-import { Header } from './Header';
+import { Header } from 'components/app';
 
 // constants
 import { expandXY, centerAll } from 'styles/styleObjects';

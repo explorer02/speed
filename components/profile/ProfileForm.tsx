@@ -12,36 +12,33 @@ import HomeIcon from '@mui/icons-material/Home';
 import { Box, IconButton, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { FormControlInput, FormControlGroup } from './components';
-import { SnackBarOverlay } from 'components/SnackbarOverlay';
-import { LoadingModal } from 'components/LoadingModal';
+import { SnackBarOverlay, useSnackbar } from 'reusable/snackbarOverlay';
+import { LoadingModal } from 'reusable/loadingModal';
 
 // hooks
 import { useProfileForm } from './useProfileForm';
 import { useLoginInfo } from 'contexts/LoginContext';
-import { useFireStoreAddMutation, useFireStoreUpdateMutation } from 'hooks/firebase';
-import { useSnackbar, useToggle } from 'hooks';
+import { useToggle } from 'hooks';
+import { useFireStoreMutation } from 'hooks/firebase';
 
 // helpers
-import {
-  getAddressFromLocalStorage,
-  getCurrentUserAddProfileDocRef,
-  getCurrentUserUpdateProfileDocRef,
-  saveAddressToLocalStorage,
-} from './helper';
+import { getAddressFromLocalStorage, saveAddressToLocalStorage } from './helper';
+import { getUserProfileDocRef } from 'helper/docReference';
+
+// styles
+import { centerAll, centerVertically } from 'styles/styleObjects';
 
 // constants
-import { centerAll, centerVertically } from 'styles/styleObjects';
 import { ACTION_TYPES } from './actions';
 
 Geocode.setLanguage('en');
 Geocode.setRegion('in');
 Geocode.setApiKey('AIzaSyA5_Ct0wRXssklQETCzxSdlDtd568FIqZA');
 
-export const ProfileForm = (): React.ReactElement => {
-  const { value, onChange, dispatcher } = useProfileForm();
+const ProfileForm = (): React.ReactElement => {
+  const { value, onChange, dispatcher, loading } = useProfileForm();
 
-  const updateUser = useFireStoreUpdateMutation();
-  const addUser = useFireStoreAddMutation();
+  const updateUser = useFireStoreMutation();
 
   const { value: openLoadingModal, set: showLoadingModal, unset: hideLoadingModal } = useToggle();
 
@@ -90,25 +87,21 @@ export const ProfileForm = (): React.ReactElement => {
   }, [value.location]);
 
   const handleSaveProduct = React.useCallback(async () => {
+    if (!phone) return;
     showLoadingModal();
     try {
-      const doesUserExist = !!value.docId;
-      const mutationFn = doesUserExist ? updateUser : addUser;
-      const docRef = doesUserExist
-        ? getCurrentUserUpdateProfileDocRef(value.docId!)
-        : getCurrentUserAddProfileDocRef();
-      await mutationFn(docRef, value);
-
-      showSnackbar('Data Saved Successfully :)');
+      const docRef = getUserProfileDocRef(phone);
+      await updateUser(docRef, value);
+      showSnackbar('Data Saved Successfully :)', 'success');
     } catch (err) {
-      showSnackbar('Some error Ocurred :(', true);
+      showSnackbar('Some error Ocurred :(', 'error');
     }
     hideLoadingModal();
-  }, [addUser, hideLoadingModal, showLoadingModal, showSnackbar, updateUser, value]);
+  }, [hideLoadingModal, phone, showLoadingModal, showSnackbar, updateUser, value]);
 
   return (
     <>
-      <LoadingModal open={openLoadingModal} loadingText="Please wait while we save your data!" />
+      <LoadingModal open={openLoadingModal || !!loading} loadingText="Please wait..." />
       <SnackBarOverlay
         open={snackbarState.open}
         onClose={hideSnackbar}
@@ -236,3 +229,8 @@ export const ProfileForm = (): React.ReactElement => {
     </>
   );
 };
+
+const MemoizedProfileForm = React.memo(ProfileForm);
+MemoizedProfileForm.displayName = 'MemoizedProfileForm';
+
+export { MemoizedProfileForm as ProfileForm };

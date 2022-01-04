@@ -2,6 +2,9 @@
 import * as React from 'react';
 import { getDocs, Query } from 'firebase/firestore';
 
+// hooks
+import { useSafeState } from 'hooks';
+
 type QueryState<T> = {
   data?: T;
   loading: boolean;
@@ -15,7 +18,8 @@ export const useFireStoreQuery = <T>(
   query?: Query,
   options?: { skip?: boolean },
 ): QueryState<T> => {
-  const [state, setState] = React.useState<QueryState<T>>(InitialState);
+  const [state, setState] = useSafeState<QueryState<T>>(InitialState);
+
   React.useEffect(() => {
     if (!options?.skip && query) {
       setState({ loading: true });
@@ -32,6 +36,6 @@ export const useFireStoreQuery = <T>(
           setState({ loading: false, error: err?.message ?? 'Some Error Ocurred!!' });
         });
     }
-  }, [options?.skip, query]);
+  }, [options?.skip, query, setState]);
   return state;
 };

@@ -7,7 +7,7 @@ import { UserProfile } from 'types/profile';
 
 export const profileConverter: FirestoreDataConverter<UserProfile> = {
   toFirestore: (profile: UserProfile) => ({
-    ..._omit(profile, ['docId', 'location']),
+    ..._omit(profile, ['location']),
     location: new GeoPoint(profile?.location?.latitude ?? 0, profile?.location?.longitude ?? 0),
   }),
   fromFirestore: (snapshot, options): UserProfile => {
@@ -18,7 +18,6 @@ export const profileConverter: FirestoreDataConverter<UserProfile> = {
         latitude: data?.location?._lat,
         longitude: data?.location?._long,
       },
-      docId: snapshot.id,
     };
   },
 };

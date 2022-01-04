@@ -3,7 +3,7 @@ import * as React from 'react';
 
 // components
 import { Box } from '@mui/material';
-import { Login } from 'components/Login';
+import { LoginForm } from 'components/login/LoginForm';
 
 // hooks
 import { useLoginInfo } from 'contexts/LoginContext';
@@ -13,7 +13,7 @@ import { NextPage } from 'next';
 
 const Home: NextPage = () => {
   const { isLoggedIn } = useLoginInfo();
-  return isLoggedIn ? <Box>Home</Box> : <Login />;
+  return isLoggedIn ? <Box>Home</Box> : <LoginForm />;
 };
 
 export default Home;

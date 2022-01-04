@@ -57,6 +57,7 @@
         "@typescript-eslint/no-unused-vars": [
             "error"
         ],
+        "@typescript-eslint/no-non-null-assertion": 1,
         "no-underscore-dangle": 0
     },
     "settings": {
