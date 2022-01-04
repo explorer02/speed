@@ -12,7 +12,7 @@ import { centerVertically } from 'styles/styleObjects';
 import { NextPage } from 'next';
 
 const Profile: NextPage = () => (
-  <Box minHeight="50%" width="40%" {...centerVertically}>
+  <Box width="40%" {...centerVertically}>
     <ProfileForm />
   </Box>
 );
