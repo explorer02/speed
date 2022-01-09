@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // components
-import { Button, Typography, Box } from '@mui/material';
+import { Button, Typography, Box, IconButton } from '@mui/material';
 
 // icons
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -10,13 +10,17 @@ import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined';
 import NoteAltOutlinedIcon from '@mui/icons-material/NoteAltOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 
 // hooks
 import { useRouter } from 'next/dist/client/router';
 import { useLoginInfo } from 'contexts/LoginContext';
+import { useColorMode } from 'contexts/AppThemeProvider';
 
 // constants
 import { centerVertically, expandXY } from 'styles/styleObjects';
+
 import {
   AVAILABILITY_PATH,
   HOME_PATH,
@@ -63,10 +67,13 @@ const NAV_BUTTONS = [
   },
 ];
 
-export const Header = (): React.ReactElement => {
+const Header = (): React.ReactElement => {
   const { push, pathname } = useRouter();
   const { isLoggedIn } = useLoginInfo();
   const selected = NAV_BUTTONS.find((btn) => btn.path === pathname)?.key;
+  const colorMode = useColorMode();
+
+  const ModeIcon = colorMode.mode === 'light' ? <LightModeIcon /> : <DarkModeIcon />;
 
   return (
     <Box
@@ -103,7 +110,13 @@ export const Header = (): React.ReactElement => {
           }
           return ButtonComp;
         })}
+        <IconButton color="primary" onClick={colorMode.toggleColorMode}>
+          {ModeIcon}
+        </IconButton>
       </Box>
     </Box>
   );
 };
+
+const MemoizedHeader = React.memo(Header);
+export { MemoizedHeader as Header };

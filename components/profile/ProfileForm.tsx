@@ -33,7 +33,7 @@ import { ACTION_TYPES } from './actions';
 
 Geocode.setLanguage('en');
 Geocode.setRegion('in');
-Geocode.setApiKey('AIzaSyA5_Ct0wRXssklQETCzxSdlDtd568FIqZA');
+Geocode.setApiKey(process.env.NEXT_PUBLIC_MAP_API_KEY!);
 
 const ProfileForm = (): React.ReactElement => {
   const { value, onChange, dispatcher, loading } = useProfileForm();

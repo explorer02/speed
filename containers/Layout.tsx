@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useMeasure } from 'react-use';
 
 // components
-import { Box } from '@mui/material';
+import { Box, Stack, useTheme } from '@mui/material';
 import { Header } from 'components/app';
 
 // constants
@@ -14,29 +14,22 @@ const GAP = 2;
 
 export const Layout = ({ children }: { children?: any }): React.ReactElement => {
   const [ref, { height }] = useMeasure();
+  const theme = useTheme();
 
   return (
-    <Box
+    <Stack
       {...expandXY}
       id="layout"
       ref={ref}
-      overflow="hidden"
-      display="flex"
-      flexDirection="column"
-      gap={GAP}
+      spacing={GAP}
+      bgcolor={theme.palette.background.default}
     >
       <Box height={HEADER_HEIGHT}>
         <Header />
       </Box>
-      <Box
-        id="layout-item"
-        maxHeight={height - HEADER_HEIGHT - GAP * 8}
-        flexGrow={1}
-        overflow="auto"
-        {...centerAll}
-      >
-        {children}
+      <Box id="layout-item" height={height - HEADER_HEIGHT - GAP * 8} overflow="auto">
+        <Box {...centerAll}>{children}</Box>
       </Box>
-    </Box>
+    </Stack>
   );
 };
