@@ -26,16 +26,19 @@ import { getAddressFromLocalStorage, saveAddressToLocalStorage } from './helper'
 import { getUserProfileDocRef } from 'helper/docReference';
 
 // styles
-import { centerAll, centerVertically } from 'styles/styleObjects';
+import { centerAll, centerHorizontally } from 'styles/styleObjects';
 
 // constants
 import { ACTION_TYPES } from './actions';
+
+// types
+import { SxProps } from '@mui/system';
 
 Geocode.setLanguage('en');
 Geocode.setRegion('in');
 Geocode.setApiKey(process.env.NEXT_PUBLIC_MAP_API_KEY!);
 
-const ProfileForm = (): React.ReactElement => {
+const ProfileForm = ({ sx }: { sx?: SxProps }): React.ReactElement => {
   const { value, onChange, dispatcher, loading } = useProfileForm();
 
   const updateUser = useFireStoreMutation();
@@ -56,8 +59,8 @@ const ProfileForm = (): React.ReactElement => {
           type: ACTION_TYPES.BATCH_UPDATE,
           payload: {
             location: {
-              latitude: geoLocation.coords.latitude,
-              longitude: geoLocation.coords.longitude,
+              lat: geoLocation.coords.latitude,
+              lng: geoLocation.coords.longitude,
             },
           },
         });
@@ -73,10 +76,7 @@ const ProfileForm = (): React.ReactElement => {
           setGeoCodeAddress(storedAddress);
           return;
         }
-        const response = await Geocode.fromLatLng(
-          `${value.location.latitude}`,
-          `${value.location.longitude}`,
-        );
+        const response = await Geocode.fromLatLng(`${value.location.lat}`, `${value.location.lng}`);
         const address = response?.results?.[0]?.formatted_address;
         setGeoCodeAddress(address);
         saveAddressToLocalStorage(value.location, address);
@@ -108,14 +108,14 @@ const ProfileForm = (): React.ReactElement => {
         message={snackbarState.message}
         severity={snackbarState.severity}
       />
-      <Box {...centerVertically} width="100%" py={5} flexDirection="column" gap="30px">
+      <Box {...centerHorizontally} py={5} flexDirection="column" gap="30px" sx={sx}>
         <FormControlInput value={value.name} onChange={onChange} label="Name" dataId="name" />
         <FormControlInput value={phone} onChange={_noop} label="Phone Number" dataId="" disabled />
 
         <FormControlGroup title="Location">
           <Box {...centerAll} gap="15px">
             <FormControlInput
-              value={value.location?.latitude}
+              value={value.location?.lat}
               label="Latitude"
               dataId="location"
               dataSubId="latitude"
@@ -123,7 +123,7 @@ const ProfileForm = (): React.ReactElement => {
               type="number"
             />
             <FormControlInput
-              value={value.location?.longitude}
+              value={value.location?.lng}
               label="Longitude"
               dataId="location"
               dataSubId="longitude"

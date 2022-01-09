@@ -3,52 +3,64 @@ import * as React from 'react';
 
 // components
 import GoogleMapReact from 'google-map-react';
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 
 // icons
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
-// hooks
-import { useProfileInfo } from 'contexts/ProfileContext';
-
 // styles
 import { expandXY } from 'styles/styleObjects';
 
+// types
+import { StringAnyMap } from 'types/generic';
+
 const MAP_API_KEY = process.env.NEXT_PUBLIC_MAP_API_KEY!;
 
-const DEFAULT_CENTER: GoogleMapReact.Coords = { lat: 28.5768478, lng: 77.0909515 };
-const DEFAULT_ZOOM = 11;
+const DEFAULT_CENTER: GoogleMapReact.Coords = { lat: 28.5272803, lng: 77.0688997 };
+const DEFAULT_ZOOM = 13;
 
-type MarkerType = (props: { lat: number; lng: number }) => React.ReactElement;
+type MarkerData = { location: GoogleMapReact.Coords; id: string } & StringAnyMap;
 
-export const Marker: MarkerType = () => <LocationOnIcon />;
+type MarkerType = (props: { lat: number; lng: number; datum: MarkerData }) => React.ReactElement;
 
-export const MapRenderer = (): React.ReactElement => {
-  const { profile } = useProfileInfo();
-  const mapCenter: GoogleMapReact.Coords = React.useMemo(
-    () =>
-      profile
-        ? { lat: profile.location?.latitude ?? 0, lng: profile.location?.longitude ?? 0 }
-        : DEFAULT_CENTER,
-    [profile],
+export const Marker: MarkerType = () => (
+  <IconButton color="primary" size="large">
+    <LocationOnIcon />
+  </IconButton>
+);
+
+const MapRenderer = ({
+  markerData,
+  center,
+  onMarkerClick,
+}: {
+  center?: GoogleMapReact.Coords;
+  markerData?: MarkerData[];
+  onMarkerClick?: (datum: MarkerData | undefined) => void;
+}): React.ReactElement => {
+  const handleChildClick = React.useCallback(
+    (_, childProps: { datum: MarkerData }) => {
+      onMarkerClick?.(childProps.datum);
+    },
+    [onMarkerClick],
   );
-  const stores: GoogleMapReact.Coords[] = [
-    DEFAULT_CENTER,
-    { lat: DEFAULT_CENTER.lat, lng: DEFAULT_CENTER.lng + 0.1 },
-  ];
 
   return (
-    <Box {...expandXY} padding={4} height={1000}>
+    <Box {...expandXY} borderRadius={3} overflow="hidden">
       <GoogleMapReact
         bootstrapURLKeys={{ key: MAP_API_KEY }}
         defaultCenter={DEFAULT_CENTER}
         defaultZoom={DEFAULT_ZOOM}
-        center={mapCenter}
+        center={center}
+        onChildClick={handleChildClick}
+        zoom={center ? 15 : DEFAULT_ZOOM}
       >
-        {stores.map((location) => (
-          <Marker lat={location.lat} lng={location.lng} key={`${location.lat}${location.lng}`} />
+        {markerData?.map((datum) => (
+          <Marker lat={datum.location.lat} lng={datum.location.lng} key={datum.id} datum={datum} />
         ))}
       </GoogleMapReact>
     </Box>
   );
 };
+const MemoizedMapRenderer = React.memo(MapRenderer);
+export { MemoizedMapRenderer as MapRenderer };

@@ -1,5 +1,3 @@
-// lib
-
 // helper
 import { getFromLocalStorage, setToLocalStorage } from 'helper/localStorage';
 
@@ -7,12 +5,7 @@ import { getFromLocalStorage, setToLocalStorage } from 'helper/localStorage';
 import { REGEX_VALUES } from './constants';
 
 // types
-import { Location } from 'types/profile';
-
-// export const getCurrentUserProfileQuery = (phone?: string): Query | undefined => {
-//   const usersRef = collection(fireStore, USER_COLLECTION).withConverter(profileConverter);
-//   return phone ? query(usersRef, where('phone', '==', phone)) : undefined;
-// };
+import googleMapReact from 'google-map-react';
 
 export const formValidator = ({
   id,
@@ -47,10 +40,13 @@ export const formValidator = ({
 };
 
 // TODO: Add expiry to location address data
-export const getAddressFromLocalStorage = (location: Location): string | undefined => {
+export const getAddressFromLocalStorage = (location: googleMapReact.Coords): string | undefined => {
   const address = getFromLocalStorage(JSON.stringify(location));
   return address;
 };
-export const saveAddressToLocalStorage = (location: Location, address: string): void => {
+export const saveAddressToLocalStorage = (
+  location: googleMapReact.Coords,
+  address: string,
+): void => {
   setToLocalStorage(JSON.stringify(location), address);
 };

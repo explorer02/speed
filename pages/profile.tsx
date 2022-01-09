@@ -6,14 +6,14 @@ import { Box } from '@mui/material';
 import { ProfileForm } from 'components/profile/ProfileForm';
 
 // styles
-import { centerVertically } from 'styles/styleObjects';
+import { centerHorizontally } from 'styles/styleObjects';
 
 // types
 import { NextPage } from 'next';
 
 const Profile: NextPage = () => (
-  <Box width="40%" {...centerVertically}>
-    <ProfileForm />
+  <Box width="100%" {...centerHorizontally}>
+    <ProfileForm sx={{ width: '40%' }} />
   </Box>
 );
 

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { signInWithPhoneNumber } from '@firebase/auth';
 
 // components
-import { Typography, Box, TextField, InputAdornment } from '@mui/material';
+import { Typography, Box, TextField, InputAdornment, Theme } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { SnackBarOverlay, useSnackbar } from 'reusable/snackbarOverlay';
 
@@ -24,6 +24,7 @@ import { centerAll } from 'styles/styleObjects';
 
 // types
 import { ConfirmationResult } from 'firebase/auth';
+import { SxProps } from '@mui/system';
 
 const LOGIN_PHASES = {
   IDLE: 0,
@@ -45,7 +46,7 @@ const INITIAL_LOGIN_STATE: LoginState = {
   phase: LOGIN_PHASES.IDLE,
 };
 
-const LoginForm = (): React.ReactElement => {
+const LoginForm = ({ sx }: { sx?: SxProps<Theme> }): React.ReactElement => {
   const appVerifier = useSignInRecaptcha();
   const [confirmationResult, setConfirmationResult] = React.useState<ConfirmationResult>();
 
@@ -132,14 +133,7 @@ const LoginForm = (): React.ReactElement => {
         message={snackbarState.message}
         onClose={hideSnackbar}
       />
-      <Box
-        minHeight="50%"
-        minWidth="30%"
-        maxWidth="50%"
-        {...centerAll}
-        flexDirection="column"
-        gap="40px"
-      >
+      <Box {...centerAll} flexDirection="column" gap="40px" sx={sx}>
         <Typography variant="h4" component="div" {...centerAll} gap="16px" mb={4}>
           <LoginOutlinedIcon fontSize="large" /> Login
         </Typography>

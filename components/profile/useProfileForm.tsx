@@ -24,7 +24,7 @@ const INITIAL_VALUES: UserProfile = {
     state: '',
     pinCode: '',
   },
-  location: { latitude: 0.0, longitude: 0.0 },
+  location: { lat: 0.0, lng: 0.0 },
 };
 
 const formReducer = (state: UserProfile, action: Action): UserProfile => {

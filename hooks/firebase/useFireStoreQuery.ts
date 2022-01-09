@@ -6,10 +6,11 @@ import { getDocs, Query } from 'firebase/firestore';
 import { useSafeState } from 'hooks';
 
 type QueryState<T> = {
-  data?: T;
+  data?: T[];
   loading: boolean;
   error?: string;
 };
+
 const InitialState = {
   loading: false,
 };
@@ -26,10 +27,10 @@ export const useFireStoreQuery = <T>(
       getDocs(query)
         .then((res) => {
           if (res.size > 0) {
-            const data = res.docs[0].data() as T;
+            const data = res.docs.map((doc) => doc.data()) as T[];
             setState({ data, loading: false });
           } else {
-            setState({ loading: false, data: {} as T });
+            setState({ loading: false, data: [] });
           }
         })
         .catch((err) => {

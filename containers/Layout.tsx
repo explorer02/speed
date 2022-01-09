@@ -6,8 +6,8 @@ import { useMeasure } from 'react-use';
 import { Box, Stack, useTheme } from '@mui/material';
 import { Header } from 'components/app';
 
-// constants
-import { centerAll, expandXY } from 'styles/styleObjects';
+// styles
+import { expandXY } from 'styles/styleObjects';
 
 const HEADER_HEIGHT = 80;
 const GAP = 2;
@@ -28,7 +28,7 @@ export const Layout = ({ children }: { children?: any }): React.ReactElement => 
         <Header />
       </Box>
       <Box id="layout-item" height={height - HEADER_HEIGHT - GAP * 8} overflow="auto">
-        <Box {...centerAll}>{children}</Box>
+        {children}
       </Box>
     </Stack>
   );

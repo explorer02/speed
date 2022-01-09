@@ -1,4 +1,5 @@
-import { GeoPoint } from 'firebase/firestore';
+// types
+import googleMapReact from 'google-map-react';
 
 export type Address = {
   houseNumber?: string;
@@ -11,11 +12,9 @@ export type Address = {
   pinCode?: string;
 };
 
-export type Location = Pick<GeoPoint, 'latitude' | 'longitude'>;
-
 export type UserProfile = {
   name?: string;
-  location?: Location;
+  location?: googleMapReact.Coords;
   address?: Address;
   phone?: string;
 };
