@@ -9,6 +9,7 @@ import {
   FormHelperText,
   InputLabel,
   OutlinedInput,
+  OutlinedInputProps,
 } from '@mui/material';
 
 // constants
@@ -18,11 +19,11 @@ import { FORM_ACTIONS } from '../constants';
 import { FormComponentProps } from '../FieldMap';
 import { StringAnyMap } from 'types/generic';
 
-type Props = FormComponentProps & {
-  label: string;
-  helperText?: string;
-  disabled?: boolean;
-} & StringAnyMap;
+type Props = FormComponentProps &
+  Pick<OutlinedInputProps, 'placeholder' | 'disabled' | 'startAdornment'> & {
+    label: string;
+    helperText?: string;
+  } & StringAnyMap;
 
 const InputComponent = experimentalStyled(OutlinedInput)`
 input[type=number]::-webkit-inner-spin-button, 
@@ -33,7 +34,16 @@ input[type=number]::-webkit-outer-spin-button {
 `;
 
 export const FormControlNumberInput = (props: Props): React.ReactElement => {
-  const { id, onAction, value, label, helperText, disabled = false } = props;
+  const {
+    id,
+    onAction,
+    value,
+    label,
+    helperText,
+    disabled = false,
+    placeholder,
+    startAdornment,
+  } = props;
 
   const latestProps = useLatest(props);
 
@@ -64,6 +74,8 @@ export const FormControlNumberInput = (props: Props): React.ReactElement => {
         label={label}
         type="number"
         className=".no_spinner"
+        placeholder={placeholder}
+        startAdornment={startAdornment}
       />
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>

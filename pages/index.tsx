@@ -3,7 +3,7 @@ import * as React from 'react';
 
 // components
 import { Box } from '@mui/material';
-import { LoginForm } from 'components/login/LoginForm';
+import { LoginForm } from 'components/login/LoginForm2';
 
 // hooks
 import { useLoginInfo } from 'contexts/LoginContext';

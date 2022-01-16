@@ -158,6 +158,7 @@ export const Form = ({
     onAction({ type: FORM_ACTIONS.ON_SUBMIT, payload: { value } });
   }, [onAction, value]);
 
+  // TODO: fix validation
   const errors = React.useMemo(
     () => (validator ? validator(value) : undefined),
     [validator, value],
