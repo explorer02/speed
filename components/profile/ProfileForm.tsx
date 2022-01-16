@@ -1,17 +1,8 @@
 // lib
 import * as React from 'react';
-import Geocode from 'react-geocode';
-import _noop from 'lodash/noop';
-
-// icons
-import MyLocationIcon from '@mui/icons-material/MyLocation';
-import UpdateIcon from '@mui/icons-material/Update';
-import HomeIcon from '@mui/icons-material/Home';
 
 // components
-import { Box, IconButton, Typography } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
-import { FormControlInput, FormControlGroup } from './components';
+import { Box } from '@mui/material';
 import { SnackBarOverlay, useSnackbar } from 'reusable/snackbarOverlay';
 import { LoadingModal } from 'reusable/loadingModal';
 
@@ -22,209 +13,74 @@ import { useToggle } from 'hooks';
 import { useFireStoreMutation } from 'hooks/firebase';
 
 // helpers
-import { getAddressFromLocalStorage, saveAddressToLocalStorage } from './helper';
 import { getUserProfileDocRef } from 'helper/docReference';
-
-// styles
-import { centerAll, centerHorizontally } from 'styles/styleObjects';
-
-// constants
-import { ACTION_TYPES } from './actions';
 
 // types
 import { SxProps } from '@mui/system';
-
-Geocode.setLanguage('en');
-Geocode.setRegion('in');
-Geocode.setApiKey(process.env.NEXT_PUBLIC_MAP_API_KEY!);
+import { Form, FormAction, FORM_ACTIONS } from 'reusable/form';
+import { LAYOUT } from './layout';
+import { FIELD_MAP } from './fields';
 
 const ProfileForm = ({ sx }: { sx?: SxProps }): React.ReactElement => {
-  const { value, onChange, dispatcher, loading } = useProfileForm();
+  const { value, onAction, isLoading, valueRef } = useProfileForm();
 
   const updateUser = useFireStoreMutation();
 
-  const { value: openLoadingModal, set: showLoadingModal, unset: hideLoadingModal } = useToggle();
+  const {
+    value: isLoadingModalVisible,
+    set: showLoadingModal,
+    unset: hideLoadingModal,
+  } = useToggle();
 
   const { state: snackbarState, showSnackbar, hideSnackbar } = useSnackbar();
-
-  const [geoCodeAddress, setGeoCodeAddress] = React.useState<string>();
 
   const { user } = useLoginInfo();
   const phone = user?.phoneNumber as string | undefined;
 
-  const setCurrentLocation = React.useCallback(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((geoLocation) => {
-        dispatcher({
-          type: ACTION_TYPES.BATCH_UPDATE,
-          payload: {
-            location: {
-              lat: geoLocation.coords.latitude,
-              lng: geoLocation.coords.longitude,
-            },
-          },
-        });
-      });
-    }
-  }, [dispatcher]);
-
-  const fetchGeoAddress = React.useCallback(async () => {
-    if (value.location) {
-      try {
-        const storedAddress = getAddressFromLocalStorage(value.location);
-        if (storedAddress) {
-          setGeoCodeAddress(storedAddress);
-          return;
-        }
-        const response = await Geocode.fromLatLng(`${value.location.lat}`, `${value.location.lng}`);
-        const address = response?.results?.[0]?.formatted_address;
-        setGeoCodeAddress(address);
-        saveAddressToLocalStorage(value.location, address);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  }, [value.location]);
-
-  const handleSaveProduct = React.useCallback(async () => {
+  const handleSubmit = React.useCallback(async () => {
     if (!phone) return;
     showLoadingModal();
     try {
       const docRef = getUserProfileDocRef(phone);
-      await updateUser(docRef, value);
+      await updateUser(docRef, valueRef.current);
       showSnackbar('Data Saved Successfully :)', 'success');
     } catch (err) {
       showSnackbar('Some error Ocurred :(', 'error');
     }
     hideLoadingModal();
-  }, [hideLoadingModal, phone, showLoadingModal, showSnackbar, updateUser, value]);
+  }, [hideLoadingModal, phone, showLoadingModal, showSnackbar, updateUser, valueRef]);
+
+  const handleAction = React.useCallback(
+    (action: FormAction) => {
+      switch (action.type) {
+        case FORM_ACTIONS.ON_SUBMIT:
+          handleSubmit();
+          break;
+        default:
+          onAction(action);
+      }
+    },
+    [handleSubmit, onAction],
+  );
 
   return (
     <>
-      <LoadingModal open={openLoadingModal || !!loading} loadingText="Please wait..." />
+      <LoadingModal open={isLoadingModalVisible || !!isLoading} loadingText="Please wait..." />
       <SnackBarOverlay
         open={snackbarState.open}
         onClose={hideSnackbar}
         message={snackbarState.message}
         severity={snackbarState.severity}
       />
-      <Box {...centerHorizontally} py={5} flexDirection="column" gap="30px" sx={sx}>
-        <FormControlInput value={value.name} onChange={onChange} label="Name" dataId="name" />
-        <FormControlInput value={phone} onChange={_noop} label="Phone Number" dataId="" disabled />
-
-        <FormControlGroup title="Location">
-          <Box {...centerAll} gap="15px">
-            <FormControlInput
-              value={value.location?.lat}
-              label="Latitude"
-              dataId="location"
-              dataSubId="latitude"
-              onChange={onChange}
-              type="number"
-            />
-            <FormControlInput
-              value={value.location?.lng}
-              label="Longitude"
-              dataId="location"
-              dataSubId="longitude"
-              onChange={onChange}
-              type="number"
-            />
-            <IconButton onClick={setCurrentLocation} color="primary">
-              <MyLocationIcon />
-            </IconButton>
-            <IconButton onClick={fetchGeoAddress} color="primary">
-              <HomeIcon />
-            </IconButton>
-          </Box>
-          {geoCodeAddress ? (
-            <Typography variant="subtitle2" mt={2} maxWidth="100%" color="secondary">
-              {geoCodeAddress}
-            </Typography>
-          ) : null}
-        </FormControlGroup>
-
-        <FormControlGroup title="Address">
-          <Box {...centerAll} gap="20px">
-            <FormControlInput
-              value={value.address?.houseNumber}
-              label="House Number"
-              dataId="address"
-              dataSubId="houseNumber"
-              onChange={onChange}
-            />
-            <FormControlInput
-              value={value.address?.street}
-              label="Street"
-              dataId="address"
-              dataSubId="street"
-              onChange={onChange}
-            />
-          </Box>
-
-          <Box {...centerAll} gap="20px" mt={2} mb={2}>
-            <FormControlInput
-              value={value.address?.locality}
-              label="Locality"
-              dataId="address"
-              dataSubId="locality"
-              onChange={onChange}
-            />
-            <FormControlInput
-              value={value.address?.area}
-              label="Area"
-              dataId="address"
-              dataSubId="area"
-              onChange={onChange}
-            />
-          </Box>
-
-          <Box {...centerAll} gap="20px" mt={2}>
-            <FormControlInput
-              value={value.address?.landmark}
-              label="Landmark"
-              dataId="address"
-              dataSubId="landmark"
-              onChange={onChange}
-            />
-            <FormControlInput
-              value={value.address?.city}
-              label="City"
-              dataId="address"
-              dataSubId="city"
-              onChange={onChange}
-            />
-          </Box>
-          <Box {...centerAll} gap="20px" mt={2}>
-            <FormControlInput
-              value={value.address?.state}
-              label="State"
-              dataId="address"
-              dataSubId="state"
-              onChange={onChange}
-            />
-            <FormControlInput
-              value={value.address?.pinCode}
-              label="Pin Code"
-              dataId="address"
-              dataSubId="pinCode"
-              onChange={onChange}
-            />
-          </Box>
-        </FormControlGroup>
-
-        <LoadingButton
-          variant="contained"
-          fullWidth
-          size="large"
-          sx={{ padding: 2 }}
-          startIcon={<UpdateIcon />}
-          loading={false}
-          loadingIndicator="Please wait..."
-          onClick={handleSaveProduct}
-        >
-          Update Profile
-        </LoadingButton>
+      <Box sx={sx}>
+        <Form
+          layout={LAYOUT}
+          fieldMap={FIELD_MAP}
+          onAction={handleAction}
+          value={value}
+          py={5}
+          config={{ submit: { label: 'Update' } }}
+        />
       </Box>
     </>
   );

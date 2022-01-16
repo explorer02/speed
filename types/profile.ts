@@ -14,7 +14,9 @@ export type Address = {
 
 export type UserProfile = {
   name?: string;
-  location?: googleMapReact.Coords;
+  location?: googleMapReact.Coords & {
+    addressText?: string;
+  };
   address?: Address;
   phone?: string;
 };

@@ -7,18 +7,18 @@ import { useSafeState } from 'hooks';
 // types
 import { AlertColor } from '@mui/material';
 
-type State = { open: boolean; severity: AlertColor; message: string };
+export type SnackbarState = { open: boolean; severity: AlertColor; message: string };
 
-const INITIAL_STATE: State = { open: false, severity: 'info', message: '' };
+const INITIAL_STATE: SnackbarState = { open: false, severity: 'info', message: '' };
 
 type UseSnackbar = () => {
-  state: State;
+  state: SnackbarState;
   showSnackbar: (message: string, severity: AlertColor) => void;
   hideSnackbar: () => void;
 };
 
 export const useSnackbar: UseSnackbar = () => {
-  const [state, setState] = useSafeState<State>(INITIAL_STATE);
+  const [state, setState] = useSafeState<SnackbarState>(INITIAL_STATE);
 
   const showSnackbar = React.useCallback(
     (message: string, severity: AlertColor): void => {

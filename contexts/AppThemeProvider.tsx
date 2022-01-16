@@ -4,7 +4,7 @@ import { createTheme, PaletteMode, ThemeOptions, ThemeProvider } from '@mui/mate
 import _noop from 'lodash/noop';
 
 // colors
-import { deepOrange, grey, blue } from '@mui/material/colors';
+import { grey, purple, teal } from '@mui/material/colors';
 
 // helpers
 import { getFromLocalStorage, setToLocalStorage } from 'helper/localStorage';
@@ -18,8 +18,8 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
     ...(mode === 'light'
       ? {
           // palette values for light mode
-          primary: deepOrange,
-          divider: blue[200],
+          primary: purple,
+          divider: purple[200],
           text: {
             primary: BLACK,
             secondary: grey[800],
@@ -27,8 +27,8 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
         }
       : {
           // palette values for dark mode
-          primary: deepOrange,
-          divider: deepOrange[700],
+          primary: teal,
+          divider: teal[700],
           background: {
             default: grey[900],
             paper: grey[900],

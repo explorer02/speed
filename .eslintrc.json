@@ -58,7 +58,8 @@
             "error"
         ],
         "@typescript-eslint/no-non-null-assertion": 1,
-        "no-underscore-dangle": 0
+        "no-underscore-dangle": 0,
+        "no-case-declarations": 0
     },
     "settings": {
         "import/resolver": {
