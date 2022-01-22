@@ -3,31 +3,21 @@ import * as React from 'react';
 
 // components
 import GoogleMapReact from 'google-map-react';
-import { Box, IconButton } from '@mui/material';
+import { Box } from '@mui/material';
+import { MapMarker } from './MapMarker';
 
 // icons
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 // styles
 import { expandXY } from 'styles/styleObjects';
 
 // types
-import { StringAnyMap } from 'types/generic';
+import { Store } from 'types/store';
 
 const MAP_API_KEY = process.env.NEXT_PUBLIC_MAP_API_KEY!;
 
 const DEFAULT_CENTER: GoogleMapReact.Coords = { lat: 28.5272803, lng: 77.0688997 };
-const DEFAULT_ZOOM = 13;
-
-type MarkerData = { location: GoogleMapReact.Coords; id: string } & StringAnyMap;
-
-type MarkerType = (props: { lat: number; lng: number; datum: MarkerData }) => React.ReactElement;
-
-export const Marker: MarkerType = () => (
-  <IconButton color="primary" size="large">
-    <LocationOnIcon />
-  </IconButton>
-);
+const DEFAULT_ZOOM = 12;
 
 const MapRenderer = ({
   markerData,
@@ -35,11 +25,11 @@ const MapRenderer = ({
   onMarkerClick,
 }: {
   center?: GoogleMapReact.Coords;
-  markerData?: MarkerData[];
-  onMarkerClick?: (datum: MarkerData | undefined) => void;
+  markerData?: Store[];
+  onMarkerClick?: (datum: Store) => void;
 }): React.ReactElement => {
   const handleChildClick = React.useCallback(
-    (_, childProps: { datum: MarkerData }) => {
+    (_, childProps: { datum: Store }) => {
       onMarkerClick?.(childProps.datum);
     },
     [onMarkerClick],
@@ -53,10 +43,16 @@ const MapRenderer = ({
         defaultZoom={DEFAULT_ZOOM}
         center={center}
         onChildClick={handleChildClick}
-        zoom={center ? 15 : DEFAULT_ZOOM}
+        zoom={DEFAULT_ZOOM}
       >
         {markerData?.map((datum) => (
-          <Marker lat={datum.location.lat} lng={datum.location.lng} key={datum.id} datum={datum} />
+          <MapMarker
+            lat={datum.location.lat}
+            lng={datum.location.lng}
+            key={datum.id}
+            datum={datum}
+            selected={!!(datum.location.lat === center?.lat && datum.location.lng === center.lng)}
+          />
         ))}
       </GoogleMapReact>
     </Box>

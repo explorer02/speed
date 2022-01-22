@@ -1,15 +1,12 @@
 import * as React from 'react';
-import { Box, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
-
-// icons
-import StorefrontIcon from '@mui/icons-material/Storefront';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { Box, List, Typography } from '@mui/material';
 
 // styles
 import { centerAll, expandXY } from 'styles/styleObjects';
 
 // type
 import { Store } from 'types/store';
+import { StoreListItem } from './StoreListItem';
 
 const StoreList = ({
   stores,
@@ -20,30 +17,16 @@ const StoreList = ({
   selectedStore?: Store;
   onClick?: (store: Store) => void;
 }): React.ReactElement => (
-  <Box {...expandXY} {...centerAll} flexDirection="column">
+  <Box {...expandXY} {...centerAll} flexDirection="column" overflow="auto">
     <Typography variant="h4">Stores</Typography>
     <List>
       {stores.map((store) => (
-        <ListItemButton
-          selected={selectedStore?.id === store.id}
+        <StoreListItem
           key={store.id}
-          onClick={(): void => onClick?.(store)}
-        >
-          <ListItemIcon>
-            <StorefrontIcon />
-          </ListItemIcon>
-          <ListItemText sx={{ maxWidth: 300 }} primary={store.name} secondary={store.address} />
-          <ListItemIcon
-            onClick={(): void => {
-              window.open(
-                `https://maps.google.com/?q=${store.location.lat},${store.location.lng}`,
-                '_blank',
-              );
-            }}
-          >
-            <OpenInNewIcon />
-          </ListItemIcon>
-        </ListItemButton>
+          store={store}
+          onClick={onClick}
+          selected={selectedStore?.id === store.id}
+        />
       ))}
     </List>
   </Box>
