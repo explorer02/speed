@@ -165,7 +165,7 @@ export const Form = ({
   );
 
   return (
-    <Grid container rowSpacing={4} {...layout.style} {...expandXY} {...gridProps}>
+    <Grid item container rowSpacing={4} {...layout.style} {...expandXY} {...gridProps}>
       <ItemRenderer
         items={layout.children}
         fieldMap={fieldMap}

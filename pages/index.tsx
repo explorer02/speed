@@ -3,7 +3,7 @@ import * as React from 'react';
 
 // components
 import { Box } from '@mui/material';
-import { LoginForm } from 'components/login/LoginForm2';
+import { LoginForm } from 'components/login/LoginForm';
 
 // hooks
 import { useLoginInfo } from 'contexts/LoginContext';
@@ -18,7 +18,9 @@ const Home: NextPage = () => {
     <Box>Home</Box>
   ) : (
     <Box width="100%" pt={8} {...centerAll}>
-      <LoginForm sx={{ width: '40%' }} />
+      <Box width="40%">
+        <LoginForm />
+      </Box>
     </Box>
   );
 };

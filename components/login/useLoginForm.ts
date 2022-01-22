@@ -15,12 +15,18 @@ type UseLoginForm = (props: {
   onSignInSubmit: (phone: string) => Promise<void>;
   onVerifyOTP: (phone: string) => Promise<void>;
   isOtpSent?: boolean;
+  resetLoginState: () => void;
 }) => {
   onAction: (action: FormAction) => void;
   value: State;
 };
 
-export const useLoginForm: UseLoginForm = ({ onSignInSubmit, onVerifyOTP, isOtpSent }) => {
+export const useLoginForm: UseLoginForm = ({
+  onSignInSubmit,
+  onVerifyOTP,
+  isOtpSent,
+  resetLoginState,
+}) => {
   const [state, setState] = React.useState(INITIAL_VALUE);
   const stateRef = useLatest(state);
 
@@ -39,12 +45,16 @@ export const useLoginForm: UseLoginForm = ({ onSignInSubmit, onVerifyOTP, isOtpS
           }
           break;
 
-        // TODO: handle reset case
+        case FORM_ACTIONS.ON_RESET:
+          setState(INITIAL_VALUE);
+          resetLoginState();
+          break;
+
         default:
           break;
       }
     },
-    [isOtpSent, onSignInSubmit, onVerifyOTP, stateRef],
+    [isOtpSent, onSignInSubmit, onVerifyOTP, resetLoginState, stateRef],
   );
 
   return { onAction: handleAction, value: state };
