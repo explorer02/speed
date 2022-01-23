@@ -6,9 +6,7 @@ import GoogleMapReact from 'google-map-react';
 import { Box } from '@mui/material';
 import { MapMarker } from './MapMarker';
 
-// icons
-
-// styles
+// constants
 import { expandXY } from 'styles/styleObjects';
 
 // types

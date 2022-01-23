@@ -12,13 +12,14 @@ import {
   ListItemText,
   TextField,
   Typography,
+  UseAutocompleteProps,
   useTheme,
 } from '@mui/material';
 
 // icons
 import StorefrontIcon from '@mui/icons-material/Storefront';
 
-// styles
+// constants
 import { centerAll } from 'styles/styleObjects';
 
 // types
@@ -29,21 +30,33 @@ const getOptionLabel = (store: Store): string => store.name;
 export const StoreSelector = ({
   stores,
   selectedStore,
+  onStoreChange,
 }: {
   stores: Store[];
   selectedStore: Store;
+  onStoreChange: (store: Store) => void;
 }): React.ReactElement => {
   const theme = useTheme();
+
+  const handleChange: UseAutocompleteProps<Store, false, true, undefined>['onChange'] =
+    React.useCallback(
+      (ev, value) => {
+        if (value) onStoreChange(value);
+      },
+      [onStoreChange],
+    );
 
   return (
     <Box {...centerAll} width="100%" gap={4}>
       <Typography variant="body1">Select Store</Typography>
-      <Autocomplete
+      <Autocomplete<Store, false, true, undefined>
         options={stores}
         itemID="id"
         sx={{ width: '300px' }}
         getOptionLabel={getOptionLabel}
+        onChange={handleChange}
         disableClearable
+        includeInputInList
         value={selectedStore}
         renderInput={(params): React.ReactElement => (
           <TextField {...params} label="" variant="standard" />

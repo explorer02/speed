@@ -10,7 +10,7 @@ import { StockViewer } from 'components/availability';
 // helpers
 import { getQueryForStoreList } from 'helper/query';
 
-// styles
+// constants
 import { expandXY } from 'styles/styleObjects';
 
 // types

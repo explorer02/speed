@@ -1,12 +1,15 @@
+// lib
 import * as React from 'react';
-import { Box, List, Typography } from '@mui/material';
 
-// styles
+// components
+import { Box, List, Typography } from '@mui/material';
+import { StoreListItem } from './StoreListItem';
+
+// constants
 import { centerAll, expandXY } from 'styles/styleObjects';
 
 // type
 import { Store } from 'types/store';
-import { StoreListItem } from './StoreListItem';
 
 const StoreList = ({
   stores,

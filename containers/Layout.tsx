@@ -6,7 +6,7 @@ import { useMeasure } from 'react-use';
 import { Box, Stack, useTheme } from '@mui/material';
 import { Header } from 'components/app';
 
-// styles
+// constants
 import { expandXY } from 'styles/styleObjects';
 
 const HEADER_HEIGHT = 80;

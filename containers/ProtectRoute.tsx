@@ -10,8 +10,6 @@ import { useRouter } from 'next/router';
 
 // constants
 import { HOME_PATH, PROTECTED_PATHS } from 'constants/paths';
-
-// styles
 import { centerAll, expandXY } from 'styles/styleObjects';
 
 export const ProtectRoute = ({ children }: { children: React.ReactNode }): React.ReactElement => {

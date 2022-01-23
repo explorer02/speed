@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Box } from '@mui/material';
 import { ProfileForm } from 'components/profile/ProfileForm';
 
-// styles
+// constants
 import { centerHorizontally } from 'styles/styleObjects';
 
 // types

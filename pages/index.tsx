@@ -8,9 +8,11 @@ import { LoginForm } from 'components/login/LoginForm';
 // hooks
 import { useLoginInfo } from 'contexts/LoginContext';
 
+// constants
+import { centerAll } from 'styles/styleObjects';
+
 // types
 import { NextPage } from 'next';
-import { centerAll } from 'styles/styleObjects';
 
 const Home: NextPage = () => {
   const { isLoggedIn } = useLoginInfo();

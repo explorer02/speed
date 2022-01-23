@@ -8,7 +8,7 @@ import { MapRenderer, StoreList } from 'components/locate';
 // helpers
 import { getQueryForStoreList } from 'helper/query';
 
-// styles
+// constants
 import { centerVertically, expandXY } from 'styles/styleObjects';
 
 // types

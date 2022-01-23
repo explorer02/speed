@@ -3,6 +3,8 @@ import * as React from 'react';
 
 // components
 import { Box, CircularProgress, Dialog, DialogContent, DialogContentText } from '@mui/material';
+
+// constants
 import { centerVertically } from 'styles/styleObjects';
 
 export const LoadingModal = ({

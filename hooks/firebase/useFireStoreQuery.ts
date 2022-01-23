@@ -8,13 +8,14 @@ import { useSafeState } from 'hooks';
 type QueryState<T> = {
   data?: T[];
   loading: boolean;
-  error?: string;
+  error?: Error;
 };
 
 const InitialState = {
   loading: false,
 };
 
+// TODO: Add caching and refetching
 export const useFireStoreQuery = <T>(
   query?: Query,
   options?: { skip?: boolean },
@@ -34,7 +35,7 @@ export const useFireStoreQuery = <T>(
           }
         })
         .catch((err) => {
-          setState({ loading: false, error: err?.message ?? 'Some Error Ocurred!!' });
+          setState({ loading: false, error: new Error(err?.message ?? 'Some Error Ocurred!!') });
         });
     }
   }, [options?.skip, query, setState]);
