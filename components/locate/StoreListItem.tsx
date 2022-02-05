@@ -21,7 +21,7 @@ export const StoreListItem = ({
   store: Store;
   onClick?: (_store: Store) => void;
   showOpenInNewTab?: boolean;
-}): React.ReactElement => {
+}): JSX.Element => {
   const handleClick = React.useCallback(() => {
     onClick?.(store);
   }, [onClick, store]);

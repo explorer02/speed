@@ -45,7 +45,7 @@ export const columnsConfig: GridColDef[] = [
     field: COLUMNS.DESCRIPTION,
     headerName: 'Description',
     align: 'left',
-    renderCell: (props): React.ReactElement => <Description {...props} />,
+    renderCell: (props): JSX.Element => <Description {...props} />,
     flex: 3,
     sortable: false,
   },

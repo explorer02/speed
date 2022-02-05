@@ -13,7 +13,7 @@ import { useToggle } from 'hooks';
 // constants
 import { centerVertically } from 'styles/styleObjects';
 
-export const Description = ({ value }: GridRenderCellParams): React.ReactElement => {
+export const Description = ({ value }: GridRenderCellParams): JSX.Element => {
   const { value: isOpen, set: show, unset: hide } = useToggle();
   const ref = React.useRef<any>();
 

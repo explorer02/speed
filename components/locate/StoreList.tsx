@@ -19,7 +19,7 @@ const StoreList = ({
   stores: Store[];
   selectedStore?: Store;
   onClick?: (store: Store) => void;
-}): React.ReactElement => (
+}): JSX.Element => (
   <Box {...expandXY} {...centerAll} flexDirection="column" overflow="auto">
     <Typography variant="h4">Stores</Typography>
     <List>

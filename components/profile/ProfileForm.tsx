@@ -17,7 +17,7 @@ import { Form, FormAction, FORM_ACTIONS } from 'reusable/form';
 import { LAYOUT } from './layout';
 import { FIELD_MAP } from './fields';
 
-const ProfileForm = ({ sx }: { sx?: SxProps }): React.ReactElement => {
+const ProfileForm = ({ sx }: { sx?: SxProps }): JSX.Element => {
   const { value, onAction, isLoading, onSave } = useProfileForm();
 
   const {

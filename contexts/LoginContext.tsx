@@ -19,7 +19,7 @@ export const useLoginInfo = (): LoginInfo => React.useContext(LoginContext);
 
 const INITIAL_LOGIN_STATE: LoginInfo = { isLoggedIn: false, user: null, loading: true };
 
-export const LoginProvider = ({ children }: { children: React.ReactNode }): React.ReactElement => {
+export const LoginProvider = ({ children }: { children: JSX.Element }): JSX.Element => {
   const [loginState, setLoginState] = React.useState<LoginInfo>(INITIAL_LOGIN_STATE);
   React.useEffect(() => {
     auth.onAuthStateChanged((user) => {

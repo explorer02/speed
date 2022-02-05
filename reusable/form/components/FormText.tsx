@@ -11,7 +11,7 @@ export const FormText = ({
   value,
   variant,
   color,
-}: FormComponentProps & Pick<TypographyProps, 'color' | 'variant'>): React.ReactElement => (
+}: FormComponentProps & Pick<TypographyProps, 'color' | 'variant'>): JSX.Element => (
   <Typography variant={variant} color={color}>
     {value}
   </Typography>

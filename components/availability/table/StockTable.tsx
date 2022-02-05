@@ -49,7 +49,7 @@ export const StockTable = ({
   data: Item[];
   loading?: boolean;
   error?: Error;
-}): React.ReactElement => (
+}): JSX.Element => (
   <Box {...expandXY} px={10}>
     <StyledDataGrid
       error={error}

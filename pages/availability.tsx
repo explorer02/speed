@@ -16,7 +16,7 @@ import { expandXY } from 'styles/styleObjects';
 // types
 import { Store } from 'types/store';
 
-const Availability = ({ stores }: { stores: Store[] }): React.ReactElement => (
+const Availability = ({ stores }: { stores: Store[] }): JSX.Element => (
   <Box {...expandXY}>
     <StockViewer stores={stores} />
   </Box>
@@ -25,7 +25,7 @@ const Availability = ({ stores }: { stores: Store[] }): React.ReactElement => (
 const STORE_QUERY = getQueryForStoreList();
 
 export const getStaticProps: GetStaticProps = async () => {
-    const res = await getDocs(STORE_QUERY);
+  const res = await getDocs(STORE_QUERY);
   return {
     props: {
       stores: res.docs.map((doc) => doc.data()),

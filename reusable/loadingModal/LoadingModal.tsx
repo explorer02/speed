@@ -13,7 +13,7 @@ export const LoadingModal = ({
 }: {
   open: boolean;
   loadingText: string;
-}): React.ReactElement => (
+}): JSX.Element => (
   <Dialog open={open} keepMounted aria-describedby="alert-dialog-slide-description">
     <DialogContent>
       <Box m={1} {...centerVertically}>

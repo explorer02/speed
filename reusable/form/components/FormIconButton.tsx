@@ -18,8 +18,8 @@ export const FormIconButton = ({
   color,
 }: FormComponentProps &
   Pick<IconButtonProps, 'size' | 'color'> & {
-    Icon?: () => React.ReactElement;
-  }): React.ReactElement => {
+    Icon?: () => JSX.Element;
+  }): JSX.Element => {
   const handleClick = React.useCallback(() => {
     onAction({
       type: FORM_ACTIONS.ON_CLICK,

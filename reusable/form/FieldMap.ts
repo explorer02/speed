@@ -1,6 +1,3 @@
-// lib
-import * as React from 'react';
-
 // types
 import { StringAnyMap } from 'types/generic';
 import { FormAction } from './types';
@@ -14,7 +11,7 @@ export type FormComponentProps<T = StringAnyMap> = {
 
 export type FieldMap<T = StringAnyMap> = {
   [id: string]: {
-    Component: (props: FormComponentProps<T> & any) => React.ReactElement;
+    Component: (props: FormComponentProps<T> & any) => JSX.Element;
     componentProps?: StringAnyMap;
     propertyPath?: string[];
   };

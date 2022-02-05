@@ -20,7 +20,7 @@ import { FieldMap } from './FieldMap';
 import { Item, ITEM_TYPE } from './Layout';
 import { FormAction, FormProps } from './types';
 
-const DummyComponent = (props: StringAnyMap): React.ReactElement => <div {...props} />;
+const DummyComponent = (props: StringAnyMap): JSX.Element => <div {...props} />;
 
 const ItemRenderer = ({
   items,
@@ -34,7 +34,7 @@ const ItemRenderer = ({
   onAction: (action: FormAction) => void;
   value: StringAnyMap;
   errors?: StringTMap<boolean>;
-}): React.ReactElement => (
+}): JSX.Element => (
   <>
     {(items ?? EMPTY_ARRAY).map((item) => {
       let Component;
@@ -147,7 +147,7 @@ export const Form = ({
   validator,
   config,
   ...gridProps
-}: FormProps): React.ReactElement => {
+}: FormProps): JSX.Element => {
   const resetForm = React.useCallback(() => {
     onAction({ type: FORM_ACTIONS.ON_RESET });
   }, [onAction]);

@@ -16,7 +16,7 @@ import { GetStaticProps } from 'next';
 import { Store } from 'types/store';
 import { getDocs } from 'firebase/firestore';
 
-const Locate = ({ stores }: { stores: Store[] }): React.ReactElement => {
+const Locate = ({ stores }: { stores: Store[] }): JSX.Element => {
   const [store, setStore] = React.useState<Store>();
   return (
     <Box {...centerVertically} {...expandXY} padding={4}>

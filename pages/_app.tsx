@@ -16,25 +16,23 @@ import { AppThemeProvider } from 'contexts/AppThemeProvider';
 
 // types
 import { AppProps } from 'next/app';
-import { NextPage } from 'next';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false, refetchOnMount: false } },
 });
 
-const MyApp = ({ Component, pageProps }: AppProps): NextPage =>
-  (
-    <QueryClientProvider client={queryClient}>
-      <AppThemeProvider>
-        <LoginProvider>
-          <ProtectRoute>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </ProtectRoute>
-        </LoginProvider>
-      </AppThemeProvider>
-    </QueryClientProvider>
-  ) as unknown as NextPage;
+const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => (
+  <QueryClientProvider client={queryClient}>
+    <AppThemeProvider>
+      <LoginProvider>
+        <ProtectRoute>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ProtectRoute>
+      </LoginProvider>
+    </AppThemeProvider>
+  </QueryClientProvider>
+);
 
 export default MyApp;

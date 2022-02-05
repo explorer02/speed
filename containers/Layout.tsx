@@ -12,7 +12,7 @@ import { expandXY } from 'styles/styleObjects';
 const HEADER_HEIGHT = 80;
 const GAP = 2;
 
-export const Layout = ({ children }: { children?: any }): React.ReactElement => {
+export const Layout = ({ children }: { children?: any }): JSX.Element => {
   const [ref, { height }] = useMeasure();
   const theme = useTheme();
 

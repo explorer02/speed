@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import { HOME_PATH, PROTECTED_PATHS } from 'constants/paths';
 import { centerAll, expandXY } from 'styles/styleObjects';
 
-export const ProtectRoute = ({ children }: { children: React.ReactNode }): React.ReactElement => {
+export const ProtectRoute = ({ children }: { children: JSX.Element }): JSX.Element => {
   const { replace, pathname } = useRouter();
   const { isLoggedIn, loading } = useLoginInfo();
 
@@ -30,5 +30,5 @@ export const ProtectRoute = ({ children }: { children: React.ReactNode }): React
       </Box>
     );
 
-  return children as React.ReactElement;
+  return children;
 };

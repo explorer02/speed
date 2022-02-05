@@ -22,7 +22,7 @@ type MarkerProps = {
 };
 
 // TODO: popover on marker
-export const MapMarker = ({ selected, datum }: MarkerProps): React.ReactElement => {
+export const MapMarker = ({ selected, datum }: MarkerProps): JSX.Element => {
   const { value: open, set: showPopover, unset: hidePopover } = useToggle(false);
   const anchorRef = React.useRef<HTMLButtonElement>();
   const id = open ? 'simple-popover' : undefined;

@@ -40,7 +40,7 @@ const resetCaptcha = (appVerifier: RecaptchaVerifier | undefined, window: any): 
   });
 };
 
-const LoginForm = (): React.ReactElement => {
+const LoginForm = (): JSX.Element => {
   const appVerifier = useSignInRecaptcha();
   const confirmationResult = React.useRef<ConfirmationResult>();
 

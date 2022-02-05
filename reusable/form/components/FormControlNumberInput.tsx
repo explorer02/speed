@@ -33,7 +33,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 `;
 
-export const FormControlNumberInput = (props: Props): React.ReactElement => {
+export const FormControlNumberInput = (props: Props): JSX.Element => {
   const {
     id,
     onAction,

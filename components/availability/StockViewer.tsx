@@ -26,7 +26,7 @@ import { Item, Store } from 'types/store';
 
 const REFRESH_INTERVAL = 10000;
 
-export const StockViewer = ({ stores }: { stores: Store[] }): React.ReactElement => {
+export const StockViewer = ({ stores }: { stores: Store[] }): JSX.Element => {
   const [selectedStore, setSelectedStore] = React.useState(stores[0]);
 
   const timerDeps = React.useMemo(() => [selectedStore.id], [selectedStore.id]);

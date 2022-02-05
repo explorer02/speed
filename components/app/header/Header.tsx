@@ -16,7 +16,7 @@ import { useColorMode } from 'contexts/AppThemeProvider';
 // constants
 import { NAV_BUTTONS } from './config';
 
-const Header = (): React.ReactElement => {
+const Header = (): JSX.Element => {
   const { push, pathname } = useRouter();
   const { isLoggedIn } = useLoginInfo();
   const selected = NAV_BUTTONS.find((btn) => btn.path === pathname)?.key;

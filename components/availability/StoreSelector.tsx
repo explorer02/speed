@@ -31,7 +31,7 @@ export const StoreSelector = ({
   stores: Store[];
   selectedStore: Store;
   onStoreChange: (store: Store) => void;
-}): React.ReactElement => {
+}): JSX.Element => {
   const theme = useTheme();
 
   const handleChange: UseAutocompleteProps<Store, false, true, undefined>['onChange'] =
@@ -54,10 +54,10 @@ export const StoreSelector = ({
         disableClearable
         includeInputInList
         value={selectedStore}
-        renderInput={(params): React.ReactElement => (
+        renderInput={(params): JSX.Element => (
           <TextField {...params} label="" variant="standard" />
         )}
-        renderOption={(props, option, { inputValue }): React.ReactElement => {
+        renderOption={(props, option, { inputValue }): JSX.Element => {
           const matches = match(option.name, inputValue);
           const parts = parse(option.name, matches);
 

@@ -58,8 +58,8 @@ export const useColorMode = (): ColorMode => React.useContext(ColorModeContext);
 export const AppThemeProvider = ({
   children,
 }: {
-  children: React.ReactNode;
-}): React.ReactElement => {
+  children: JSX.Element;
+}): JSX.Element => {
   const [mode, setMode] = React.useState<PaletteMode>(
     () => getFromLocalStorage('theme') ?? 'light',
   );

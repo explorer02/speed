@@ -19,7 +19,7 @@ type Props = FormComponentProps & {
   type?: string;
 } & StringAnyMap;
 
-export const FormControlTextInput = (props: Props): React.ReactElement => {
+export const FormControlTextInput = (props: Props): JSX.Element => {
   const { id, onAction, value, label, helperText, disabled = false, type = 'text' } = props;
 
   const latestProps = useLatest(props);

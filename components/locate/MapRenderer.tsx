@@ -25,7 +25,7 @@ const MapRenderer = ({
   center?: GoogleMapReact.Coords;
   markerData?: Store[];
   onMarkerClick?: (datum: Store) => void;
-}): React.ReactElement => {
+}): JSX.Element => {
   const handleChildClick = React.useCallback(
     (_, childProps: { datum: Store }) => {
       onMarkerClick?.(childProps.datum);
