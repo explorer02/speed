@@ -16,7 +16,7 @@ import { useColorMode } from 'contexts/AppThemeProvider';
 // constants
 import { NAV_BUTTONS } from './config';
 
-const Header2 = (): React.ReactElement => {
+const Header = (): React.ReactElement => {
   const { push, pathname } = useRouter();
   const { isLoggedIn } = useLoginInfo();
   const selected = NAV_BUTTONS.find((btn) => btn.path === pathname)?.key;
@@ -68,5 +68,5 @@ const Header2 = (): React.ReactElement => {
   );
 };
 
-const MemoizedHeader = React.memo(Header2);
+const MemoizedHeader = React.memo(Header);
 export { MemoizedHeader as Header };

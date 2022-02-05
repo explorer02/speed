@@ -1,5 +1,10 @@
+// lib
 import * as React from 'react';
+
+// hooks
 import { useLatest } from 'react-use';
+
+// constants
 import { FormAction, FORM_ACTIONS } from 'reusable/form';
 
 type State = {

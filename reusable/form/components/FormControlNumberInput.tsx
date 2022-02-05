@@ -47,6 +47,14 @@ export const FormControlNumberInput = (props: Props): React.ReactElement => {
 
   const latestProps = useLatest(props);
 
+  const inputRef = React.useRef<HTMLInputElement>();
+  React.useEffect(() => {
+    const el = inputRef.current;
+    const onMouseScroll = (): void => el?.blur();
+    el?.addEventListener('wheel', onMouseScroll);
+    return (): void => el?.removeEventListener('wheel', onMouseScroll);
+  }, []);
+
   const handleChange = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
       onAction({
@@ -72,6 +80,7 @@ export const FormControlNumberInput = (props: Props): React.ReactElement => {
         value={value}
         onChange={handleChange}
         label={label}
+        inputRef={inputRef}
         type="number"
         className=".no_spinner"
         placeholder={placeholder}

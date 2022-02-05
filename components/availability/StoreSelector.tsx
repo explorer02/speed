@@ -8,16 +8,12 @@ import {
   Autocomplete,
   Box,
   ListItem,
-  ListItemIcon,
   ListItemText,
   TextField,
   Typography,
   UseAutocompleteProps,
   useTheme,
 } from '@mui/material';
-
-// icons
-import StorefrontIcon from '@mui/icons-material/Storefront';
 
 // constants
 import { centerAll } from 'styles/styleObjects';
@@ -67,9 +63,6 @@ export const StoreSelector = ({
 
           return (
             <ListItem {...props}>
-              <ListItemIcon>
-                <StorefrontIcon />
-              </ListItemIcon>
               <ListItemText
                 sx={{ maxWidth: 300 }}
                 primary={parts.map((part, index) => (

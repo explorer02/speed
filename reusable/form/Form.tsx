@@ -14,7 +14,6 @@ import { FORM_ACTIONS } from './constants';
 import { EMPTY_ARRAY } from 'constants/empty';
 import { expandXY } from 'styles/styleObjects';
 
-
 // types
 import { StringAnyMap, StringTMap } from 'types/generic';
 import { FieldMap } from './FieldMap';

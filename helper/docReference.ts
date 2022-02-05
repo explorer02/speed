@@ -1,11 +1,5 @@
 // lib
-import {
-  collection,
-  CollectionReference,
-  doc,
-  DocumentData,
-  DocumentReference,
-} from 'firebase/firestore';
+import { collection, CollectionReference, doc, DocumentReference } from 'firebase/firestore';
 
 // converters
 import { profileConverter } from 'converters/userProfile';
@@ -23,13 +17,17 @@ import {
   USER_COLLECTION,
 } from 'constants/collections';
 
-export const getUserProfileDocRef = (docId: string): DocumentReference<DocumentData> =>
+// types
+import { Item, Store } from 'types/store';
+import { UserProfile } from 'types/profile';
+
+export const getUserProfileDocRef = (docId: string): DocumentReference<UserProfile> =>
   doc(collection(fireStore, USER_COLLECTION), docId).withConverter(profileConverter);
 
-export const getStoreCollectionRef = (): CollectionReference<DocumentData> =>
+export const getStoreCollectionRef = (): CollectionReference<Store> =>
   collection(fireStore, STORE_COLLECTION).withConverter(storeConverter);
 
-export const getStoreItemCollectionRef = (storeId: string): CollectionReference<DocumentData> =>
+export const getStoreItemCollectionRef = (storeId: string): CollectionReference<Item> =>
   collection(fireStore, STOCK_COLLECTION, storeId, STOCK_COLLECTION_ITEM).withConverter(
     itemConverter,
   );

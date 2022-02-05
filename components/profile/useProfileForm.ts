@@ -2,17 +2,27 @@
 import * as React from 'react';
 import _cloneDeep from 'lodash/cloneDeep';
 import _set from 'lodash/set';
+import _merge from 'lodash/merge';
+
+// hooks
+import {
+  useFirestoreDocumentData,
+  useFirestoreDocumentMutation,
+} from '@react-query-firebase/firestore';
 
 // helpers
 import { fetchGeoAddress } from 'helper/geoAddress';
+import { getUserProfileDocRef } from 'helper/docReference';
+import { useLoginInfo } from 'contexts/LoginContext';
+
+// constants
+import { USER_COLLECTION } from 'constants/collections';
 
 // types
 import { UserProfile } from 'types/profile';
-import { useProfileInfo } from 'contexts/ProfileContext';
 import { FORM_ACTIONS } from 'reusable/form/constants';
 import { FormAction } from 'reusable/form';
 import { FIELDS, FIELD_MAP } from './fields';
-import { useLatest } from 'react-use';
 
 const INITIAL_VALUES: UserProfile = {
   phone: '',
@@ -40,18 +50,38 @@ export const useProfileForm = (): {
   value: UserProfile;
   onAction: (action: FormAction) => void;
   isLoading?: boolean;
-  valueRef: React.MutableRefObject<UserProfile>;
+  onSave: () => Promise<void>;
 } => {
   const [state, setState] = React.useState(INITIAL_VALUES);
-  const stateRef = useLatest(state);
 
-  const { loading: profileLoading, profile } = useProfileInfo();
+  const { user } = useLoginInfo();
+
+  const userProfileDocRef = React.useMemo(
+    () => getUserProfileDocRef(user?.phoneNumber ?? ''),
+    [user?.phoneNumber],
+  );
+
+  const {
+    data,
+    isLoading: userLoading,
+    refetch,
+  } = useFirestoreDocumentData<UserProfile>(
+    [USER_COLLECTION, user?.phoneNumber],
+    userProfileDocRef,
+  );
 
   React.useEffect(() => {
-    if (profile) {
-      setState(profile);
+    if (data) {
+      const newValues = _cloneDeep(INITIAL_VALUES);
+      setState(_merge(newValues, data));
     }
-  }, [profile]);
+  }, [data]);
+
+  const { mutateAsync, isLoading: userSaving } = useFirestoreDocumentMutation(userProfileDocRef);
+  const onSave = React.useCallback(async () => {
+    await mutateAsync(state);
+    await refetch();
+  }, [mutateAsync, refetch, state]);
 
   const recenter = React.useCallback(() => {
     if (navigator.geolocation) {
@@ -105,7 +135,7 @@ export const useProfileForm = (): {
   return {
     value: state,
     onAction: handleAction,
-    isLoading: profileLoading,
-    valueRef: stateRef,
+    onSave,
+    isLoading: userLoading || userSaving,
   };
 };

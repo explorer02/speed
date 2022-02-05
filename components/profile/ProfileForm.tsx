@@ -10,10 +10,6 @@ import { LoadingModal } from 'reusable/loadingModal';
 import { useProfileForm } from './useProfileForm';
 import { useLoginInfo } from 'contexts/LoginContext';
 import { useToggle } from 'hooks';
-import { useFireStoreMutation } from 'hooks/firebase';
-
-// helpers
-import { getUserProfileDocRef } from 'helper/docReference';
 
 // types
 import { SxProps } from '@mui/system';
@@ -22,9 +18,7 @@ import { LAYOUT } from './layout';
 import { FIELD_MAP } from './fields';
 
 const ProfileForm = ({ sx }: { sx?: SxProps }): React.ReactElement => {
-  const { value, onAction, isLoading, valueRef } = useProfileForm();
-
-  const updateUser = useFireStoreMutation();
+  const { value, onAction, isLoading, onSave } = useProfileForm();
 
   const {
     value: isLoadingModalVisible,
@@ -41,14 +35,13 @@ const ProfileForm = ({ sx }: { sx?: SxProps }): React.ReactElement => {
     if (!phone) return;
     showLoadingModal();
     try {
-      const docRef = getUserProfileDocRef(phone);
-      await updateUser(docRef, valueRef.current);
+      await onSave();
       showSnackbar('Data Saved Successfully :)', 'success');
     } catch (err) {
       showSnackbar('Some error Ocurred :(', 'error');
     }
     hideLoadingModal();
-  }, [hideLoadingModal, phone, showLoadingModal, showSnackbar, updateUser, valueRef]);
+  }, [hideLoadingModal, onSave, phone, showLoadingModal, showSnackbar]);
 
   const handleAction = React.useCallback(
     (action: FormAction) => {

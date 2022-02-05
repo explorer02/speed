@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 // components
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridInitialState } from '@mui/x-data-grid';
 import { Box, styled } from '@mui/material';
 
 // constants
@@ -35,6 +35,12 @@ const StyledDataGrid = styled(DataGrid)`
   }
 `;
 
+const INITIAL_TABLE_STATE: GridInitialState = {
+  sorting: {
+    sortModel: [{ field: COLUMNS.LABEL, sort: 'asc' }],
+  },
+};
+
 export const StockTable = ({
   data,
   loading,
@@ -53,11 +59,7 @@ export const StockTable = ({
       columns={columnsConfig}
       density="comfortable"
       disableSelectionOnClick
-      initialState={{
-        sorting: {
-          sortModel: [{ field: COLUMNS.LABEL, sort: 'asc' }],
-        },
-      }}
+      initialState={INITIAL_TABLE_STATE}
     />
   </Box>
 );
