@@ -1,2 +1,8 @@
 todo:
 Add error boundary
+
+Crate order
+1) Place order button
+2) User profile check
+3) Increase decrease quantity
+4) remove item in table

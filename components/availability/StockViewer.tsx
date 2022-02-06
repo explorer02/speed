@@ -5,7 +5,7 @@ import { useFirestoreQueryData } from '@react-query-firebase/firestore';
 // components
 import { Box, IconButton, Stack } from '@mui/material';
 import { StockTable } from './table';
-import { StoreSelector } from './StoreSelector';
+import { AutoComplete, AutoCompleteProps } from 'reusable/autoComplete';
 
 // icons
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -48,12 +48,17 @@ export const StockViewer = ({ stores }: { stores: Store[] }): JSX.Element => {
   }, [refetch, resetTimer]);
 
   return (
-    <Stack gap={4} py={2} {...expandXY} sx={{ position: 'relative' }}>
+    <Stack gap={6} py={2} {...expandXY} sx={{ position: 'relative' }}>
       <Box flexShrink={0}>
-        <StoreSelector
-          stores={stores}
-          selectedStore={selectedStore}
-          onStoreChange={setSelectedStore}
+        <AutoComplete
+          items={stores}
+          selectedItem={selectedStore}
+          onItemChange={setSelectedStore as AutoCompleteProps['onItemChange']}
+          idKey="id"
+          labelKey="name"
+          label="Select Store"
+          secondaryTextKey="address"
+          inputWidth={400}
         />
       </Box>
       <Box flexGrow={1}>

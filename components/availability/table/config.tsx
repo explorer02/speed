@@ -5,6 +5,9 @@ import { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 // components
 import { Description } from './cellRenderer/Description';
 
+// helper
+import { priceFormatter } from 'helper/formatter';
+
 // types
 import { Item } from 'types/store';
 
@@ -26,10 +29,10 @@ export const columnsConfig: GridColDef[] = [
     field: COLUMNS.PRICE,
     headerName: 'Price',
     flex: 1,
-    valueGetter: (params: GridValueGetterParams<Item>): string => `Rs ${params.row.price}/-`,
+    valueGetter: (params: GridValueGetterParams<Item>): string => priceFormatter(params.row.price),
     align: 'left',
     sortComparator: (v1, v2): number =>
-      Number(v1?.toString().slice(3, -2) ?? 0) - Number(v2?.toString().slice(3, -2) ?? 0),
+      Number(v1?.toString().slice(3) ?? 0) - Number(v2?.toString().slice(3, -2) ?? 0),
   },
   {
     field: COLUMNS.QUANTITY,
