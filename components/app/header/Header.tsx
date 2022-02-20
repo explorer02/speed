@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Link from 'next/link';
 
 // components
 import { Button, Typography, IconButton, Grid, Divider } from '@mui/material';
@@ -17,7 +18,7 @@ import { useColorMode } from 'contexts/AppThemeProvider';
 import { NAV_BUTTONS } from './config';
 
 const Header = (): JSX.Element => {
-  const { push, pathname } = useRouter();
+  const { pathname } = useRouter();
   const { isLoggedIn } = useLoginInfo();
   const selected = NAV_BUTTONS.find((btn) => btn.path === pathname)?.key;
   const colorMode = useColorMode();
@@ -43,16 +44,14 @@ const Header = (): JSX.Element => {
           {NAV_BUTTONS.map((btn) => {
             const { startIcon: Icon } = btn;
             const ButtonComp = (
-              <Button
-                key={btn.key}
-                variant={btn.key === selected ? 'contained' : 'outlined'}
-                startIcon={<Icon />}
-                onClick={(): void => {
-                  if (btn.key !== selected) push(btn.path);
-                }}
-              >
-                {btn.title}
-              </Button>
+              <Link href={btn.path} key={btn.key}>
+                <Button
+                  variant={btn.key === selected ? 'contained' : 'outlined'}
+                  startIcon={<Icon />}
+                >
+                  {btn.title}
+                </Button>
+              </Link>
             );
             if (btn.loginRequired && !isLoggedIn) return undefined;
             return ButtonComp;

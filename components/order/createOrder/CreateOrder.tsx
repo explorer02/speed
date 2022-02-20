@@ -1,33 +1,30 @@
 // lib
 import * as React from 'react';
-import { useFirestoreQueryData } from '@react-query-firebase/firestore';
 
 // components
 import { Button, Grid } from '@mui/material';
 import { AutoComplete, AutoCompleteProps } from 'reusable/autoComplete';
+import { OrderSummary } from './OrderSummary';
 
-// helpers
-import { getQueryForStoreItems } from 'helper/query';
+// hooks
+import { useCreateOrder } from './useCreateOrder';
 
 // constants
 import { expandXY } from 'styles/styleObjects';
-import { OrderSummary } from './OrderSummary';
-import { STOCK_COLLECTION_ITEM } from 'constants/collections';
-import { EMPTY_ARRAY } from 'constants/empty';
 
 // types
-import { Item, Store } from 'types/store';
+import { Store } from 'types/store';
 
 export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
-  const [selectedStore, setSelectedStore] = React.useState(stores[0]);
-  const [selectedItems, setSelectedItems] = React.useState(EMPTY_ARRAY);
-
-  const query = React.useMemo(() => getQueryForStoreItems(selectedStore.id), [selectedStore.id]);
-
-  const { data: items = EMPTY_ARRAY, isLoading } = useFirestoreQueryData<Item>(
-    [STOCK_COLLECTION_ITEM, selectedStore.id],
-    query,
-  );
+  const {
+    selectedItems,
+    selectedStore,
+    onStoreChange,
+    onItemChange,
+    items,
+    itemsLoading,
+    onAction,
+  } = useCreateOrder({ initialStore: stores[0] });
 
   return (
     <Grid
@@ -44,10 +41,11 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
           <AutoComplete
             items={stores}
             selectedItem={selectedStore}
-            onItemChange={setSelectedStore as AutoCompleteProps['onItemChange']}
+            onItemChange={onStoreChange as AutoCompleteProps['onItemChange']}
             idKey="id"
             labelKey="name"
             label="Select Store"
+            filterSelectedOptions
             secondaryTextKey="address"
             inputWidth={350}
           />
@@ -56,7 +54,7 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
           <AutoComplete
             items={items}
             selectedItem={selectedItems}
-            onItemChange={setSelectedItems as AutoCompleteProps['onItemChange']}
+            onItemChange={onItemChange as AutoCompleteProps['onItemChange']}
             idKey="id"
             labelKey="label"
             label="Select Items"
@@ -64,7 +62,7 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
             filterSelectedOptions
             inputWidth={350}
             disableClearable={false}
-            loading={isLoading}
+            loading={itemsLoading}
           />
         </Grid>
         <Grid item container justifyContent="center">
@@ -74,7 +72,7 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
         </Grid>
       </Grid>
       <Grid item xs={6} height="100%">
-        <OrderSummary store={selectedStore} items={selectedItems} />
+        <OrderSummary store={selectedStore} items={selectedItems} onAction={onAction} />
       </Grid>
     </Grid>
   );
