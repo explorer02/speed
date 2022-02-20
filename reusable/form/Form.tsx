@@ -36,7 +36,7 @@ const ItemRenderer = ({
   errors?: StringTMap<boolean>;
 }): JSX.Element => (
   <>
-    {(items ?? EMPTY_ARRAY).map((item) => {
+    {(items ?? (EMPTY_ARRAY as Item[])).map((item) => {
       let Component;
       let componentProps;
       let propertyPath;

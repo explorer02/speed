@@ -28,20 +28,18 @@ type UseCreateOrder = (props: { initialStore: Store }) => {
 
 export const useCreateOrder: UseCreateOrder = ({ initialStore }) => {
   const [selectedStore, setSelectedStore] = React.useState(initialStore);
-  const [selectedItems, setSelectedItems] = React.useState<Item[]>(EMPTY_ARRAY);
+  const [selectedItems, setSelectedItems] = React.useState<Item[]>(EMPTY_ARRAY as Item[]);
 
   const query = React.useMemo(() => getQueryForStoreItems(selectedStore.id), [selectedStore.id]);
 
-  const { data: items = EMPTY_ARRAY, isLoading: itemsLoading } = useFirestoreQueryData<Item>(
-    [STOCK_COLLECTION_ITEM, selectedStore.id],
-    query,
-  );
+  const { data: items = EMPTY_ARRAY as Item[], isLoading: itemsLoading } =
+    useFirestoreQueryData<Item>([STOCK_COLLECTION_ITEM, selectedStore.id], query);
 
   const onAction = React.useCallback((action: Action) => {
     switch (action.type) {
       case ACTION_TYPES.CHANGE_STORE:
         setSelectedStore(action.payload.store);
-        setSelectedItems(EMPTY_ARRAY);
+        setSelectedItems(EMPTY_ARRAY as Item[]);
         break;
       case ACTION_TYPES.UPDATE_ITEMS:
         setSelectedItems(action.payload.items);
@@ -77,7 +75,7 @@ export const useCreateOrder: UseCreateOrder = ({ initialStore }) => {
   const onStoreChange = React.useCallback(
     (store: Store) => {
       setSelectedStore(store);
-      setSelectedItems(EMPTY_ARRAY);
+      setSelectedItems(EMPTY_ARRAY as Item[]);
       onAction({
         type: ACTION_TYPES.CHANGE_STORE,
         payload: {
