@@ -82,6 +82,7 @@ export type AutoCompleteProps = {
   filterSelectedOptions?: boolean;
   inputWidth?: number;
   disableClearable?: boolean;
+  disabled?: boolean;
 };
 
 export const AutoComplete = ({
@@ -98,6 +99,7 @@ export const AutoComplete = ({
   filterSelectedOptions,
   inputWidth = 300,
   disableClearable = true,
+  disabled,
 }: AutoCompleteProps): JSX.Element => {
   const handleChange: UseAutocompleteProps<StringAnyMap, boolean, boolean, undefined>['onChange'] =
     React.useCallback(
@@ -129,6 +131,7 @@ export const AutoComplete = ({
         includeInputInList={includeInputInList}
         value={adaptedValues as StringAnyMap[]}
         filterSelectedOptions={filterSelectedOptions}
+        disabled={disabled}
         renderInput={(params): JSX.Element => <TextField {...params} label="" variant="standard" />}
         renderOption={(props, option, state): JSX.Element => (
           <Option

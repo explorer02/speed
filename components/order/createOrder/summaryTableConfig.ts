@@ -1,6 +1,7 @@
 // components
 import { Quantity } from './renderer/Quantity';
 import { TotalPrice } from './renderer/TotalPrice';
+import { Name } from './renderer/Name';
 
 // helpers
 import { priceFormatter } from 'helper/formatter';
@@ -22,6 +23,7 @@ export const getColumnConfig = (onAction: OnAction): ColumnsConfig<Item> => [
     id: COLUMNS.LABEL,
     label: 'Name',
     fluidWidth: 2,
+    renderer: Name,
   },
   {
     id: COLUMNS.PRICE,

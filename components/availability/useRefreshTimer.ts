@@ -3,27 +3,17 @@ import * as React from 'react';
 
 // hooks
 import { useSafeState } from 'hooks';
+import { useTimeoutFn } from 'react-use';
 
 export const useRefreshTimer = (
   refreshInterval: number,
-  deps?: React.DependencyList,
 ): { isRefreshActive: boolean; resetTimer: () => void } => {
-  const [isRefreshActive, setIsRefreshActive] = useSafeState(false);
-  const timerRef = React.useRef<number>();
+  const [, forceRender] = useSafeState(false);
+  const [isReady, cancel, reset] = useTimeoutFn(() => {
+    forceRender((s) => !s);
+  }, refreshInterval);
 
-  const resetTimer = React.useCallback(() => {
-    clearTimeout(timerRef.current);
-    setIsRefreshActive(false);
-    timerRef.current = setTimeout(() => {
-      setIsRefreshActive(true);
-      clearTimeout(timerRef.current);
-      timerRef.current = undefined;
-    }, refreshInterval) as unknown as number;
-  }, [refreshInterval, setIsRefreshActive]);
+  React.useEffect(() => cancel, [cancel]);
 
-  React.useEffect(() => {
-    resetTimer();
-  }, [deps, setIsRefreshActive, refreshInterval, resetTimer]);
-
-  return { isRefreshActive, resetTimer };
+  return { isRefreshActive: !!isReady(), resetTimer: reset };
 };

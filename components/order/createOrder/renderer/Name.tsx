@@ -2,30 +2,29 @@
 import * as React from 'react';
 
 // components
-import { IconButton, Popover, Typography } from '@mui/material';
+import { Box, IconButton, Popover, Typography } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
-import { Box } from '@mui/system';
 
 // hooks
 import { useToggle } from 'hooks';
 
 // constants
 import { centerVertically } from 'styles/styleObjects';
+
+// types
 import { ColumnRendererProps } from 'reusable/table';
 import { Item } from 'types/store';
 
-export const Description = ({ value }: ColumnRendererProps<Item>): JSX.Element => {
+export const Name = ({ value, entity: item }: ColumnRendererProps<Item>): JSX.Element => {
   const { value: isOpen, set: show, unset: hide } = useToggle();
   const ref = React.useRef<any>();
 
   return (
     <>
-      <Box {...centerVertically} justifyContent="space-between">
-        <Typography flexGrow={1} maxWidth="100%">
-          {value}
-        </Typography>
+      <Box {...centerVertically} gap={3}>
+        <Typography maxWidth="100%">{value}</Typography>
         <Box flexShrink={0}>
-          <IconButton onClick={isOpen ? hide : show} ref={ref}>
+          <IconButton onClick={isOpen ? hide : show} ref={ref} size="small">
             <InfoIcon />
           </IconButton>
         </Box>
@@ -41,7 +40,7 @@ export const Description = ({ value }: ColumnRendererProps<Item>): JSX.Element =
         }}
       >
         <Typography maxWidth={400} p={2}>
-          {value}
+          {item.description}
         </Typography>
       </Popover>
     </>

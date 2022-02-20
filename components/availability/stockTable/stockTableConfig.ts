@@ -1,6 +1,3 @@
-// components
-import { Description } from './cellRenderer/Description';
-
 // helper
 import { priceFormatter } from 'helper/formatter';
 
@@ -37,6 +34,5 @@ export const columnsConfig: ColumnsConfig<Item> = [
     id: COLUMNS.DESCRIPTION,
     label: 'Description',
     fluidWidth: 4,
-    renderer: Description,
   },
 ];

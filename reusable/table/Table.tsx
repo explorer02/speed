@@ -1,22 +1,20 @@
 // lib
 import * as React from 'react';
 
-// componnents
+// components
 import {
-  Paper,
   Stack,
-  TableContainer,
   TableHead,
   Typography,
-  Table as BaseTable,
   TableRow,
   TableCell,
   TableBody,
   StackProps,
 } from '@mui/material';
+import { TableLayout } from './TableLayout';
 
-// constanta
-import { centerHorizontally, expandXY } from 'styles/styleObjects';
+// constants
+import { centerHorizontally } from 'styles/styleObjects';
 
 // types
 import { StringAnyMap } from 'types/generic';
@@ -32,6 +30,7 @@ type Props<T extends BaseEntityType> = {
   items: T[];
   preEntityRows?: JSX.Element;
   postEntityRows?: JSX.Element;
+  children?: JSX.Element;
 } & Pick<StackProps, 'sx'>;
 
 const Title = <T extends BaseEntityType>({ title }: Pick<Props<T>, 'title'>): JSX.Element | null =>
@@ -63,7 +62,7 @@ const ColumnGroup = <T extends BaseEntityType>({
   return (
     <colgroup>
       {columnConfig.map((column) => (
-        <col width={`${(column.fluidWidth / totalFluidWidth) * 100}%`} />
+        <col key={column.id} width={`${(column.fluidWidth / totalFluidWidth) * 100}%`} />
       ))}
     </colgroup>
   );
@@ -125,22 +124,35 @@ export const Table = <T extends BaseEntityType>({
   preEntityRows,
   postEntityRows,
   sx,
+  children,
 }: Props<T>): JSX.Element => (
-  <Stack gap={4} {...expandXY} sx={sx}>
-    <Title title={title} />
-    <Caption caption={caption} subCaption={subCaption} />
+  <TableLayout sx={sx}>
+    {children}
+    <TableLayout.Slot name="title">
+      <Title title={title} />
+    </TableLayout.Slot>
 
-    <TableContainer component={Paper}>
-      <BaseTable stickyHeader sx={{ width: '100%', overflow: 'hidden' }}>
-        <ColumnGroup columnConfig={columnConfig} />
-        <Header columnConfig={columnConfig} />
-        <Body
-          columnConfig={columnConfig}
-          items={items}
-          preEntityRows={preEntityRows}
-          postEntityRows={postEntityRows}
-        />
-      </BaseTable>
-    </TableContainer>
-  </Stack>
+    <TableLayout.Slot name="caption">
+      <Caption caption={caption} subCaption={subCaption} />
+    </TableLayout.Slot>
+
+    <TableLayout.Slot name="column_group">
+      <ColumnGroup columnConfig={columnConfig} />
+    </TableLayout.Slot>
+
+    <TableLayout.Slot name="header">
+      <Header columnConfig={columnConfig} />
+    </TableLayout.Slot>
+
+    <TableLayout.Slot name="body">
+      <Body
+        columnConfig={columnConfig}
+        items={items}
+        preEntityRows={preEntityRows}
+        postEntityRows={postEntityRows}
+      />
+    </TableLayout.Slot>
+  </TableLayout>
 );
+
+Table.Slot = TableLayout.Slot;
