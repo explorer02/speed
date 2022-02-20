@@ -3,8 +3,6 @@ import * as React from 'react';
 
 // components
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-
-// icons
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 

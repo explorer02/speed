@@ -3,8 +3,6 @@ import Link from 'next/link';
 
 // components
 import { Button, Typography, IconButton, Grid, Divider } from '@mui/material';
-
-// icons
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';

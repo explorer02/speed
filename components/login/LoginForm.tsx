@@ -5,8 +5,6 @@ import { signInWithPhoneNumber, RecaptchaVerifier } from '@firebase/auth';
 // components
 import { Typography, Grid } from '@mui/material';
 import { SnackBarOverlay, useSnackbar } from 'reusable/snackbarOverlay';
-
-// icons
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 
 // hooks

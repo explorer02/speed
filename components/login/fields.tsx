@@ -1,8 +1,6 @@
 // components
 import { InputAdornment } from '@mui/material';
 import { FormControlNumberInput } from 'reusable/form/components';
-
-// icons
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
 import DialpadOutlinedIcon from '@mui/icons-material/DialpadOutlined';
 

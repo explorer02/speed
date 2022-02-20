@@ -1,4 +1,4 @@
-// icons
+// components
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined';
 import NoteAltOutlinedIcon from '@mui/icons-material/NoteAltOutlined';

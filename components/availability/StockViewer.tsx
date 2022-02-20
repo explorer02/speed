@@ -6,8 +6,6 @@ import { useFirestoreQueryData } from '@react-query-firebase/firestore';
 import { Box, IconButton, Stack } from '@mui/material';
 import { StockTable } from './table';
 import { AutoComplete, AutoCompleteProps } from 'reusable/autoComplete';
-
-// icons
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 // hooks

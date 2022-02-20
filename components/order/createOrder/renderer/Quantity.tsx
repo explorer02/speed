@@ -3,8 +3,6 @@ import * as React from 'react';
 
 // components
 import { Box, IconButton } from '@mui/material';
-
-// icons
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 

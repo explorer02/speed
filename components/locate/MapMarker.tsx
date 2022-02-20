@@ -3,8 +3,6 @@ import * as React from 'react';
 
 // components
 import { IconButton, Popover } from '@mui/material';
-
-// icons
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 // types

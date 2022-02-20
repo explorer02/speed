@@ -3,8 +3,6 @@ import * as React from 'react';
 
 // components
 import { Box, IconButton } from '@mui/material';
-
-// icons
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
 // constants

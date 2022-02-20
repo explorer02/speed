@@ -5,8 +5,6 @@ import {
   FormIconButton,
   FormText,
 } from 'reusable/form/components';
-
-// icons
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 
 // types
