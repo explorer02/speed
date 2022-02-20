@@ -4,7 +4,7 @@ import { useFirestoreQueryData } from '@react-query-firebase/firestore';
 
 // components
 import { Box, IconButton, Stack } from '@mui/material';
-import { StockTable } from './table';
+import { StockTable } from './StockTable';
 import { AutoComplete, AutoCompleteProps } from 'reusable/autoComplete';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
@@ -35,7 +35,6 @@ export const StockViewer = ({ stores }: { stores: Store[] }): JSX.Element => {
   const {
     data = EMPTY_ARRAY,
     isLoading,
-    error,
     refetch,
     isRefetching,
   } = useFirestoreQueryData<Item>([STOCK_COLLECTION_ITEM, selectedStore.id], query);
@@ -60,7 +59,7 @@ export const StockViewer = ({ stores }: { stores: Store[] }): JSX.Element => {
         />
       </Box>
       <Box flexGrow={1}>
-        <StockTable data={data} loading={isLoading} error={error as Error} />
+        <StockTable items={data} />
       </Box>
       <IconButton
         sx={{ position: 'absolute', top: 0, right: 80 }}

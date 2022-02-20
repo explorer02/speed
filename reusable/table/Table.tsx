@@ -12,6 +12,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  StackProps,
 } from '@mui/material';
 
 // constanta
@@ -31,7 +32,7 @@ type Props<T extends BaseEntityType> = {
   items: T[];
   preEntityRows?: JSX.Element;
   postEntityRows?: JSX.Element;
-};
+} & Pick<StackProps, 'sx'>;
 
 const Title = <T extends BaseEntityType>({ title }: Pick<Props<T>, 'title'>): JSX.Element | null =>
   title ? (
@@ -123,8 +124,9 @@ export const Table = <T extends BaseEntityType>({
   items,
   preEntityRows,
   postEntityRows,
+  sx,
 }: Props<T>): JSX.Element => (
-  <Stack gap={4} {...expandXY}>
+  <Stack gap={4} {...expandXY} sx={sx}>
     <Title title={title} />
     <Caption caption={caption} subCaption={subCaption} />
 

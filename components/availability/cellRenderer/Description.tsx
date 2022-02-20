@@ -1,6 +1,5 @@
 // lib
 import * as React from 'react';
-import { GridRenderCellParams } from '@mui/x-data-grid';
 
 // components
 import { IconButton, Popover, Typography } from '@mui/material';
@@ -12,15 +11,17 @@ import { useToggle } from 'hooks';
 
 // constants
 import { centerVertically } from 'styles/styleObjects';
+import { ColumnRendererProps } from 'reusable/table';
+import { Item } from 'types/store';
 
-export const Description = ({ value }: GridRenderCellParams): JSX.Element => {
+export const Description = ({ value }: ColumnRendererProps<Item>): JSX.Element => {
   const { value: isOpen, set: show, unset: hide } = useToggle();
   const ref = React.useRef<any>();
 
   return (
     <>
-      <Box width="100%" {...centerVertically} justifyContent="space-between">
-        <Typography noWrap flexGrow={1}>
+      <Box {...centerVertically} justifyContent="space-between">
+        <Typography flexGrow={1} maxWidth="100%">
           {value}
         </Typography>
         <Box flexShrink={0}>
