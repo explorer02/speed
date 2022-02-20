@@ -6,15 +6,13 @@ import { Box } from '@mui/material';
 import { MapRenderer, StoreList } from 'components/locate';
 
 // helpers
-import { getQueryForStoreList } from 'helper/query';
+import { getStaticPropsForStoreList } from 'helper/staticPropsGetter';
 
 // constants
 import { centerVertically, expandXY } from 'styles/styleObjects';
 
 // types
-import { GetStaticProps } from 'next';
 import { Store } from 'types/store';
-import { getDocs } from 'firebase/firestore';
 
 const Locate = ({ stores }: { stores: Store[] }): JSX.Element => {
   const [store, setStore] = React.useState<Store>();
@@ -30,15 +28,6 @@ const Locate = ({ stores }: { stores: Store[] }): JSX.Element => {
   );
 };
 
-const STORE_QUERY = getQueryForStoreList();
-
-export const getStaticProps: GetStaticProps = async () => {
-  const res = await getDocs(STORE_QUERY);
-  return {
-    props: {
-      stores: res.docs.map((doc) => doc.data()),
-    },
-  };
-};
+export const getStaticProps = getStaticPropsForStoreList;
 
 export default Locate;

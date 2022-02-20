@@ -1,14 +1,12 @@
 // lib
 import * as React from 'react';
-import { GetStaticProps } from 'next';
-import { getDocs } from 'firebase/firestore';
 
 // components
 import { Box } from '@mui/material';
 import { StockViewer } from 'components/availability';
 
 // helpers
-import { getQueryForStoreList } from 'helper/query';
+import { getStaticPropsForStoreList } from 'helper/staticPropsGetter';
 
 // constants
 import { expandXY } from 'styles/styleObjects';
@@ -22,15 +20,6 @@ const Availability = ({ stores }: { stores: Store[] }): JSX.Element => (
   </Box>
 );
 
-const STORE_QUERY = getQueryForStoreList();
-
-export const getStaticProps: GetStaticProps = async () => {
-  const res = await getDocs(STORE_QUERY);
-  return {
-    props: {
-      stores: res.docs.map((doc) => doc.data()),
-    },
-  };
-};
+export const getStaticProps = getStaticPropsForStoreList;
 
 export default Availability;

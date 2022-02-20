@@ -1,7 +1,5 @@
 // lib
 import * as React from 'react';
-import { GetStaticProps } from 'next';
-import { getDocs } from 'firebase/firestore';
 
 // components
 import { Box, Stack } from '@mui/material';
@@ -9,7 +7,7 @@ import { TabPanel, Tabs } from 'reusable/tabs';
 import { CreateOrder } from 'components/order/createOrder';
 
 // helpers
-import { getQueryForStoreList } from 'helper/query';
+import { getStaticPropsForStoreList } from 'helper/staticPropsGetter';
 
 // constants
 import { TABS_LIST } from 'components/order/tabsConfig';
@@ -37,13 +35,4 @@ const Order = ({ stores }: { stores: Store[] }): JSX.Element => {
 
 export default Order;
 
-const STORE_QUERY = getQueryForStoreList();
-
-export const getStaticProps: GetStaticProps = async () => {
-  const res = await getDocs(STORE_QUERY);
-  return {
-    props: {
-      stores: res.docs.map((doc) => doc.data()),
-    },
-  };
-};
+export const getStaticProps = getStaticPropsForStoreList;
