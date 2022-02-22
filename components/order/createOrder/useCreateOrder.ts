@@ -33,7 +33,9 @@ export const useCreateOrder: UseCreateOrder = ({ initialStore }) => {
   const query = React.useMemo(() => getQueryForStoreItems(selectedStore.id), [selectedStore.id]);
 
   const { data: items = EMPTY_ARRAY as Item[], isLoading: itemsLoading } =
-    useFirestoreQueryData<Item>([STOCK_COLLECTION_ITEM, selectedStore.id], query);
+    useFirestoreQueryData<Item>([STOCK_COLLECTION_ITEM, selectedStore.id], query, {
+      subscribe: true,
+    });
 
   const onAction = React.useCallback((action: Action) => {
     switch (action.type) {

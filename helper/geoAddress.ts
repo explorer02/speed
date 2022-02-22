@@ -5,7 +5,7 @@ import Geocode from 'react-geocode';
 import { getFromLocalStorage, setToLocalStorage } from './localStorage';
 
 // types
-import googleMapReact from 'google-map-react';
+import { Location } from 'types/location';
 
 // ****** SET GEOCODE DEFAULTS ***** */
 Geocode.setLanguage('en');
@@ -14,18 +14,15 @@ Geocode.setApiKey(process.env.NEXT_PUBLIC_MAP_API_KEY!);
 // ********************************* */
 
 // TODO: Add expiry to location address data
-export const getAddressFromLocalStorage = (location: googleMapReact.Coords): string | undefined => {
+export const getAddressFromLocalStorage = (location: Location): string | undefined => {
   const address = getFromLocalStorage(JSON.stringify(location));
   return address;
 };
-export const saveAddressToLocalStorage = (
-  location: googleMapReact.Coords,
-  address: string,
-): void => {
+export const saveAddressToLocalStorage = (location: Location, address: string): void => {
   setToLocalStorage(JSON.stringify(location), address);
 };
 
-export const fetchGeoAddress = async (location: googleMapReact.Coords): Promise<string> => {
+export const fetchGeoAddress = async (location: Location): Promise<string> => {
   try {
     const storedAddress = getAddressFromLocalStorage(location);
     if (storedAddress) {

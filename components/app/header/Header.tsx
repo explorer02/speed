@@ -10,7 +10,7 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 // hooks
 import { useRouter } from 'next/dist/client/router';
 import { useLoginInfo } from 'contexts/LoginContext';
-import { useColorMode } from 'contexts/AppThemeProvider';
+import { PALETTE_MODE, useColorMode } from 'contexts/AppThemeProvider';
 
 // constants
 import { NAV_BUTTONS } from './config';
@@ -21,7 +21,7 @@ const Header = (): JSX.Element => {
   const selected = NAV_BUTTONS.find((btn) => btn.path === pathname)?.key;
   const colorMode = useColorMode();
 
-  const ModeIcon = colorMode.mode === 'light' ? <DarkModeIcon /> : <LightModeIcon />;
+  const ModeIcon = colorMode.mode === PALETTE_MODE.DARK ? <DarkModeIcon /> : <LightModeIcon />;
 
   return (
     <>
@@ -42,9 +42,10 @@ const Header = (): JSX.Element => {
           {NAV_BUTTONS.map((btn) => {
             const { startIcon: Icon } = btn;
             const ButtonComp = (
-              <Link href={btn.path} key={btn.key}>
+              <Link href={btn.path} key={btn.key} prefetch={false}>
                 <Button
                   variant={btn.key === selected ? 'contained' : 'outlined'}
+                  sx={{ fontWeight: 400 }}
                   startIcon={<Icon />}
                 >
                   {btn.title}

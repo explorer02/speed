@@ -23,6 +23,8 @@ export const ProtectRoute = ({ children }: { children: JSX.Element }): JSX.Eleme
     if (shouldRedirectToHome) replace(HOME_PATH);
   }, [replace, shouldRedirectToHome]);
 
+  if (!isProtectedPath) return children;
+
   if (loading || shouldRedirectToHome)
     return (
       <Box {...expandXY} {...centerAll}>

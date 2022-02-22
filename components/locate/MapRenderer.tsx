@@ -11,10 +11,11 @@ import { expandXY } from 'styles/styleObjects';
 
 // types
 import { Store } from 'types/store';
+import { Location } from 'types/location';
 
 const MAP_API_KEY = process.env.NEXT_PUBLIC_MAP_API_KEY!;
 
-const DEFAULT_CENTER: GoogleMapReact.Coords = { lat: 28.5272803, lng: 77.0688997 };
+const DEFAULT_CENTER: Location = { lat: 28.5272803, lng: 77.0688997 };
 const DEFAULT_ZOOM = 12;
 
 const MapRenderer = ({
@@ -22,7 +23,7 @@ const MapRenderer = ({
   center,
   onMarkerClick,
 }: {
-  center?: GoogleMapReact.Coords;
+  center?: Location;
   markerData?: Store[];
   onMarkerClick?: (datum: Store) => void;
 }): JSX.Element => {

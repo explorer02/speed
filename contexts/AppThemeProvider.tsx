@@ -1,13 +1,16 @@
 // lib
 import * as React from 'react';
-import { createTheme, PaletteMode, ThemeOptions, ThemeProvider } from '@mui/material';
 import _noop from 'lodash/noop';
+import { createTheme, PaletteMode, ThemeOptions, ThemeProvider } from '@mui/material';
+import { useLocalStorage } from 'react-use';
 
 // colors
 import { grey, purple, teal } from '@mui/material/colors';
 
-// helpers
-import { getFromLocalStorage, setToLocalStorage } from 'helper/localStorage';
+export const PALETTE_MODE = {
+  LIGHT: 'light',
+  DARK: 'dark',
+} as const;
 
 const BLACK = '#000';
 const WHITE = '#fff';
@@ -15,7 +18,7 @@ const WHITE = '#fff';
 const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
   palette: {
     mode,
-    ...(mode === 'light'
+    ...(mode === PALETTE_MODE.LIGHT
       ? {
           // palette values for light mode
           primary: purple,
@@ -41,7 +44,7 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
   },
   typography: {
     allVariants: {
-      color: mode === 'light' ? BLACK : WHITE,
+      color: mode === PALETTE_MODE.LIGHT ? BLACK : WHITE,
     },
   },
 });
@@ -49,30 +52,26 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
 type ColorMode = { mode: PaletteMode; toggleColorMode: () => void };
 
 const ColorModeContext = React.createContext<ColorMode>({
-  mode: 'light',
+  mode: PALETTE_MODE.LIGHT,
   toggleColorMode: _noop,
 });
 
 export const useColorMode = (): ColorMode => React.useContext(ColorModeContext);
 
-export const AppThemeProvider = ({
-  children,
-}: {
-  children: JSX.Element;
-}): JSX.Element => {
-  const [mode, setMode] = React.useState<PaletteMode>(
-    () => getFromLocalStorage('theme') ?? 'light',
+export const AppThemeProvider = ({ children }: { children: JSX.Element }): JSX.Element => {
+  const [mode = PALETTE_MODE.LIGHT, setMode] = useLocalStorage<PaletteMode>(
+    'theme',
+    PALETTE_MODE.LIGHT,
   );
 
   const colorMode: ColorMode = React.useMemo(
     () => ({
       mode,
       toggleColorMode: (): void => {
-        setToLocalStorage('theme', mode === 'light' ? 'dark' : 'light');
-        setMode((prevMode: PaletteMode) => (prevMode === 'light' ? 'dark' : 'light'));
+        setMode(mode === PALETTE_MODE.DARK ? PALETTE_MODE.LIGHT : PALETTE_MODE.DARK);
       },
     }),
-    [mode],
+    [mode, setMode],
   );
 
   // Update the theme only if the mode changes

@@ -18,7 +18,12 @@ import { AppThemeProvider } from 'contexts/AppThemeProvider';
 import { AppProps } from 'next/app';
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { refetchOnWindowFocus: false, refetchOnMount: false } },
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+  },
 });
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => (

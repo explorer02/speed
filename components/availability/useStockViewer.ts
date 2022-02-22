@@ -52,7 +52,9 @@ export const useStockViewer: UseStockViewer = ({ initialStore }) => {
     isLoading,
     refetch,
     isRefetching,
-  } = useFirestoreQueryData<Item>([STOCK_COLLECTION_ITEM, selectedStore.id], query);
+  } = useFirestoreQueryData<Item>([STOCK_COLLECTION_ITEM, selectedStore.id], query, {
+    subscribe: true,
+  });
 
   const onAction: OnAction = React.useCallback(
     (action) => {

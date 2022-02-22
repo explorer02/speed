@@ -1,5 +1,6 @@
 // types
-import googleMapReact from 'google-map-react';
+import { Location } from './location';
+import { Order } from './order';
 
 export type Address = {
   houseNumber?: string;
@@ -14,9 +15,8 @@ export type Address = {
 
 export type UserProfile = {
   name?: string;
-  location?: googleMapReact.Coords & {
-    addressText?: string;
-  };
+  location?: Location;
   address?: Address;
   phone?: string;
+  orders?: Order[];
 };

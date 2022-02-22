@@ -7,7 +7,11 @@ import { useSafeState } from 'hooks';
 // types
 import { AlertColor } from '@mui/material';
 
-export type SnackbarState = { open: boolean; severity: AlertColor; message: string };
+export type SnackbarState = {
+  open: boolean;
+  severity: AlertColor;
+  message: string;
+};
 
 const INITIAL_STATE: SnackbarState = { open: false, severity: 'info', message: '' };
 

@@ -12,6 +12,7 @@ import {
   StackProps,
 } from '@mui/material';
 import { TableLayout } from './TableLayout';
+import { TombStone } from './Tombstone';
 
 // constants
 import { centerHorizontally } from 'styles/styleObjects';
@@ -31,6 +32,7 @@ type Props<T extends BaseEntityType> = {
   preEntityRows?: JSX.Element;
   postEntityRows?: JSX.Element;
   children?: JSX.Element;
+  isLoading?: boolean;
 } & Pick<StackProps, 'sx'>;
 
 const Title = <T extends BaseEntityType>({ title }: Pick<Props<T>, 'title'>): JSX.Element | null =>
@@ -97,7 +99,6 @@ const Body = <T extends BaseEntityType>({
             <TableCell key={`${item.id}${column.id}`}>
               {Renderer ? (
                 <Renderer
-                  key={`${item.id}${column.id}`}
                   rowIndex={rowIndex}
                   entity={item}
                   value={value}
@@ -125,6 +126,7 @@ export const Table = <T extends BaseEntityType>({
   postEntityRows,
   sx,
   children,
+  isLoading,
 }: Props<T>): JSX.Element => (
   <TableLayout sx={sx}>
     {children}
@@ -145,12 +147,16 @@ export const Table = <T extends BaseEntityType>({
     </TableLayout.Slot>
 
     <TableLayout.Slot name="body">
-      <Body
-        columnConfig={columnConfig}
-        items={items}
-        preEntityRows={preEntityRows}
-        postEntityRows={postEntityRows}
-      />
+      {isLoading ? (
+        <TombStone columnConfig={columnConfig} />
+      ) : (
+        <Body
+          columnConfig={columnConfig}
+          items={items}
+          preEntityRows={preEntityRows}
+          postEntityRows={postEntityRows}
+        />
+      )}
     </TableLayout.Slot>
   </TableLayout>
 );

@@ -16,12 +16,19 @@ export const StockTable = ({
   items,
   actionState,
   onAction,
+  isLoading,
 }: {
   items: Item[];
   actionState: ActionState;
   onAction: OnAction;
+  isLoading?: boolean;
 }): JSX.Element => (
-  <Table columnConfig={columnsConfig} items={items} sx={{ padding: '20px 80px' }}>
+  <Table
+    columnConfig={columnsConfig}
+    items={items}
+    sx={{ padding: '20px 80px' }}
+    isLoading={isLoading}
+  >
     <Table.Slot name="action_bar">
       <ActionBar actionState={actionState} onAction={onAction} />
     </Table.Slot>

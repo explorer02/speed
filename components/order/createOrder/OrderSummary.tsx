@@ -8,6 +8,7 @@ import { Table } from 'reusable/table';
 // helpers
 import { priceFormatter } from 'helper/formatter';
 import { getColumnConfig } from './summaryTableConfig';
+import { getTotalAmount } from './helper';
 
 import { Item, Store } from 'types/store';
 import { OnAction } from './types';
@@ -19,10 +20,8 @@ type Props = {
 };
 
 export const OrderSummary = ({ store, items, onAction }: Props): JSX.Element => {
-  const totalAmount = priceFormatter(100);
-
   const columnsConfig = React.useMemo(() => getColumnConfig(onAction), [onAction]);
-
+  const totalAmount = React.useMemo(() => getTotalAmount(items), [items]);
   return (
     <Table<Item>
       columnConfig={columnsConfig}
@@ -33,8 +32,8 @@ export const OrderSummary = ({ store, items, onAction }: Props): JSX.Element => 
       postEntityRows={
         <TableRow>
           <TableCell rowSpan={3} />
-          <TableCell colSpan={2}>Total</TableCell>
-          <TableCell>{totalAmount}</TableCell>
+          <TableCell colSpan={2}>Total Amount</TableCell>
+          <TableCell>{priceFormatter(totalAmount)}</TableCell>
         </TableRow>
       }
     />

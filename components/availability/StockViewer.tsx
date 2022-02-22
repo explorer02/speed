@@ -46,7 +46,12 @@ export const StockViewer = ({ stores }: { stores: Store[] }): JSX.Element => {
         />
       </Box>
       <Box flexGrow={1}>
-        <StockTable items={data} actionState={actionState} onAction={onAction} />
+        <StockTable
+          items={data}
+          actionState={actionState}
+          onAction={onAction}
+          isLoading={isLoading}
+        />
       </Box>
       <IconButton
         sx={{ position: 'absolute', top: 0, right: 80 }}
