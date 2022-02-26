@@ -3,7 +3,7 @@ import * as React from 'react';
 
 // styles
 import 'styles/globals.css';
-import 'fontsource-roboto';
+import '@fontsource/roboto';
 
 // components
 import { Layout } from 'containers/Layout';
