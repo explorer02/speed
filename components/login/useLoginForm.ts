@@ -22,7 +22,7 @@ type UseLoginForm = (props: {
   isOtpSent?: boolean;
   resetLoginState: () => void;
 }) => {
-  onAction: (action: FormAction) => void;
+  onAction: (action: FormAction<State>) => void;
   value: State;
 };
 
@@ -36,7 +36,7 @@ export const useLoginForm: UseLoginForm = ({
   const stateRef = useLatest(state);
 
   const handleAction = React.useCallback(
-    (action: FormAction) => {
+    (action: FormAction<State>) => {
       switch (action.type) {
         case FORM_ACTIONS.ON_CHANGE:
           setState((prev) => ({ ...prev, [action.payload.id]: action.payload.value }));
