@@ -16,3 +16,9 @@ export type Action = {
 };
 
 export type ValueOf<T> = T[keyof T];
+
+export type KeyTMap<K extends string | number | symbol, V> = {
+  [key in K]: V;
+};
+
+export type keyStringMap<K extends string | number | symbol> = KeyTMap<K, string>;

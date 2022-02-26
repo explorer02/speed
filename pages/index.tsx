@@ -20,7 +20,7 @@ const Home: NextPage = () => {
     <Box>Home</Box>
   ) : (
     <Box width="100%" pt={8} {...centerAll}>
-      <Box width="40%">
+      <Box width={450} maxWidth="90%">
         <LoginForm />
       </Box>
     </Box>

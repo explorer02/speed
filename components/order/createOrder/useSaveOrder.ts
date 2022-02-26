@@ -28,13 +28,13 @@ const adaptOrder = (selectedItems: Item[], selectedStore: Store): Order => ({
 type UseSaveOrder = (props: { selectedItems: Item[]; selectedStore: Store }) => {
   onSave: () => Promise<void>;
   isSavingOrder: boolean;
-  snackBarProps: SnackbarState & { onClose: () => void };
+  snackbarState: SnackbarState;
 };
 
 export const useSaveOrder: UseSaveOrder = ({ selectedItems, selectedStore }) => {
   const phone = useLoginInfo().user?.phoneNumber;
 
-  const { state: snackbarState, showSnackbar, hideSnackbar } = useSnackbar();
+  const { state: snackbarState, showSnackbar } = useSnackbar();
 
   const userOrderCollectionRef = React.useMemo(() => getOrderCollectionRef(phone!), [phone]);
 
@@ -53,5 +53,5 @@ export const useSaveOrder: UseSaveOrder = ({ selectedItems, selectedStore }) => 
     }
   }, [phone, saveOrder, selectedItems, selectedStore, showSnackbar]);
 
-  return { onSave, isSavingOrder, snackBarProps: { ...snackbarState, onClose: hideSnackbar } };
+  return { onSave, isSavingOrder, snackbarState };
 };

@@ -9,17 +9,14 @@ import { FORM_ACTIONS } from '../constants';
 
 // types
 import { FormComponentProps } from '../FieldMap';
+import { SvgIconComponent } from '@mui/icons-material';
 
-export const FormIconButton = ({
-  onAction,
-  id,
-  Icon,
-  size,
-  color,
-}: FormComponentProps &
+type Props = FormComponentProps &
   Pick<IconButtonProps, 'size' | 'color'> & {
-    Icon?: () => JSX.Element;
-  }): JSX.Element => {
+    Icon: SvgIconComponent;
+  };
+
+export const FormIconButton = ({ onAction, id, Icon, size, color }: Props): JSX.Element => {
   const handleClick = React.useCallback(() => {
     onAction({
       type: FORM_ACTIONS.ON_CLICK,
@@ -30,7 +27,7 @@ export const FormIconButton = ({
   }, [id, onAction]);
   return (
     <IconButton onClick={handleClick} size={size} color={color}>
-      {Icon ? <Icon /> : null}
+      <Icon />
     </IconButton>
   );
 };

@@ -10,17 +10,25 @@ import { FORM_ACTIONS } from '../constants';
 
 // types
 import { FormComponentProps } from '../FieldMap';
-import { StringAnyMap } from 'types/generic';
 
 type Props = FormComponentProps & {
   label: string;
   helperText?: string;
   disabled?: boolean;
   type?: string;
-} & StringAnyMap;
+};
 
 export const FormControlTextInput = (props: Props): JSX.Element => {
-  const { id, onAction, value, label, helperText, disabled = false, type = 'text' } = props;
+  const {
+    id,
+    onAction,
+    value,
+    label,
+    helperText,
+    disabled = false,
+    type = 'text',
+    loading,
+  } = props;
 
   const latestProps = useLatest(props);
 
@@ -39,12 +47,12 @@ export const FormControlTextInput = (props: Props): JSX.Element => {
   );
 
   return (
-    <FormControl fullWidth disabled={disabled}>
-      <InputLabel htmlFor="component-outlined" disabled={disabled}>
+    <FormControl fullWidth disabled={disabled || loading}>
+      <InputLabel htmlFor="component-outlined" disabled={disabled || loading}>
         {label}
       </InputLabel>
       <OutlinedInput
-        disabled={disabled}
+        disabled={disabled || loading}
         id="component-outlined"
         value={value}
         onChange={handleChange}

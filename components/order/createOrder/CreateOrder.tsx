@@ -31,12 +31,12 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
   const {
     onSave: onSaveOrder,
     isSavingOrder,
-    snackBarProps,
+    snackbarState,
   } = useSaveOrder({ selectedItems, selectedStore });
 
   return (
     <>
-      <SnackBarOverlay {...snackBarProps} />
+      <SnackBarOverlay {...snackbarState} />
       <Grid
         {...expandXY}
         gap={2}

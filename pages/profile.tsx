@@ -13,7 +13,7 @@ import { NextPage } from 'next';
 
 const Profile: NextPage = () => (
   <Box width="100%" {...centerHorizontally}>
-    <ProfileForm sx={{ width: '40%' }} />
+    <ProfileForm sx={{ width: 700, maxWidth: '90%' }} />
   </Box>
 );
 

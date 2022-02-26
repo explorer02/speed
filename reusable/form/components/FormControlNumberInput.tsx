@@ -17,13 +17,12 @@ import { FORM_ACTIONS } from '../constants';
 
 // types
 import { FormComponentProps } from '../FieldMap';
-import { StringAnyMap } from 'types/generic';
 
 type Props = FormComponentProps &
   Pick<OutlinedInputProps, 'placeholder' | 'disabled' | 'startAdornment'> & {
     label: string;
     helperText?: string;
-  } & StringAnyMap;
+  };
 
 const InputComponent = experimentalStyled(OutlinedInput)`
 input[type=number]::-webkit-inner-spin-button, 
@@ -43,6 +42,7 @@ export const FormControlNumberInput = (props: Props): JSX.Element => {
     disabled = false,
     placeholder,
     startAdornment,
+    loading,
   } = props;
 
   const latestProps = useLatest(props);
@@ -70,12 +70,12 @@ export const FormControlNumberInput = (props: Props): JSX.Element => {
   );
 
   return (
-    <FormControl fullWidth disabled={disabled}>
-      <InputLabel htmlFor="component-outlined" disabled={disabled}>
+    <FormControl fullWidth disabled={disabled || loading}>
+      <InputLabel htmlFor="component-outlined" disabled={disabled || loading}>
         {label}
       </InputLabel>
       <InputComponent
-        disabled={disabled}
+        disabled={disabled || loading}
         id="component-outlined"
         value={value}
         onChange={handleChange}

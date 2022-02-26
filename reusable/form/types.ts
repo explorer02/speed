@@ -4,7 +4,7 @@ import { FORM_ACTIONS } from './constants';
 import { FieldMap } from './FieldMap';
 import { Layout } from './Layout';
 
-export type FormAction<T = StringAnyMap> =
+export type FormAction<T> =
   | {
       type: typeof FORM_ACTIONS.ON_CHANGE;
       payload: StringAnyMap & {
@@ -29,10 +29,10 @@ export type FormAction<T = StringAnyMap> =
     }
   
 
-export type FormProps<T = StringAnyMap> = {
+export type FormProps<T> = {
   layout: Layout;
-  fieldMap: FieldMap<T>;
-  onAction: (action: FormAction) => void;
+  fieldMap: FieldMap;
+  onAction: (action: FormAction<T>) => void;
   value: T;
   loading?: boolean;
   validator?: (_value: T) => StringTMap<boolean>;

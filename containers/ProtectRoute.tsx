@@ -17,7 +17,7 @@ export const ProtectRoute = ({ children }: { children: JSX.Element }): JSX.Eleme
   const { isLoggedIn, loading } = useLoginInfo();
 
   const isProtectedPath = PROTECTED_PATHS.includes(pathname);
-  const shouldRedirectToHome = !loading && !isLoggedIn && isProtectedPath;
+  const shouldRedirectToHome = !loading && !isLoggedIn && isProtectedPath && pathname !== HOME_PATH;
 
   React.useEffect(() => {
     if (shouldRedirectToHome) replace(HOME_PATH);

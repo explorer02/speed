@@ -5,10 +5,7 @@ import _set from 'lodash/set';
 import _merge from 'lodash/merge';
 
 // hooks
-import {
-  useFirestoreDocumentData,
-  useFirestoreDocumentMutation,
-} from '@react-query-firebase/firestore';
+import { useFirestoreDocumentData } from '@react-query-firebase/firestore';
 
 // helpers
 import { fetchGeoAddress } from 'helper/geoAddress';
@@ -48,9 +45,8 @@ const updateState = (state: UserProfile, propertyPath: string[], value: any): Us
 
 export const useProfileForm = (): {
   value: UserProfile;
-  onAction: (action: FormAction) => void;
-  isLoading?: boolean;
-  onSave: () => Promise<void>;
+  onAction: (action: FormAction<UserProfile>) => void;
+  isLoading: boolean;
 } => {
   const [state, setState] = React.useState(INITIAL_VALUES);
 
@@ -61,11 +57,7 @@ export const useProfileForm = (): {
     [user?.phoneNumber],
   );
 
-  const {
-    data,
-    isLoading: userLoading,
-    refetch,
-  } = useFirestoreDocumentData<UserProfile>(
+  const { data, isLoading: userLoading } = useFirestoreDocumentData<UserProfile>(
     [USER_COLLECTION, user?.phoneNumber],
     userProfileDocRef,
   );
@@ -76,12 +68,6 @@ export const useProfileForm = (): {
       setState(_merge(newValues, data));
     }
   }, [data]);
-
-  const { mutateAsync, isLoading: userSaving } = useFirestoreDocumentMutation(userProfileDocRef);
-  const onSave = React.useCallback(async () => {
-    await mutateAsync(state);
-    await refetch();
-  }, [mutateAsync, refetch, state]);
 
   const recenter = React.useCallback(() => {
     if (navigator.geolocation) {
@@ -104,7 +90,7 @@ export const useProfileForm = (): {
   }, []);
 
   const handleAction = React.useCallback(
-    (action: FormAction) => {
+    (action: FormAction<UserProfile>) => {
       switch (action.type) {
         case FORM_ACTIONS.ON_CHANGE:
           const { id, value } = action.payload;
@@ -135,7 +121,6 @@ export const useProfileForm = (): {
   return {
     value: state,
     onAction: handleAction,
-    onSave,
-    isLoading: userLoading || userSaving,
+    isLoading: userLoading,
   };
 };

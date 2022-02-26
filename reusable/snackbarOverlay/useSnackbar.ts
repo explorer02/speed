@@ -1,5 +1,6 @@
 // lib
 import * as React from 'react';
+import _noop from 'lodash/noop';
 
 // hooks
 import { useSafeState } from 'hooks';
@@ -11,9 +12,10 @@ export type SnackbarState = {
   open: boolean;
   severity: AlertColor;
   message: string;
+  onClose: () => void;
 };
 
-const INITIAL_STATE: SnackbarState = { open: false, severity: 'info', message: '' };
+const INITIAL_STATE: SnackbarState = { open: false, severity: 'info', message: '', onClose: _noop };
 
 type UseSnackbar = () => {
   state: SnackbarState;
@@ -26,7 +28,7 @@ export const useSnackbar: UseSnackbar = () => {
 
   const showSnackbar = React.useCallback(
     (message: string, severity: AlertColor): void => {
-      setState({ severity, message, open: true });
+      setState((prev) => ({ ...prev, severity, message, open: true }));
     },
     [setState],
   );
@@ -34,5 +36,9 @@ export const useSnackbar: UseSnackbar = () => {
     setState((prev) => ({ ...prev, open: false }));
   }, [setState]);
 
-  return { state, showSnackbar, hideSnackbar };
+  return {
+    state: React.useMemo(() => ({ ...state, onClose: hideSnackbar }), [hideSnackbar, state]),
+    showSnackbar,
+    hideSnackbar,
+  };
 };

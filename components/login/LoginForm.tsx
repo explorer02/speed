@@ -43,7 +43,7 @@ const LoginForm = (): JSX.Element => {
   const confirmationResult = React.useRef<ConfirmationResult>();
 
   const window = useWindow();
-  const { state: snackbarState, showSnackbar, hideSnackbar } = useSnackbar();
+  const { state: snackbarState, showSnackbar } = useSnackbar();
 
   const [loginState, setLoginState] = useSafeState<LoginState>(INITIAL_LOGIN_STATE);
 
@@ -123,12 +123,7 @@ const LoginForm = (): JSX.Element => {
   return (
     <>
       <div id="sign-in-button" />
-      <SnackBarOverlay
-        open={snackbarState.open}
-        severity={snackbarState.severity}
-        message={snackbarState.message}
-        onClose={hideSnackbar}
-      />
+      <SnackBarOverlay {...snackbarState} />
       <Grid container gap={5} justifyContent="center">
         <Grid item container justifyContent="center" alignItems="center" gap={2} direction="row">
           <LoginOutlinedIcon fontSize="large" /> <Typography variant="h4">Login</Typography>

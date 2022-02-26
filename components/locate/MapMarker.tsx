@@ -22,12 +22,11 @@ type MarkerProps = {
 // TODO: popover on marker
 export const MapMarker = ({ selected, datum }: MarkerProps): JSX.Element => {
   const { value: open, set: showPopover, unset: hidePopover } = useToggle(false);
-  const anchorRef = React.useRef<HTMLButtonElement>();
+  const anchorRef = React.useRef<HTMLButtonElement | null>(null);
   const id = open ? 'simple-popover' : undefined;
 
   return (
     <>
-      {/*  @ts-expect-error */}
       <IconButton
         color={selected ? 'primary' : 'success'}
         size="large"

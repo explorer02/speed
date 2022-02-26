@@ -22,18 +22,20 @@ import { FormAction, FormProps } from './types';
 
 const DummyComponent = (props: StringAnyMap): JSX.Element => <div {...props} />;
 
-const ItemRenderer = ({
+const ItemRenderer = <T,>({
   items,
   fieldMap,
   onAction,
   value,
   errors,
+  loading,
 }: {
   items?: Item[];
   fieldMap: FieldMap;
-  onAction: (action: FormAction) => void;
+  onAction: (action: FormAction<T>) => void;
   value: StringAnyMap;
   errors?: StringTMap<boolean>;
+  loading?: boolean;
 }): JSX.Element => (
   <>
     {(items ?? (EMPTY_ARRAY as Item[])).map((item) => {
@@ -59,6 +61,7 @@ const ItemRenderer = ({
                 value={fieldValue}
                 error={errors?.[item.id]}
                 id={item.id}
+                loading={loading}
               />
             </Grid>
           );
@@ -71,6 +74,7 @@ const ItemRenderer = ({
                 value={fieldValue}
                 error={errors?.[item.id]}
                 id={item.id}
+                loading={loading}
               />
             </Grid>
           );
@@ -100,6 +104,7 @@ const ItemRenderer = ({
                 fieldMap={fieldMap}
                 value={value}
                 errors={errors}
+                loading={loading}
               />
             </Grid>
           );
@@ -128,6 +133,7 @@ const ItemRenderer = ({
                 fieldMap={fieldMap}
                 value={value}
                 errors={errors}
+                loading={loading}
               />
             </Grid>
           );
@@ -138,7 +144,7 @@ const ItemRenderer = ({
   </>
 );
 
-export const Form = ({
+export const Form = <T,>({
   layout,
   fieldMap,
   onAction,
@@ -147,7 +153,7 @@ export const Form = ({
   validator,
   config,
   ...gridProps
-}: FormProps): JSX.Element => {
+}: FormProps<T>): JSX.Element => {
   const resetForm = React.useCallback(() => {
     onAction({ type: FORM_ACTIONS.ON_RESET });
   }, [onAction]);
@@ -170,6 +176,7 @@ export const Form = ({
         onAction={onAction}
         value={value}
         errors={errors}
+        loading={loading}
       />
       <Grid item container rowSpacing={2} columnSpacing={4} alignItems="center">
         {(config?.reset?.visible ?? true) && (
@@ -177,7 +184,7 @@ export const Form = ({
             <Button
               onClick={resetForm}
               fullWidth
-              disabled={config?.reset?.disabled}
+              disabled={config?.reset?.disabled || loading}
               variant="outlined"
               sx={{ paddingX: 2, paddingY: 1 }}
             >

@@ -13,41 +13,77 @@ import {
   ORDER_PATH,
   PROFILE_PATH,
 } from 'constants/paths';
+import { SvgIconComponent } from '@mui/icons-material';
+import { Breakpoint } from '@mui/system';
+import { KeyTMap } from 'types/generic';
 
-export const NAV_BUTTONS = [
-  {
-    key: 'home',
-    title: 'Home',
-    loginRequired: false,
-    path: HOME_PATH,
-    startIcon: HomeOutlinedIcon,
+type NavItem = {
+  key: string;
+  title: string;
+  loginRequired: boolean;
+  path: string;
+  startIcon: SvgIconComponent;
+};
+
+const HOME: NavItem = {
+  key: 'home',
+  title: 'Home',
+  loginRequired: false,
+  path: HOME_PATH,
+  startIcon: HomeOutlinedIcon,
+};
+const AVAILABILITY = {
+  key: 'availability',
+  title: 'Availability',
+  loginRequired: false,
+  path: AVAILABILITY_PATH,
+  startIcon: TrendingUpOutlinedIcon,
+};
+
+const ORDER = {
+  key: 'order',
+  title: 'Order',
+  loginRequired: true,
+  path: ORDER_PATH,
+  startIcon: NoteAltOutlinedIcon,
+};
+
+const PROFILE = {
+  key: 'profile',
+  title: 'Profile',
+  loginRequired: true,
+  path: PROFILE_PATH,
+  startIcon: AccountCircleOutlinedIcon,
+};
+const LOCATE = {
+  key: 'locate',
+  title: 'Locate Us',
+  loginRequired: false,
+  path: LOCATE_PATH,
+  startIcon: LocationOnOutlinedIcon,
+};
+
+export const NAV_BUTTONS: NavItem[] = [HOME, AVAILABILITY, ORDER, PROFILE, LOCATE];
+
+export const NAV_CONFIG: KeyTMap<Breakpoint, { list: NavItem[]; menu: NavItem[] }> = {
+  xs: {
+    list: [],
+    menu: [HOME, AVAILABILITY, ORDER, PROFILE, LOCATE],
   },
-  {
-    key: 'availability',
-    title: 'Availability',
-    loginRequired: false,
-    path: AVAILABILITY_PATH,
-    startIcon: TrendingUpOutlinedIcon,
+  sm: {
+    list: [HOME, AVAILABILITY],
+    menu: [ORDER, PROFILE, LOCATE],
   },
-  {
-    key: 'order',
-    title: 'Order',
-    loginRequired: true,
-    path: ORDER_PATH,
-    startIcon: NoteAltOutlinedIcon,
+  md: {
+    list: [HOME, AVAILABILITY, ORDER],
+    menu: [PROFILE, LOCATE],
   },
-  {
-    key: 'profile',
-    title: 'Profile',
-    loginRequired: true,
-    path: PROFILE_PATH,
-    startIcon: AccountCircleOutlinedIcon,
+  lg: {
+    list: [HOME, AVAILABILITY, ORDER, PROFILE, LOCATE],
+    menu: [],
   },
-  {
-    key: 'locate',
-    title: 'Locate Us',
-    loginRequired: false,
-    path: LOCATE_PATH,
-    startIcon: LocationOnOutlinedIcon,
+  xl: {
+    list: [HOME, AVAILABILITY, ORDER, PROFILE, LOCATE],
+    menu: [],
   },
-];
+};

@@ -11,7 +11,7 @@ import { Header } from 'components/app';
 import { expandXY } from 'styles/styleObjects';
 import { HOME_PATH, PAGE_TITLE } from 'constants/paths';
 
-const HEADER_HEIGHT = 80;
+const HEADER_HEIGHT = 56;
 const GAP = 2;
 
 export const Layout = ({ children }: { children?: any }): JSX.Element => {
