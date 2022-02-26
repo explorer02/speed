@@ -11,9 +11,6 @@ import { SnackBarOverlay } from 'reusable/snackbarOverlay';
 import { useCreateOrder } from './useCreateOrder';
 import { useSaveOrder } from './useSaveOrder';
 
-// constants
-import { expandXY } from 'styles/styleObjects';
-
 // types
 import { Store } from 'types/store';
 
@@ -37,16 +34,8 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
   return (
     <>
       <SnackBarOverlay {...snackbarState} />
-      <Grid
-        {...expandXY}
-        gap={2}
-        direction="row"
-        container
-        justifyContent="space-between"
-        id="create-order"
-        wrap="nowrap"
-      >
-        <Grid item container direction="column" gap={4} xs={6} mt={5}>
+      <Grid spacing={4} container justifyContent="space-between" id="create-order">
+        <Grid item container direction="column" spacing={4} xs={12} lg={6}>
           <Grid item>
             <AutoComplete
               items={stores}
@@ -75,7 +64,7 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
               loading={itemsLoading}
             />
           </Grid>
-          <Grid item container justifyContent="center">
+          <Grid item container justifyContent="center" mb={8}>
             <Button
               variant="outlined"
               disabled={selectedItems.length === 0 || isSavingOrder}
@@ -85,7 +74,7 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
             </Button>
           </Grid>
         </Grid>
-        <Grid item xs={6} height="100%">
+        <Grid item xs={12} lg={6}>
           <OrderSummary store={selectedStore} items={selectedItems} onAction={onAction} />
         </Grid>
       </Grid>

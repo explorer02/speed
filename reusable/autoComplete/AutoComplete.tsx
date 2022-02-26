@@ -117,13 +117,13 @@ export const AutoComplete = ({
   );
 
   return (
-    <Box {...centerAll} width="100%" gap={4}>
+    <Box {...centerAll} width="100%" gap={3}>
       <Typography variant="body1">{label}</Typography>
       <BaseAutoComplete<StringAnyMap, boolean, boolean, undefined>
         options={items}
         itemID={idKey}
         loading={loading}
-        sx={{ width: `${inputWidth}px` }}
+        sx={{ width: `${inputWidth}px`, flexShrink: 1 }}
         getOptionLabel={getOptionLabel}
         onChange={handleChange}
         disableClearable={disableClearable}

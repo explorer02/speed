@@ -2,9 +2,10 @@
 import * as React from 'react';
 
 // components
-import { Box, IconButton } from '@mui/material';
+import { Box } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
+import { IconButtonWithTooltip } from 'reusable/iconButtonWithTooltip';
 
 // constants
 import { ACTION_TYPES } from '../constants';
@@ -43,12 +44,22 @@ export const Quantity = ({
   return (
     <Box {...centerVertically} gap={1}>
       {value}
-      <IconButton color="primary" size="small" onClick={handleMinus}>
+      <IconButtonWithTooltip
+        title="Decrease Quantity"
+        color="primary"
+        size="small"
+        onClick={handleMinus}
+      >
         <RemoveIcon fontSize="small" />
-      </IconButton>
-      <IconButton color="primary" size="small" onClick={handlePlus}>
+      </IconButtonWithTooltip>
+      <IconButtonWithTooltip
+        title="Increase Quantity"
+        color="primary"
+        size="small"
+        onClick={handlePlus}
+      >
         <AddIcon fontSize="small" />
-      </IconButton>
+      </IconButtonWithTooltip>
     </Box>
   );
 };

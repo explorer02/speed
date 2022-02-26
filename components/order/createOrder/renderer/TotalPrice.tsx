@@ -2,8 +2,9 @@
 import * as React from 'react';
 
 // components
-import { Box, IconButton } from '@mui/material';
+import { Box } from '@mui/material';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import { IconButtonWithTooltip } from 'reusable/iconButtonWithTooltip';
 
 // constants
 import { ACTION_TYPES } from '../constants';
@@ -32,9 +33,15 @@ export const TotalPrice = ({
   return (
     <Box {...centerVertically} gap={1}>
       {value}
-      <IconButton color="primary" sx={{ marginLeft: '16px' }} onClick={handleRemove} size="small">
+      <IconButtonWithTooltip
+        title="Remove Item"
+        color="primary"
+        sx={{ marginLeft: '16px' }}
+        onClick={handleRemove}
+        size="small"
+      >
         <RemoveCircleOutlineIcon fontSize="small" />
-      </IconButton>
+      </IconButtonWithTooltip>
     </Box>
   );
 };

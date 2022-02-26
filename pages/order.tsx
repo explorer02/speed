@@ -21,7 +21,7 @@ const Order = ({ stores }: { stores: Store[] }): JSX.Element => {
   return (
     <Stack {...expandXY} gap={4}>
       <Tabs tabList={TABS_LIST} selectedTab={selectedTab} onTabChange={setSelectedTab} />
-      <Box px={4} py={2} flexGrow={1}>
+      <Box px={4} py={2}>
         <TabPanel value={selectedTab} index={0}>
           <CreateOrder stores={stores} />
         </TabPanel>

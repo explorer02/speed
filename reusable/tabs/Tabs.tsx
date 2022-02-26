@@ -22,7 +22,13 @@ export const Tabs = ({ tabList, selectedTab, onTabChange }: Props): JSX.Element 
   );
 
   return (
-    <BaseTabs value={selectedTab} onChange={handleChange} centered variant="standard">
+    <BaseTabs
+      value={selectedTab}
+      onChange={handleChange}
+      centered
+      variant="standard"
+      sx={{ flexShrink: 0 }}
+    >
       {tabList.map(({ id, label, Icon }) => (
         <Tab
           icon={Icon ? <Icon /> : undefined}

@@ -105,8 +105,8 @@ export const useStockViewer: UseStockViewer = ({ initialStore }) => {
   const adaptedData = React.useMemo(() => {
     const filteredData = data.filter(
       (datum) =>
-        datum.label.includes(actionState.searchInput) ||
-        datum.description.includes(actionState.searchInput),
+        datum.label.toLowerCase().includes(actionState.searchInput.toLowerCase()) ||
+        datum.description.toLowerCase().includes(actionState.searchInput.toLowerCase()),
     );
     const sortedData = _orderBy(
       filteredData,

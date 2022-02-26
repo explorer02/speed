@@ -18,6 +18,7 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import MenuIcon from '@mui/icons-material/Menu';
+import { IconButtonWithTooltip } from 'reusable/iconButtonWithTooltip';
 
 // hooks
 import { useRouter } from 'next/dist/client/router';
@@ -115,9 +116,13 @@ const Header = (): JSX.Element => {
               <MenuIcon />
             </IconButton>
           ) : null}
-          <IconButton color="primary" onClick={colorMode.toggleColorMode}>
+          <IconButtonWithTooltip
+            title="Change Light Mode"
+            color="primary"
+            onClick={colorMode.toggleColorMode}
+          >
             {ModeIcon}
-          </IconButton>
+          </IconButtonWithTooltip>
         </Grid>
       </Grid>
       <Divider sx={{ marginTop: 1 }} />
