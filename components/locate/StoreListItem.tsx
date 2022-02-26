@@ -24,11 +24,17 @@ export const StoreListItem = ({
     onClick?.(store);
   }, [onClick, store]);
   return (
-    <ListItemButton selected={selected} key={store.id} onClick={handleClick}>
+    <ListItemButton selected={selected} key={store.id} onClick={handleClick} sx={{ width: 400 }}>
       <ListItemIcon>
-        <StorefrontIcon />
+        <StorefrontIcon fontSize="small" />
       </ListItemIcon>
-      <ListItemText sx={{ maxWidth: 300 }} primary={store.name} secondary={store.address} />
+      <ListItemText
+        sx={{ maxWidth: 300 }}
+        primaryTypographyProps={{ variant: 'body2' }}
+        secondaryTypographyProps={{ variant: 'caption' }}
+        primary={store.name}
+        secondary={store.address}
+      />
       {showOpenInNewTab ? (
         <ListItemIcon
           onClick={(): void => {
@@ -38,7 +44,7 @@ export const StoreListItem = ({
             );
           }}
         >
-          <OpenInNewIcon />
+          <OpenInNewIcon fontSize="small" />
         </ListItemIcon>
       ) : null}
     </ListItemButton>

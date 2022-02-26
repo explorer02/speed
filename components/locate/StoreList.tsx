@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 // components
-import { Box, List, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { StoreListItem } from './StoreListItem';
 
 // constants
@@ -20,9 +20,9 @@ const StoreList = ({
   selectedStore?: Store;
   onClick?: (store: Store) => void;
 }): JSX.Element => (
-  <Box {...expandXY} {...centerAll} flexDirection="column" overflow="auto">
-    <Typography variant="h4">Stores</Typography>
-    <List>
+  <Box {...expandXY} {...centerAll} flexDirection="column">
+    <Typography variant="h5">Stores</Typography>
+    <Box sx={{ width: '100%', display: 'flex', flexWrap: 'wrap' }}>
       {stores.map((store) => (
         <StoreListItem
           key={store.id}
@@ -31,7 +31,7 @@ const StoreList = ({
           selected={selectedStore?.id === store.id}
         />
       ))}
-    </List>
+    </Box>
   </Box>
 );
 

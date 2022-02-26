@@ -80,12 +80,14 @@ const Header = (): JSX.Element => {
           if (btn.loginRequired && !isLoggedIn) return undefined;
 
           return (
-            <ListItemButton selected={btn.key === selected} key={btn.key}>
-              <ListItemIcon>
-                <Icon />
-              </ListItemIcon>
-              <ListItemText>{btn.title}</ListItemText>
-            </ListItemButton>
+            <Link href={btn.path} key={btn.key} prefetch={false}>
+              <ListItemButton selected={btn.key === selected} key={btn.key}>
+                <ListItemIcon>
+                  <Icon />
+                </ListItemIcon>
+                <ListItemText>{btn.title}</ListItemText>
+              </ListItemButton>
+            </Link>
           );
         })}
       </List>
@@ -103,7 +105,6 @@ const Header = (): JSX.Element => {
         mt={1}
         id="header"
         direction="row"
-        wrap="nowrap"
       >
         <Grid item container xs="auto" justifyContent="center" alignItems="center">
           <StarBorderIcon color="primary" fontSize="large" />
@@ -112,7 +113,7 @@ const Header = (): JSX.Element => {
         <Grid item container xs="auto" gap={2} alignItems="center">
           {listEl}
           {config.menu.length ? (
-            <IconButton color="primary" onClick={showMenu} ref={menuAnchorRef}>
+            <IconButton onClick={showMenu} ref={menuAnchorRef}>
               <MenuIcon />
             </IconButton>
           ) : null}
