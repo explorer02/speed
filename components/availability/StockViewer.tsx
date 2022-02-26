@@ -31,7 +31,7 @@ export const StockViewer = ({ stores }: { stores: Store[] }): JSX.Element => {
   });
 
   return (
-    <Stack gap={6} py={2} {...expandXY} sx={{ position: 'relative' }}>
+    <Stack gap={6} py={2} {...expandXY} sx={{ position: 'relative', minWidth: 900 }}>
       <Box flexShrink={0}>
         <AutoComplete
           items={stores}

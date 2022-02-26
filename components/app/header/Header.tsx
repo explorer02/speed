@@ -81,7 +81,7 @@ const Header = (): JSX.Element => {
 
           return (
             <Link href={btn.path} key={btn.key} prefetch={false}>
-              <ListItemButton selected={btn.key === selected} key={btn.key}>
+              <ListItemButton selected={btn.key === selected} key={btn.key} onClick={hideMenu}>
                 <ListItemIcon>
                   <Icon />
                 </ListItemIcon>

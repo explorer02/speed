@@ -19,7 +19,7 @@ import { Store } from 'types/store';
 const Order = ({ stores }: { stores: Store[] }): JSX.Element => {
   const [selectedTab, setSelectedTab] = React.useState(0);
   return (
-    <Stack {...expandXY} gap={4}>
+    <Stack {...expandXY} gap={4} sx={{ minWidth: 900 }}>
       <Tabs tabList={TABS_LIST} selectedTab={selectedTab} onTabChange={setSelectedTab} />
       <Box px={4} py={2}>
         <TabPanel value={selectedTab} index={0}>
