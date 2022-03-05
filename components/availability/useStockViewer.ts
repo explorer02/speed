@@ -5,6 +5,8 @@ import _orderBy from 'lodash/orderBy';
 
 // hooks
 import { useRefreshTimer } from './useRefreshTimer';
+import { useRouter } from 'next/dist/client/router';
+import { useStateWithRef } from 'hooks/useStateWithRef';
 
 // helpers
 import { getQueryForStoreItems } from 'helper/query';
@@ -13,6 +15,7 @@ import { getQueryForStoreItems } from 'helper/query';
 import { EMPTY_ARRAY } from 'constants/empty';
 import { STOCK_COLLECTION_ITEM } from 'constants/collections';
 import { ACTION_TYPES, SORT_FIELDS } from './constants';
+import { ORDER_PATH } from 'constants/paths';
 
 // types
 import { Item, Store } from 'types/store';
@@ -24,6 +27,8 @@ type UseStockViewer = (props: { initialStore: Store }) => {
   isRefreshActive: boolean;
   onRefresh: () => void;
   selectedStore: Store;
+  selectedItems: Set<string>;
+  onRowClick: (id: string) => void;
   onStoreChange: (store: Store) => void;
   data: Item[];
   isLoading: boolean;
@@ -41,9 +46,17 @@ const INITIAL_ACTION_STATE: ActionState = {
 
 export const useStockViewer: UseStockViewer = ({ initialStore }) => {
   const [selectedStore, setSelectedStore] = React.useState(initialStore);
+  const {
+    state: selectedItems,
+    setState: setSelectedItems,
+    stateRef: selectedItemsRef,
+  } = useStateWithRef(new Set<string>());
+
   const [actionState, setActionState] = React.useState(INITIAL_ACTION_STATE);
 
   const { resetTimer, isRefreshActive } = useRefreshTimer(REFRESH_INTERVAL);
+
+  const { push } = useRouter();
 
   const query = React.useMemo(() => getQueryForStoreItems(selectedStore.id), [selectedStore.id]);
 
@@ -56,11 +69,19 @@ export const useStockViewer: UseStockViewer = ({ initialStore }) => {
     subscribe: true,
   });
 
+  const onOrder = React.useCallback(() => {
+    const selectedStoreId = selectedStore.id;
+    const selectedItemsId = [...selectedItemsRef.current.entries()].join();
+    const queryParams = `?store=${selectedStoreId}&items=${selectedItemsId}`;
+    push(`${ORDER_PATH}${queryParams}`);
+  }, [push, selectedItemsRef, selectedStore.id]);
+
   const onAction: OnAction = React.useCallback(
     (action) => {
       switch (action.type) {
         case ACTION_TYPES.STORE_CHANGE:
           setSelectedStore(action.payload.store);
+          setSelectedItems(new Set());
           resetTimer();
           break;
         case ACTION_TYPES.SEARCH_INPUT_CHANGE:
@@ -89,11 +110,26 @@ export const useStockViewer: UseStockViewer = ({ initialStore }) => {
             },
           }));
           break;
+        case ACTION_TYPES.TOGGLE_ITEM:
+          setSelectedItems((prevItems) => {
+            const { id } = action.payload;
+            const updatedItems = new Set(prevItems);
+            if (updatedItems.has(id)) updatedItems.delete(id);
+            else updatedItems.add(id);
+            return updatedItems;
+          });
+          break;
+        case ACTION_TYPES.CLEAR_SELECTION:
+          setSelectedItems(new Set());
+          break;
+        case ACTION_TYPES.CONTINUE_TO_ORDER:
+          onOrder();
+          break;
         default:
           break;
       }
     },
-    [refetch, resetTimer],
+    [onOrder, refetch, resetTimer, setSelectedItems],
   );
 
   const onRefresh = React.useCallback(() => onAction({ type: ACTION_TYPES.REFRESH }), [onAction]);
@@ -115,10 +151,20 @@ export const useStockViewer: UseStockViewer = ({ initialStore }) => {
     );
     return sortedData;
   }, [actionState, data]);
+
+  const onRowClick = React.useCallback(
+    (id: string) => {
+      onAction({ type: ACTION_TYPES.TOGGLE_ITEM, payload: { id } });
+    },
+    [onAction],
+  );
+
   return {
     isRefreshActive: isLoading || isRefetching || isRefreshActive,
     onRefresh,
     selectedStore,
+    selectedItems,
+    onRowClick,
     onStoreChange,
     data: adaptedData,
     isLoading: isLoading || isRefetching,

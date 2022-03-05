@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 // hooks
-import { useSafeState } from 'hooks';
+import { useSafeState } from 'hooks/useSafeState';
 import { useTimeoutFn } from 'react-use';
 
 export const useRefreshTimer = (

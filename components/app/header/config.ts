@@ -71,12 +71,12 @@ export const NAV_CONFIG: KeyTMap<Breakpoint, { list: NavItem[]; menu: NavItem[] 
     menu: [HOME, AVAILABILITY, ORDER, PROFILE, LOCATE],
   },
   sm: {
-    list: [HOME, AVAILABILITY],
-    menu: [ORDER, PROFILE, LOCATE],
+    list: [HOME, AVAILABILITY, ORDER, PROFILE, LOCATE],
+    menu: [],
   },
   md: {
-    list: [HOME, AVAILABILITY, ORDER],
-    menu: [PROFILE, LOCATE],
+    list: [HOME, AVAILABILITY, ORDER, PROFILE, LOCATE],
+    menu: [],
   },
   lg: {
     list: [HOME, AVAILABILITY, ORDER, PROFILE, LOCATE],

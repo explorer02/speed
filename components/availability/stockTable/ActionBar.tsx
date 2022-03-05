@@ -3,7 +3,8 @@ import * as React from 'react';
 
 // components
 import {
-  IconButton,
+  Badge,
+  Button,
   Input,
   MenuItem,
   Select,
@@ -12,6 +13,11 @@ import {
   Typography,
 } from '@mui/material';
 import SortIcon from '@mui/icons-material/Sort';
+import ClearAllIcon from '@mui/icons-material/ClearAll';
+import { IconButtonWithTooltip } from 'reusable/iconButtonWithTooltip';
+
+// hooks
+import { useLoginInfo } from 'contexts/LoginContext';
 
 // constants
 import { centerVertically } from 'styles/styleObjects';
@@ -23,9 +29,11 @@ import { ActionState, OnAction } from '../types';
 export const ActionBar = ({
   actionState,
   onAction,
+  selectedItemsCount,
 }: {
   actionState: ActionState;
   onAction: OnAction;
+  selectedItemsCount: number;
 }): JSX.Element => {
   const {
     searchInput,
@@ -61,6 +69,15 @@ export const ActionBar = ({
     },
     [onAction],
   );
+  const onClearSelection = React.useCallback(() => {
+    onAction({ type: ACTION_TYPES.CLEAR_SELECTION });
+  }, [onAction]);
+
+  const onOrder = React.useCallback(() => {
+    onAction({ type: ACTION_TYPES.CONTINUE_TO_ORDER });
+  }, [onAction]);
+
+  const { isLoggedIn } = useLoginInfo();
 
   return (
     <Stack direction="row" gap={8}>
@@ -80,14 +97,34 @@ export const ActionBar = ({
             </MenuItem>
           ))}
         </Select>
-        <IconButton
+        <IconButtonWithTooltip
+          title="Reverse order of Items"
           size="small"
           color={order === 'asc' ? 'primary' : 'default'}
           onClick={onSortOrderChange}
         >
           <SortIcon />
-        </IconButton>
+        </IconButtonWithTooltip>
       </Stack>
+      <Badge badgeContent={selectedItemsCount} max={10} color="primary">
+        <IconButtonWithTooltip
+          title="Clear Selected"
+          onClick={onClearSelection}
+          color={selectedItemsCount ? 'primary' : undefined}
+        >
+          <ClearAllIcon />
+        </IconButtonWithTooltip>
+      </Badge>
+      {isLoggedIn ? (
+        <Button
+          onClick={onOrder}
+          variant="outlined"
+          sx={{ marginLeft: 'auto' }}
+          disabled={selectedItemsCount === 0}
+        >
+          Continue to Order
+        </Button>
+      ) : null}
     </Stack>
   );
 };

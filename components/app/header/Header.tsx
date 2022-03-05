@@ -4,7 +4,6 @@ import * as React from 'react';
 // components
 import Link from 'next/link';
 import {
-  Button,
   Typography,
   IconButton,
   Grid,
@@ -19,11 +18,12 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import MenuIcon from '@mui/icons-material/Menu';
 import { LightModeButton } from './LightModeButton';
 import { DesktopModeButton } from './DesktopModeButton';
+import { IconButtonWithTooltip } from 'reusable/iconButtonWithTooltip';
 
 // hooks
 import { useRouter } from 'next/dist/client/router';
 import { useLoginInfo } from 'contexts/LoginContext';
-import { useToggle } from 'hooks';
+import { useToggle } from 'hooks/useToggle';
 import { useBreakpoint } from 'hooks/useBreakpoint';
 
 // constants
@@ -49,14 +49,12 @@ const Header = (): JSX.Element => {
 
     return (
       <Link href={btn.path} key={btn.key} prefetch={false}>
-        <Button
-          variant={btn.key === selected ? 'contained' : 'outlined'}
-          sx={{ fontWeight: 400, height: 40 }}
-          startIcon={<Icon />}
-          size="small"
+        <IconButtonWithTooltip
+          title={btn.title}
+          color={selected === btn.key ? 'primary' : undefined}
         >
-          {btn.title}
-        </Button>
+          <Icon />
+        </IconButtonWithTooltip>
       </Link>
     );
   });

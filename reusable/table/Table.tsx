@@ -16,6 +16,7 @@ import { TombStone } from './Tombstone';
 
 // constants
 import { centerHorizontally } from 'styles/styleObjects';
+import { grey } from '@mui/material/colors';
 
 // types
 import { StringAnyMap } from 'types/generic';
@@ -29,10 +30,12 @@ type Props<T extends BaseEntityType> = {
   subCaption?: string;
   columnConfig: ColumnsConfig<T>;
   items: T[];
+  selectedItems?: Set<string>;
   preEntityRows?: JSX.Element;
   postEntityRows?: JSX.Element;
   children?: JSX.Element;
   isLoading?: boolean;
+  onRowClick?: (id: string) => void;
 } & Pick<StackProps, 'sx'>;
 
 const Title = <T extends BaseEntityType>({ title }: Pick<Props<T>, 'title'>): JSX.Element | null =>
@@ -87,23 +90,30 @@ const Body = <T extends BaseEntityType>({
   columnConfig,
   preEntityRows,
   postEntityRows,
-}: Pick<Props<T>, 'columnConfig' | 'items' | 'preEntityRows' | 'postEntityRows'>): JSX.Element => (
+  selectedItems,
+  onRowClick,
+}: Pick<
+  Props<T>,
+  'columnConfig' | 'items' | 'preEntityRows' | 'postEntityRows' | 'selectedItems' | 'onRowClick'
+>): JSX.Element => (
   <TableBody>
     {preEntityRows}
     {items.map((item, rowIndex) => (
-      <TableRow key={item.id}>
+      <TableRow
+        key={item.id}
+        onClick={(): void => onRowClick?.(item.id)}
+        sx={{
+          background: selectedItems?.has(item.id) ? grey[400] : undefined,
+          cursor: onRowClick ? 'pointer' : undefined,
+        }}
+      >
         {columnConfig.map((column) => {
           const { renderer: Renderer, rendererProps } = column;
           const value = column.valueGetter?.(item) ?? item[column.id];
           return (
-            <TableCell key={`${item.id}${column.id}`}>
+            <TableCell key={`${item.id}${column.id}`} color="primary">
               {Renderer ? (
-                <Renderer
-                  rowIndex={rowIndex}
-                  entity={item}
-                  value={value}
-                  {...rendererProps}
-                />
+                <Renderer rowIndex={rowIndex} entity={item} value={value} {...rendererProps} />
               ) : (
                 value
               )}
@@ -122,6 +132,8 @@ export const Table = <T extends BaseEntityType>({
   subCaption,
   columnConfig,
   items,
+  selectedItems,
+  onRowClick,
   preEntityRows,
   postEntityRows,
   sx,
@@ -153,8 +165,10 @@ export const Table = <T extends BaseEntityType>({
         <Body
           columnConfig={columnConfig}
           items={items}
+          selectedItems={selectedItems}
           preEntityRows={preEntityRows}
           postEntityRows={postEntityRows}
+          onRowClick={onRowClick}
         />
       )}
     </TableLayout.Slot>

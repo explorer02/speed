@@ -2,8 +2,7 @@
 import * as React from 'react';
 
 // components
-import { Box, Stack } from '@mui/material';
-import { TabPanel, Tabs } from 'reusable/tabs';
+import { TabPanel } from 'reusable/tabs';
 import { CreateOrder } from 'components/order/createOrder';
 
 // helpers
@@ -11,25 +10,31 @@ import { getStaticPropsForStoreList } from 'helper/staticPropsGetter';
 
 // constants
 import { TABS_LIST } from 'components/order/tabsConfig';
-import { expandXY } from 'styles/styleObjects';
 
 // types
 import { Store } from 'types/store';
+import { TabbedLayout } from 'reusable/tabbedLayout';
+import { useRouter } from 'next/router';
 
 const Order = ({ stores }: { stores: Store[] }): JSX.Element => {
-  const [selectedTab, setSelectedTab] = React.useState(0);
+ 
+  
+  const { query } = useRouter();
+  console.log(query);
+  console.log(1);
   return (
-    <Stack {...expandXY} gap={4}>
-      <Tabs tabList={TABS_LIST} selectedTab={selectedTab} onTabChange={setSelectedTab} />
-      <Box px={4} py={2}>
-        <TabPanel value={selectedTab} index={0}>
-          <CreateOrder stores={stores} />
-        </TabPanel>
-        <TabPanel value={selectedTab} index={1}>
-          <p>No</p>
-        </TabPanel>
-      </Box>
-    </Stack>
+    <TabbedLayout tabs={TABS_LIST}>
+      {({ selectedTab }): JSX.Element => (
+        <>
+          <TabPanel value={selectedTab} index={0}>
+            <CreateOrder stores={stores} />
+          </TabPanel>
+          <TabPanel value={selectedTab} index={1}>
+            <p>No</p>
+          </TabPanel>
+        </>
+      )}
+    </TabbedLayout>
   );
 };
 

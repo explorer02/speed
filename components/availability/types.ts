@@ -38,6 +38,18 @@ type Action =
       payload: {
         searchInput: string;
       };
+    }
+  | {
+      type: typeof ACTION_TYPES.TOGGLE_ITEM;
+      payload: {
+        id: string;
+      };
+    }
+  | {
+      type: typeof ACTION_TYPES.CLEAR_SELECTION;
+    }
+  | {
+      type: typeof ACTION_TYPES.CONTINUE_TO_ORDER;
     };
 
 export type OnAction = (action: Action) => void;

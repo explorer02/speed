@@ -10,11 +10,21 @@ import { SnackBarOverlay } from 'reusable/snackbarOverlay';
 // hooks
 import { useCreateOrder } from './useCreateOrder';
 import { useSaveOrder } from './useSaveOrder';
+import { useRouter } from 'next/router';
 
 // types
 import { Store } from 'types/store';
 
 export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
+  const { query: queryParams } = useRouter();
+
+  const initialStore = React.useMemo(() => {
+    const storeId = queryParams.store;
+    if (!storeId) return stores[0];
+    return stores.find((store) => store.id === storeId) ?? stores[0];
+  }, [queryParams.store, stores]);
+
+
   const {
     selectedItems,
     selectedStore,
@@ -23,7 +33,7 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
     items,
     itemsLoading,
     onAction,
-  } = useCreateOrder({ initialStore: stores[0] });
+  } = useCreateOrder({ initialStore, stores });
 
   const {
     onSave: onSaveOrder,

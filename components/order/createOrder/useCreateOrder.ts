@@ -3,6 +3,7 @@ import * as React from 'react';
 import _difference from 'lodash/difference';
 import { useFirestoreQueryData } from '@react-query-firebase/firestore';
 import { useLatest } from 'react-use';
+import { useRouter } from 'next/router';
 
 // helpers
 import { getQueryForStoreItems } from 'helper/query';
@@ -11,12 +12,13 @@ import { getQueryForStoreItems } from 'helper/query';
 import { STOCK_COLLECTION_ITEM } from 'constants/collections';
 import { EMPTY_ARRAY } from 'constants/empty';
 import { ACTION_TYPES } from './constants';
+import { ORDER_PATH } from 'constants/paths';
 
 // types
 import { Item, Store } from 'types/store';
 import { Action, OnAction } from './types';
 
-type UseCreateOrder = (props: { initialStore: Store }) => {
+type UseCreateOrder = (props: { initialStore: Store; stores: Store[] }) => {
   items: Item[];
   selectedItems: Item[];
   selectedStore: Store;
@@ -26,7 +28,7 @@ type UseCreateOrder = (props: { initialStore: Store }) => {
   onAction: OnAction;
 };
 
-export const useCreateOrder: UseCreateOrder = ({ initialStore }) => {
+export const useCreateOrder: UseCreateOrder = ({ initialStore, stores }) => {
   const [selectedStore, setSelectedStore] = React.useState(initialStore);
   const [selectedItems, setSelectedItems] = React.useState<Item[]>(EMPTY_ARRAY as Item[]);
 
@@ -107,6 +109,41 @@ export const useCreateOrder: UseCreateOrder = ({ initialStore }) => {
     },
     [itemsRef, onAction],
   );
+
+  const { query: queryParams, replace } = useRouter();
+
+  React.useEffect(() => {
+    const storeId = queryParams.store;
+
+    if (storeId && selectedStore.id === storeId && !itemsLoading) {
+      const itemIds = queryParams.items;
+      const parsedItemIds = new Set(((itemIds as string) ?? '').split(','));
+
+      const toBeSelectedItems = items
+        .filter((item) => parsedItemIds.has(item.id))
+        .map((item) => ({ ...item, quantity: 1 }));
+
+      replace(`${ORDER_PATH}`).then(() =>
+        onAction({
+          type: ACTION_TYPES.UPDATE_ITEMS,
+          payload: {
+            items: toBeSelectedItems,
+          },
+        }),
+      );
+    }
+  }, [
+    items,
+    itemsLoading,
+    onAction,
+    onItemChange,
+    onStoreChange,
+    queryParams.items,
+    queryParams.store,
+    replace,
+    selectedStore.id,
+    stores,
+  ]);
 
   return {
     items,

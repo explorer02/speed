@@ -61,8 +61,8 @@ const Option = ({
           </span>
         ))}
         secondary={secondaryTextKey ? option[secondaryTextKey] : undefined}
-        primaryTypographyProps={{ fontSize: '17px' }}
-        secondaryTypographyProps={{ fontSize: '14px' }}
+        primaryTypographyProps={{ variant: 'body2' }}
+        secondaryTypographyProps={{ variant: 'caption' }}
       />
     </ListItem>
   );
@@ -116,6 +116,16 @@ export const AutoComplete = ({
     [multiple, selectedItem],
   );
 
+  const filterOptions = React.useCallback(
+    (options: StringAnyMap[]) => {
+      const selectedOptionsId = new Set<string>(
+        _castArray(selectedItem).map((item) => item[idKey]),
+      );
+      return options.filter((item) => !selectedOptionsId.has(item[idKey]));
+    },
+    [idKey, selectedItem],
+  );
+
   return (
     <Box {...centerAll} width="100%" gap={3}>
       <Typography variant="body1">{label}</Typography>
@@ -129,6 +139,7 @@ export const AutoComplete = ({
         disableClearable={disableClearable}
         multiple={multiple}
         includeInputInList={includeInputInList}
+        filterOptions={filterOptions}
         value={adaptedValues as StringAnyMap[]}
         filterSelectedOptions={filterSelectedOptions}
         disabled={disabled}

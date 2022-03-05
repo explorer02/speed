@@ -3,7 +3,7 @@ import * as React from 'react';
 import _noop from 'lodash/noop';
 
 // hooks
-import { useSafeState } from 'hooks';
+import { useSafeState } from 'hooks/useSafeState';
 
 // types
 import { AlertColor } from '@mui/material';
