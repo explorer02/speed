@@ -8,13 +8,13 @@ import AddIcon from '@mui/icons-material/Add';
 import { IconButtonWithTooltip } from 'reusable/iconButtonWithTooltip';
 
 // constants
-import { ACTION_TYPES } from '../constants';
+import { ACTION_TYPES } from '../../hooks/constants';
 import { centerVertically } from 'styles/styleObjects';
 
 // types
 import { ColumnRendererProps } from 'reusable/table';
 import { Item } from 'types/store';
-import { OnAction } from '../types';
+import { OnAction } from '../../hooks/types';
 
 export const Quantity = ({
   rowIndex,

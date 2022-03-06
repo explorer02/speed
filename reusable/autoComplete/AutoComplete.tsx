@@ -82,6 +82,7 @@ export type AutoCompleteProps = {
   filterSelectedOptions?: boolean;
   inputWidth?: number;
   disableClearable?: boolean;
+  disableCloseOnSelect?: boolean;
   disabled?: boolean;
 };
 
@@ -99,6 +100,7 @@ export const AutoComplete = ({
   filterSelectedOptions,
   inputWidth = 300,
   disableClearable = true,
+  disableCloseOnSelect,
   disabled,
 }: AutoCompleteProps): JSX.Element => {
   const handleChange: UseAutocompleteProps<StringAnyMap, boolean, boolean, undefined>['onChange'] =
@@ -142,7 +144,9 @@ export const AutoComplete = ({
         filterOptions={filterOptions}
         value={adaptedValues as StringAnyMap[]}
         filterSelectedOptions={filterSelectedOptions}
+        disableCloseOnSelect={disableCloseOnSelect}
         disabled={disabled}
+        noOptionsText="No more options.. :("
         renderInput={(params): JSX.Element => <TextField {...params} label="" variant="standard" />}
         renderOption={(props, option, state): JSX.Element => (
           <Option

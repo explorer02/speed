@@ -109,7 +109,7 @@ const Body = <T extends BaseEntityType>({
       >
         {columnConfig.map((column) => {
           const { renderer: Renderer, rendererProps } = column;
-          const value = column.valueGetter?.(item) ?? item[column.id];
+          const value = column.valueGetter?.(item, rowIndex) ?? item[column.id];
           return (
             <TableCell key={`${item.id}${column.id}`} color="primary">
               {Renderer ? (

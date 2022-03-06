@@ -8,10 +8,10 @@ import { Table } from 'reusable/table';
 // helpers
 import { priceFormatter } from 'helper/formatter';
 import { getColumnConfig } from './summaryTableConfig';
-import { getTotalAmount } from './helper';
+import { getTotalAmount } from '../helper';
 
 import { Item, Store } from 'types/store';
-import { OnAction } from './types';
+import { OnAction } from '../hooks/types';
 
 type Props = {
   store: Store;

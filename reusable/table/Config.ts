@@ -11,7 +11,7 @@ export type Column<T> = {
   id: string;
   label: string;
   fluidWidth: number;
-  valueGetter?: (item: T) => string;
+  valueGetter?: (item: T, index: number) => string | number;
   renderer?: (props: ColumnRendererProps<T>) => JSX.Element;
   rendererProps?: StringAnyMap;
 };

@@ -9,7 +9,7 @@ import { priceFormatter } from 'helper/formatter';
 // types
 import { ColumnsConfig } from 'reusable/table';
 import { Item } from 'types/store';
-import { OnAction } from './types';
+import { OnAction } from '../hooks/types';
 
 export const COLUMNS = {
   LABEL: 'label',

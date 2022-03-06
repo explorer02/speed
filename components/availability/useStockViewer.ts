@@ -46,11 +46,7 @@ const INITIAL_ACTION_STATE: ActionState = {
 
 export const useStockViewer: UseStockViewer = ({ initialStore }) => {
   const [selectedStore, setSelectedStore] = React.useState(initialStore);
-  const {
-    state: selectedItems,
-    setState: setSelectedItems,
-    stateRef: selectedItemsRef,
-  } = useStateWithRef(new Set<string>());
+  const [selectedItems, setSelectedItems, selectedItemsRef] = useStateWithRef(new Set<string>());
 
   const [actionState, setActionState] = React.useState(INITIAL_ACTION_STATE);
 
@@ -72,8 +68,11 @@ export const useStockViewer: UseStockViewer = ({ initialStore }) => {
   const onOrder = React.useCallback(() => {
     const selectedStoreId = selectedStore.id;
     const selectedItemsId = [...selectedItemsRef.current.entries()].join();
-    const queryParams = `?store=${selectedStoreId}&items=${selectedItemsId}`;
-    push(`${ORDER_PATH}${queryParams}`);
+    const queryParams = {
+      store: selectedStoreId,
+      items: selectedItemsId,
+    };
+    push({ pathname: ORDER_PATH, query: queryParams });
   }, [push, selectedItemsRef, selectedStore.id]);
 
   const onAction: OnAction = React.useCallback(

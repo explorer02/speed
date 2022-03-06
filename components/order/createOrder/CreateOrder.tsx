@@ -4,12 +4,12 @@ import * as React from 'react';
 // components
 import { Button, Grid } from '@mui/material';
 import { AutoComplete, AutoCompleteProps } from 'reusable/autoComplete';
-import { OrderSummary } from './OrderSummary';
+import { OrderSummary } from './components/OrderSummary';
 import { SnackBarOverlay } from 'reusable/snackbarOverlay';
 
 // hooks
-import { useCreateOrder } from './useCreateOrder';
-import { useSaveOrder } from './useSaveOrder';
+import { useCreateOrder } from './hooks/useCreateOrder';
+import { useSaveOrder } from './hooks/useSaveOrder';
 import { useRouter } from 'next/router';
 
 // types
@@ -24,7 +24,6 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
     return stores.find((store) => store.id === storeId) ?? stores[0];
   }, [queryParams.store, stores]);
 
-
   const {
     selectedItems,
     selectedStore,
@@ -33,7 +32,7 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
     items,
     itemsLoading,
     onAction,
-  } = useCreateOrder({ initialStore, stores });
+  } = useCreateOrder({ initialStore });
 
   const {
     onSave: onSaveOrder,
@@ -72,6 +71,7 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
               inputWidth={350}
               disableClearable={false}
               loading={itemsLoading}
+              disableCloseOnSelect
             />
           </Grid>
           <Grid item container justifyContent="center" mb={8}>
