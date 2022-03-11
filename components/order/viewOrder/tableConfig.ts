@@ -3,6 +3,8 @@
 // components
 import { Store } from './cellRenderer/Store';
 import { Items } from './cellRenderer/Items';
+import { Status } from './cellRenderer/Status';
+import { Actions } from './cellRenderer/Actions';
 
 // helpers
 import { formatRelativeTime, priceFormatter } from 'helper/formatter';
@@ -10,7 +12,7 @@ import { formatRelativeTime, priceFormatter } from 'helper/formatter';
 // types
 import { ColumnsConfig } from 'reusable/table';
 import { Order } from 'types/order';
-// import { OnAction } from '../hooks/types';
+import { OnAction } from './hooks/types';
 
 export const COLUMNS = {
   SNO: 'Sno',
@@ -18,15 +20,16 @@ export const COLUMNS = {
   STORE: 'storeId',
   ITEMS: 'items',
   AMOUNT: 'amount',
+  STATUS: 'status',
   ACTIONS: 'actions',
 } as const;
 
-export const getColumnConfig = (): ColumnsConfig<Order> => [
+export const getColumnsConfig = ({ onAction }: { onAction: OnAction }): ColumnsConfig<Order> => [
   {
     id: COLUMNS.SNO,
-    label: 'Sno',
-    fluidWidth: 0.5,
-    valueGetter: (_, index) => index + 1,
+    label: '',
+    fluidWidth: 0.25,
+    valueGetter: (_, index) => `${index + 1})`,
   },
   {
     id: COLUMNS.TIME,
@@ -53,8 +56,18 @@ export const getColumnConfig = (): ColumnsConfig<Order> => [
     valueGetter: (order): string => priceFormatter(order.totalAmount),
   },
   {
+    id: COLUMNS.STATUS,
+    label: 'Status',
+    fluidWidth: 0.75,
+    renderer: Status,
+  },
+  {
     id: COLUMNS.ACTIONS,
     label: '',
     fluidWidth: 1,
+    renderer: Actions,
+    rendererProps: {
+      onAction,
+    },
   },
 ];

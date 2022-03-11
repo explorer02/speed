@@ -1,18 +1,17 @@
-// types
-import { StringAnyMap, ValueOf } from 'types/generic';
+import { StringAnyMap } from 'types/generic';
 
 export type ColumnRendererProps<T> = {
   rowIndex: number;
-  value: ValueOf<T>;
   entity: T;
-} & StringAnyMap;
+  value: any;
+};
 
 export type Column<T> = {
   id: string;
   label: string;
   fluidWidth: number;
   valueGetter?: (item: T, index: number) => string | number;
-  renderer?: (props: ColumnRendererProps<T>) => JSX.Element;
+  renderer?: (props: ColumnRendererProps<T> & any) => JSX.Element | null;
   rendererProps?: StringAnyMap;
 };
 

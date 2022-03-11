@@ -15,7 +15,7 @@ export const Items = ({ value }: ColumnRendererProps<Order>): JSX.Element => {
   return (
     <Box display="flex" gap={1} flexWrap="wrap">
       {items.map((item) => (
-        <Chip color="info" label={item.label} />
+        <Chip key={item.id} color="info" label={item.label} />
       ))}
     </Box>
   );

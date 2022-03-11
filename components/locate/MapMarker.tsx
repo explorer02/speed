@@ -8,7 +8,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 // types
 import { Store } from 'types/store';
 import { StoreListItem } from './StoreListItem';
-import { useToggle } from 'hooks';
+import { useToggle } from 'hooks/useToggle';
 
 type MarkerProps = {
   // eslint-disable-next-line react/no-unused-prop-types

@@ -2,16 +2,12 @@
 /** @type {import('next').NextConfig} */
 
 // const withBundleAnalyzer = require('@next/bundle-analyzer')({
-//   enabled: 'false',
+//   enabled: 'true',
 // });
 
 // module.exports = withBundleAnalyzer({
 //   reactStrictMode: true,
 //   swcMinify: true,
-//   webpack(config) {
-
-//     return config;
-//   },
 // });
 
 module.exports = {

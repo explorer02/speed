@@ -37,3 +37,8 @@ export const getStoreItemCollectionRef = (storeId: string): CollectionReference<
 
 export const getOrderCollectionRef = (phone: string): CollectionReference<Order> =>
   collection(fireStore, USER_COLLECTION, phone, ORDER_COLLECTION).withConverter(orderConverter);
+
+export const getSingleOrderRef = (phone: string, oid: string): DocumentReference<Order> =>
+  doc(collection(fireStore, USER_COLLECTION, phone, ORDER_COLLECTION), oid).withConverter(
+    orderConverter,
+  );

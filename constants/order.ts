@@ -4,4 +4,12 @@ export const ORDER_STATUS = {
   READY: 'READY',
   COLLECTED: 'COLLECTED',
   CANCELLED: 'CANCELLED',
-};
+} as const;
+
+export const ORDER_STATUS_LABELS = {
+  [ORDER_STATUS.CREATED]: 'Created',
+  [ORDER_STATUS.PROCESSING]: 'Processing',
+  [ORDER_STATUS.READY]: 'Ready',
+  [ORDER_STATUS.COLLECTED]: 'Collected',
+  [ORDER_STATUS.CANCELLED]: 'Cancelled',
+} as const;
