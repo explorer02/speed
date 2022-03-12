@@ -9,11 +9,17 @@ import { getColumnsConfig } from './tableConfig';
 
 // types
 import { useViewOrder } from './hooks/useViewOrder';
+import { SnackBarOverlay } from 'reusable/snackbarOverlay';
 
 export const ViewOrder = (): JSX.Element => {
-  const { data, isLoading, onAction } = useViewOrder();
+  const { data, isLoading, onAction, snackbarState } = useViewOrder();
 
   const columnConfig = React.useMemo(() => getColumnsConfig({ onAction }), [onAction]);
 
-  return <Table columnConfig={columnConfig} items={data} isLoading={isLoading} />;
+  return (
+    <>
+      <SnackBarOverlay {...snackbarState} />
+      <Table columnConfig={columnConfig} items={data} isLoading={isLoading} />;
+    </>
+  );
 };

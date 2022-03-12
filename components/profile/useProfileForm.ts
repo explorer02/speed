@@ -62,6 +62,8 @@ export const useProfileForm = (): {
     userProfileDocRef,
   );
 
+  console.log(data);
+
   React.useEffect(() => {
     if (data) {
       const newValues = _cloneDeep(INITIAL_VALUES);

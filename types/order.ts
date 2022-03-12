@@ -8,7 +8,7 @@ import { Item } from './store';
 export type Order = {
   id: string;
   storeId: string;
-  items: Item[];
+  items: Omit<Item, 'description'>[];
   totalAmount: number;
   createdOn: number;
   updatedOn?: number;

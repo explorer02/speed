@@ -6,7 +6,7 @@ import { FirestoreDataConverter } from 'firebase/firestore';
 import { Order } from 'types/order';
 
 export const orderConverter: FirestoreDataConverter<Order> = {
-  toFirestore: (order: Order) => _omit(order, ['id']) as Order,
+  toFirestore: (order: Order) => _omit(order, ['id', 'description']) as Order,
   fromFirestore: (snapshot, options): Order => {
     const data = snapshot.data(options);
     return {
