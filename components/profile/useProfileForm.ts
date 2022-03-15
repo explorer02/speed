@@ -5,21 +5,18 @@ import _set from 'lodash/set';
 import _merge from 'lodash/merge';
 
 // hooks
-import { useFirestoreDocumentData } from '@react-query-firebase/firestore';
+import { useProfileQuery } from './useProfileQuery';
 
 // helpers
 import { fetchGeoAddress } from 'helper/geoAddress';
-import { getUserProfileDocRef } from 'helper/docReference';
-import { useLoginInfo } from 'contexts/LoginContext';
 
 // constants
-import { USER_COLLECTION } from 'constants/collections';
+import { FIELDS, FIELD_MAP } from './fields';
 
 // types
 import { UserProfile } from 'types/profile';
 import { FORM_ACTIONS } from 'reusable/form/constants';
 import { FormAction } from 'reusable/form';
-import { FIELDS, FIELD_MAP } from './fields';
 
 const INITIAL_VALUES: UserProfile = {
   phone: '',
@@ -50,19 +47,8 @@ export const useProfileForm = (): {
 } => {
   const [state, setState] = React.useState(INITIAL_VALUES);
 
-  const { user } = useLoginInfo();
-
-  const userProfileDocRef = React.useMemo(
-    () => getUserProfileDocRef(user?.phoneNumber ?? ''),
-    [user?.phoneNumber],
-  );
-
-  const { data, isLoading: userLoading } = useFirestoreDocumentData<UserProfile>(
-    [USER_COLLECTION, user?.phoneNumber],
-    userProfileDocRef,
-  );
-
-  console.log(data);
+  // TODO: Error handling
+  const { data, loading: userLoading } = useProfileQuery();
 
   React.useEffect(() => {
     if (data) {

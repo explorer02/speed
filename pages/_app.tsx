@@ -13,6 +13,10 @@ import { ProtectRoute } from 'containers/ProtectRoute';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { LoginProvider } from 'contexts/LoginContext';
 import { AppThemeProvider } from 'contexts/AppThemeProvider';
+import { ApolloProvider } from '@apollo/react-hooks';
+
+// config
+import { client } from 'config/apollo';
 
 // types
 import { AppProps } from 'next/app';
@@ -27,17 +31,19 @@ const queryClient = new QueryClient({
 });
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => (
-  <QueryClientProvider client={queryClient}>
-    <AppThemeProvider>
-      <LoginProvider>
-        <ProtectRoute>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </ProtectRoute>
-      </LoginProvider>
-    </AppThemeProvider>
-  </QueryClientProvider>
+  <ApolloProvider client={client as any}>
+    <QueryClientProvider client={queryClient}>
+      <AppThemeProvider>
+        <LoginProvider>
+          <ProtectRoute>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ProtectRoute>
+        </LoginProvider>
+      </AppThemeProvider>
+    </QueryClientProvider>
+  </ApolloProvider>
 );
 
 export default MyApp;
