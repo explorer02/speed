@@ -1,19 +1,15 @@
 // lib
 import * as React from 'react';
-import { useFirestoreQueryData } from '@react-query-firebase/firestore';
 import _orderBy from 'lodash/orderBy';
 
 // hooks
 import { useRefreshTimer } from './useRefreshTimer';
 import { useRouter } from 'next/dist/client/router';
 import { useStateWithRef } from 'hooks/useStateWithRef';
-
-// helpers
-import { getQueryForStoreItems } from 'helper/query';
+import { useSingleStoresQuery } from 'hooks/useSingleStoreQuery';
 
 // constants
 import { EMPTY_ARRAY } from 'constants/empty';
-import { STOCK_COLLECTION_ITEM } from 'constants/collections';
 import { ACTION_TYPES, SORT_FIELDS } from './constants';
 import { ORDER_PATH } from 'constants/paths';
 
@@ -54,26 +50,23 @@ export const useStockViewer: UseStockViewer = ({ initialStore }) => {
 
   const { push } = useRouter();
 
-  const query = React.useMemo(() => getQueryForStoreItems(selectedStore.id), [selectedStore.id]);
-
   const {
-    data = EMPTY_ARRAY as Item[],
-    isLoading,
+    data: storeWithItems,
+    loading,
     refetch,
-    isRefetching,
-  } = useFirestoreQueryData<Item>([STOCK_COLLECTION_ITEM, selectedStore.id], query, {
-    subscribe: true,
-  });
+  } = useSingleStoresQuery({ _id: selectedStore._id });
+
+  const items = storeWithItems?.items ?? (EMPTY_ARRAY as Item[]);
 
   const onOrder = React.useCallback(() => {
-    const selectedStoreId = selectedStore.id;
+    const selectedStoreId = selectedStore._id;
     const selectedItemsId = [...selectedItemsRef.current.entries()].join();
     const queryParams = {
       store: selectedStoreId,
       items: selectedItemsId,
     };
     push({ pathname: ORDER_PATH, query: queryParams });
-  }, [push, selectedItemsRef, selectedStore.id]);
+  }, [push, selectedItemsRef, selectedStore._id]);
 
   const onAction: OnAction = React.useCallback(
     (action) => {
@@ -138,10 +131,10 @@ export const useStockViewer: UseStockViewer = ({ initialStore }) => {
   );
 
   const adaptedData = React.useMemo(() => {
-    const filteredData = data.filter(
+    const filteredData = items.filter(
       (datum) =>
-        datum.label.toLowerCase().includes(actionState.searchInput.toLowerCase()) ||
-        datum.description.toLowerCase().includes(actionState.searchInput.toLowerCase()),
+        datum.item.label.toLowerCase().includes(actionState.searchInput.toLowerCase()) ||
+        datum.item.description.toLowerCase().includes(actionState.searchInput.toLowerCase()),
     );
     const sortedData = _orderBy(
       filteredData,
@@ -149,7 +142,7 @@ export const useStockViewer: UseStockViewer = ({ initialStore }) => {
       [actionState.sortBy.order],
     );
     return sortedData;
-  }, [actionState, data]);
+  }, [actionState.searchInput, actionState.sortBy.field, actionState.sortBy.order, items]);
 
   const onRowClick = React.useCallback(
     (id: string) => {
@@ -159,14 +152,14 @@ export const useStockViewer: UseStockViewer = ({ initialStore }) => {
   );
 
   return {
-    isRefreshActive: isLoading || isRefetching || isRefreshActive,
+    isRefreshActive: !loading && isRefreshActive,
     onRefresh,
     selectedStore,
     selectedItems,
     onRowClick,
     onStoreChange,
     data: adaptedData,
-    isLoading: isLoading || isRefetching,
+    isLoading: loading,
     actionState,
     onAction,
   };

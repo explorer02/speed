@@ -24,7 +24,12 @@ export const StoreListItem = ({
     onClick?.(store);
   }, [onClick, store]);
   return (
-    <ListItemButton selected={selected} key={store.id} onClick={handleClick} sx={{ width: 400 }}>
+    <ListItemButton
+      selected={selected}
+      key={store._id}
+      onClick={handleClick}
+      sx={{ width: 400, flexGrow: 0 }}
+    >
       <ListItemIcon>
         <StorefrontIcon fontSize="small" />
       </ListItemIcon>
@@ -37,6 +42,7 @@ export const StoreListItem = ({
       />
       {showOpenInNewTab ? (
         <ListItemIcon
+          sx={{ marginLeft: 2 }}
           onClick={(): void => {
             window.open(
               `https://maps.google.com/?q=${store.location.lat},${store.location.lng}`,

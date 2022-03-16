@@ -21,7 +21,7 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
   const initialStore = React.useMemo(() => {
     const storeId = queryParams.store;
     if (!storeId) return stores[0];
-    return stores.find((store) => store.id === storeId) ?? stores[0];
+    return stores.find((store) => store._id === storeId) ?? stores[0];
   }, [queryParams.store, stores]);
 
   const {
@@ -50,7 +50,7 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
               items={stores}
               selectedItem={selectedStore}
               onItemChange={onStoreChange as AutoCompleteProps['onItemChange']}
-              idKey="id"
+              idKey="_id"
               labelKey="name"
               label="Select Store"
               filterSelectedOptions

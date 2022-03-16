@@ -22,13 +22,13 @@ const StoreList = ({
 }): JSX.Element => (
   <Box {...expandXY} {...centerAll} flexDirection="column">
     <Typography variant="h5">Stores</Typography>
-    <Box sx={{ width: '100%', display: 'flex', flexWrap: 'wrap' }}>
+    <Box sx={{ width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
       {stores.map((store) => (
         <StoreListItem
-          key={store.id}
+          key={store._id}
           store={store}
           onClick={onClick}
-          selected={selectedStore?.id === store.id}
+          selected={selectedStore?._id === store._id}
         />
       ))}
     </Box>

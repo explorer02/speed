@@ -1,17 +1,21 @@
 // lib
 import { GetStaticProps } from 'next';
-import { getDocs } from 'firebase/firestore';
 
-// helpers
-import { getQueryForStoreList } from 'helper/query';
+import { client } from 'config/apollo';
 
-const STORE_QUERY = getQueryForStoreList();
+// queries
+import { FETCH_ALL_STORES } from 'queries/store';
+
+// types
+import { Store } from 'types/store';
 
 export const getStaticPropsForStoreList: GetStaticProps = async () => {
-  const res = await getDocs(STORE_QUERY);
+  const res = await client.query<{ stores: Store[] }>({
+    query: FETCH_ALL_STORES,
+  });
   return {
     props: {
-      stores: res.docs.map((doc) => doc.data()),
+      stores: res.data.stores,
     },
   };
 };

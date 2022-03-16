@@ -13,6 +13,7 @@ import { Store } from 'types/store';
 
 const Locate = ({ stores }: { stores: Store[] }): JSX.Element => {
   const [store, setStore] = React.useState<Store>();
+
   return (
     <Stack gap={3} p={4}>
       <Box height={700} width="100%">

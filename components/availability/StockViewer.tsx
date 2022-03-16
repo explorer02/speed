@@ -40,7 +40,7 @@ export const StockViewer = ({ stores }: { stores: Store[] }): JSX.Element => {
           items={stores}
           selectedItem={selectedStore}
           onItemChange={onStoreChange as AutoCompleteProps['onItemChange']}
-          idKey="id"
+          idKey="_id"
           labelKey="name"
           label="Select Store"
           secondaryTextKey="address"
