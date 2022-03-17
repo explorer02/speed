@@ -22,9 +22,10 @@ import { grey } from '@mui/material/colors';
 import { StringAnyMap } from 'types/generic';
 import { ColumnsConfig } from './Config';
 
-type BaseEntityType = { id: string } & StringAnyMap;
+type BaseEntityType = StringAnyMap;
 
 type Props<T extends BaseEntityType> = {
+  getId: (entity: T) => string;
   title?: string;
   caption?: string;
   subCaption?: string;
@@ -92,36 +93,46 @@ const Body = <T extends BaseEntityType>({
   postEntityRows,
   selectedItems,
   onRowClick,
+  getId,
 }: Pick<
   Props<T>,
-  'columnConfig' | 'items' | 'preEntityRows' | 'postEntityRows' | 'selectedItems' | 'onRowClick'
+  | 'columnConfig'
+  | 'items'
+  | 'preEntityRows'
+  | 'postEntityRows'
+  | 'selectedItems'
+  | 'onRowClick'
+  | 'getId'
 >): JSX.Element => (
   <TableBody>
     {preEntityRows}
-    {items.map((item, rowIndex) => (
-      <TableRow
-        key={item.id}
-        onClick={(): void => onRowClick?.(item.id)}
-        sx={{
-          background: selectedItems?.has(item.id) ? grey[400] : undefined,
-          cursor: onRowClick ? 'pointer' : undefined,
-        }}
-      >
-        {columnConfig.map((column) => {
-          const { renderer: Renderer, rendererProps } = column;
-          const value = column.valueGetter?.(item, rowIndex) ?? item[column.id];
-          return (
-            <TableCell key={`${item.id}${column.id}`} color="primary">
-              {Renderer ? (
-                <Renderer rowIndex={rowIndex} entity={item} value={value} {...rendererProps} />
-              ) : (
-                value
-              )}
-            </TableCell>
-          );
-        })}
-      </TableRow>
-    ))}
+    {items.map((item, rowIndex) => {
+      const rowId = getId(item);
+      return (
+        <TableRow
+          key={rowId}
+          onClick={(): void => onRowClick?.(rowId)}
+          sx={{
+            background: selectedItems?.has(rowId) ? grey[400] : undefined,
+            cursor: onRowClick ? 'pointer' : undefined,
+          }}
+        >
+          {columnConfig.map((column) => {
+            const { renderer: Renderer, rendererProps } = column;
+            const value = column.valueGetter?.(item, rowIndex) ?? item[column.id];
+            return (
+              <TableCell key={`${rowId}${column.id}`} color="primary">
+                {Renderer ? (
+                  <Renderer rowIndex={rowIndex} entity={item} value={value} {...rendererProps} />
+                ) : (
+                  value
+                )}
+              </TableCell>
+            );
+          })}
+        </TableRow>
+      );
+    })}
     {postEntityRows}
   </TableBody>
 );
@@ -139,6 +150,7 @@ export const Table = <T extends BaseEntityType>({
   sx,
   children,
   isLoading,
+  getId,
 }: Props<T>): JSX.Element => (
   <TableLayout sx={sx}>
     {children}
@@ -169,6 +181,7 @@ export const Table = <T extends BaseEntityType>({
           preEntityRows={preEntityRows}
           postEntityRows={postEntityRows}
           onRowClick={onRowClick}
+          getId={getId}
         />
       )}
     </TableLayout.Slot>

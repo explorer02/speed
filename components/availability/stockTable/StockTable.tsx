@@ -12,6 +12,8 @@ import { Item } from 'types/store';
 import { Table } from 'reusable/table';
 import { ActionState, OnAction } from '../types';
 
+const getId = (item: Item): string => item.item._id;
+
 export const StockTable = ({
   items,
   actionState,
@@ -28,6 +30,7 @@ export const StockTable = ({
   onRowClick: (id: string) => void;
 }): JSX.Element => (
   <Table
+    getId={getId}
     columnConfig={columnsConfig}
     items={items}
     sx={{ padding: '20px 80px' }}
