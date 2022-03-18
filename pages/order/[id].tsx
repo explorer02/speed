@@ -5,9 +5,6 @@ import { TabPanel } from 'reusable/tabs';
 import { CreateOrder } from 'components/order/createOrder';
 import { ViewOrder } from 'components/order/viewOrder';
 
-// providers
-import { StoresProvider } from 'contexts/StoresContext';
-
 // constants
 import { TABS_LIST } from 'components/order/tabsConfig';
 
