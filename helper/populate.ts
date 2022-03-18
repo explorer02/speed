@@ -1,3 +1,6 @@
+// @ts-ignore
+// @ts-nocheck
+
 import { addDoc, CollectionReference, getDocs, WithFieldValue } from 'firebase/firestore';
 import { Item, Store } from 'types/store';
 import { getStoreCollectionRef, getStoreItemCollectionRef } from './docReference';
@@ -10,7 +13,7 @@ const populator = async <T = any>(
 
 const buildStore = build<Store>({
   fields: {
-    id: fake((f) => f.random.alphaNumeric(10)),
+    _id: fake((f) => f.random.alphaNumeric(10)),
     address: fake((f) => f.address.streetAddress()),
     name: fake((f) => f.company.companyName()),
     location: {
@@ -30,7 +33,7 @@ export const populateStore = (): void => {
 
 const buildItem = build<Item>({
   fields: {
-    id: fake((f) => f.random.alphaNumeric(10)),
+    _id: fake((f) => f.random.alphaNumeric(10)),
     label: fake((f) => f.commerce.product()),
     quantity: fake((f) => f.random.number(10)),
     unit: fake((f) => f.commerce.productAdjective()),

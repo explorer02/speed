@@ -19,6 +19,6 @@ export const storeConverter: FirestoreDataConverter<Store> = {
         lat: data?.location._lat,
         lng: data?.location._long,
       },
-    } as Store;
+    } as unknown as Store;
   },
 };

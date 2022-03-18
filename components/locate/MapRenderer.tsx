@@ -48,7 +48,7 @@ const MapRenderer = ({
           <MapMarker
             lat={datum.location.lat}
             lng={datum.location.lng}
-            key={datum.id}
+            key={datum._id}
             datum={datum}
             selected={!!(datum.location.lat === center?.lat && datum.location.lng === center.lng)}
           />

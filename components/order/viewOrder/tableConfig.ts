@@ -1,11 +1,11 @@
 // components
-import { Store } from './cellRenderer/Store';
 import { Items } from './cellRenderer/Items';
 import { Status } from './cellRenderer/Status';
 import { Actions } from './cellRenderer/Actions';
 
 // helpers
 import { formatRelativeTime, priceFormatter } from 'helper/formatter';
+import { getStoreNameFromOrder } from 'helper/getter';
 
 // types
 import { ColumnsConfig } from 'reusable/table';
@@ -39,7 +39,7 @@ export const getColumnsConfig = ({ onAction }: { onAction: OnAction }): ColumnsC
     id: COLUMNS.STORE,
     label: 'Store',
     fluidWidth: 2,
-    renderer: Store,
+    valueGetter: getStoreNameFromOrder,
   },
   {
     id: COLUMNS.ITEMS,

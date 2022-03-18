@@ -12,6 +12,6 @@ export const itemConverter: FirestoreDataConverter<Item> = {
     return {
       ...data,
       id: snapshot.id,
-    } as Item;
+    } as unknown as Item;
   },
 };

@@ -8,3 +8,4 @@ export const getItemDescription = (item: Item): string => item.item.description;
 export const getItemUnit = (item: Item): string => item.item.unit;
 
 export const getOrderId = (order: Order): string => order._id;
+export const getStoreNameFromOrder = (order: Order): string => order.store.name;
