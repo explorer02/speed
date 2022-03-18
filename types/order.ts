@@ -3,14 +3,16 @@ import { ORDER_STATUS } from 'constants/order';
 
 // types
 import { ValueOf } from './generic';
-import { Item } from './store';
+import { UserProfile } from './profile';
+import { Item, Store } from './store';
 
 export type Order = {
-  id: string;
-  storeId: string;
-  items: Omit<Item, 'description'>[];
+  _id: string;
+  store: Store;
+  items: Item[];
   totalAmount: number;
   createdOn: number;
   updatedOn?: number;
   status: ValueOf<typeof ORDER_STATUS>;
+  user?: UserProfile;
 };

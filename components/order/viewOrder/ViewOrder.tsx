@@ -6,6 +6,7 @@ import { Table } from 'reusable/table';
 
 // helpers
 import { getColumnsConfig } from './tableConfig';
+import { getOrderId } from 'helper/getter';
 
 // types
 import { useViewOrder } from './hooks/useViewOrder';
@@ -19,7 +20,7 @@ export const ViewOrder = (): JSX.Element => {
   return (
     <>
       <SnackBarOverlay {...snackbarState} />
-      <Table columnConfig={columnConfig} items={data} isLoading={isLoading} />;
+      <Table getId={getOrderId} columnConfig={columnConfig} items={data} isLoading={isLoading} />
     </>
   );
 };

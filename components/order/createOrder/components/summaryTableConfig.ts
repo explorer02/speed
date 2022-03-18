@@ -10,6 +10,7 @@ import { priceFormatter } from 'helper/formatter';
 import { ColumnsConfig } from 'reusable/table';
 import { Item } from 'types/store';
 import { OnAction } from '../hooks/types';
+import { getItemLabel, getItemUnit } from 'helper/getter';
 
 export const COLUMNS = {
   LABEL: 'label',
@@ -24,6 +25,7 @@ export const getColumnConfig = (onAction: OnAction): ColumnsConfig<Item> => [
     label: 'Name',
     fluidWidth: 2,
     renderer: Name,
+    valueGetter: getItemLabel,
   },
   {
     id: COLUMNS.PRICE,
@@ -35,7 +37,7 @@ export const getColumnConfig = (onAction: OnAction): ColumnsConfig<Item> => [
     id: COLUMNS.QUANTITY,
     label: 'Quantity',
     fluidWidth: 2,
-    valueGetter: (item): string => `${item.quantity} ${item.unit}`,
+    valueGetter: (item): string => `${item.quantity} ${getItemUnit(item)}`,
     renderer: Quantity,
     rendererProps: {
       onAction,

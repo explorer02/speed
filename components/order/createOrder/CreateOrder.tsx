@@ -12,8 +12,11 @@ import { useCreateOrder } from './hooks/useCreateOrder';
 import { useSaveOrder } from './hooks/useSaveOrder';
 import { useRouter } from 'next/router';
 
+// helpers
+import { getItemLabel } from 'helper/getter';
+
 // types
-import { Store } from 'types/store';
+import { Item, Store } from 'types/store';
 
 export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
   const { query: queryParams } = useRouter();
@@ -49,7 +52,7 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
             <AutoComplete
               items={stores}
               selectedItem={selectedStore}
-              onItemChange={onStoreChange as AutoCompleteProps['onItemChange']}
+              onItemChange={onStoreChange as AutoCompleteProps<Store>['onItemChange']}
               idKey="_id"
               labelKey="name"
               label="Select Store"
@@ -62,9 +65,9 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
             <AutoComplete
               items={items}
               selectedItem={selectedItems}
-              onItemChange={onItemChange as AutoCompleteProps['onItemChange']}
-              idKey="id"
-              labelKey="label"
+              onItemChange={onItemChange as AutoCompleteProps<Item>['onItemChange']}
+              idKey="_id"
+              getOptionLabel={getItemLabel}
               label="Select Items"
               multiple
               filterSelectedOptions

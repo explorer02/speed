@@ -1,5 +1,3 @@
-// TODO: add status and actions [Reciept,Reorder,Cancel] field
-
 // components
 import { Store } from './cellRenderer/Store';
 import { Items } from './cellRenderer/Items';

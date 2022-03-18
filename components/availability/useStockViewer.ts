@@ -6,7 +6,7 @@ import _orderBy from 'lodash/orderBy';
 import { useRefreshTimer } from './useRefreshTimer';
 import { useRouter } from 'next/dist/client/router';
 import { useStateWithRef } from 'hooks/useStateWithRef';
-import { useSingleStoresQuery } from 'hooks/useSingleStoreQuery';
+import { useStoreQueryWithItems } from 'hooks/useStoreQueryWithItems';
 
 // constants
 import { EMPTY_ARRAY } from 'constants/empty';
@@ -54,7 +54,7 @@ export const useStockViewer: UseStockViewer = ({ initialStore }) => {
     data: storeWithItems,
     loading,
     refetch,
-  } = useSingleStoresQuery({ _id: selectedStore._id });
+  } = useStoreQueryWithItems({ _id: selectedStore._id });
 
   const items = storeWithItems?.items ?? (EMPTY_ARRAY as Item[]);
 

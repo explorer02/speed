@@ -1,23 +1,19 @@
 // lib
 import * as React from 'react';
 import _difference from 'lodash/difference';
-import { useFirestoreQueryData } from '@react-query-firebase/firestore';
 
 // hooks
 import { useInitializeOrder } from './useInitializeOrder';
-
-// helpers
-import { getQueryForStoreItems } from 'helper/query';
+import { useStoreQueryWithItems } from 'hooks/useStoreQueryWithItems';
+import { useStateWithRef } from 'hooks/useStateWithRef';
 
 // constants
-import { STOCK_COLLECTION_ITEM } from 'constants/collections';
 import { EMPTY_ARRAY } from 'constants/empty';
 import { ACTION_TYPES } from './constants';
 
 // types
 import { Item, Store } from 'types/store';
 import { Action, OnAction } from './types';
-import { useStateWithRef } from 'hooks/useStateWithRef';
 
 type UseCreateOrder = (props: { initialStore: Store }) => {
   items: Item[];
@@ -35,12 +31,9 @@ export const useCreateOrder: UseCreateOrder = ({ initialStore }) => {
     EMPTY_ARRAY as Item[],
   );
 
-  const query = React.useMemo(() => getQueryForStoreItems(selectedStore.id), [selectedStore.id]);
+  const { data: storeWithItems, loading } = useStoreQueryWithItems({ _id: selectedStore._id });
 
-  const { data: items = EMPTY_ARRAY as Item[], isLoading: itemsLoading } =
-    useFirestoreQueryData<Item>([STOCK_COLLECTION_ITEM, selectedStore.id], query, {
-      subscribe: true,
-    });
+  const items = storeWithItems?.items ?? (EMPTY_ARRAY as Item[]);
 
   const onAction = React.useCallback(
     (action: Action) => {
@@ -54,7 +47,7 @@ export const useCreateOrder: UseCreateOrder = ({ initialStore }) => {
           break;
         case ACTION_TYPES.REMOVE_ITEM:
           setSelectedItems((prevItems) =>
-            prevItems.filter((item) => item.id !== action.payload.item.id),
+            prevItems.filter((item) => item._id !== action.payload.item._id),
           );
           break;
         case ACTION_TYPES.DECREASE_ITEM_QUANTITY:
@@ -82,7 +75,12 @@ export const useCreateOrder: UseCreateOrder = ({ initialStore }) => {
     [setSelectedItems],
   );
 
-  useInitializeOrder({ items, itemsLoading, onAction, selectedStoreId: selectedStore.id });
+  useInitializeOrder({
+    items,
+    itemsLoading: loading,
+    onAction,
+    selectedStoreId: selectedStore._id,
+  });
 
   const onStoreChange = React.useCallback(
     (store: Store) => {
@@ -118,7 +116,7 @@ export const useCreateOrder: UseCreateOrder = ({ initialStore }) => {
     items,
     selectedItems,
     selectedStore,
-    itemsLoading,
+    itemsLoading: loading,
     onStoreChange,
     onItemChange,
     onAction,

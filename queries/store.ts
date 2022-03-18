@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost';
+import { gql } from '@apollo/client';
 
 const ITEM_FRAGMENT = gql`
   fragment ItemFields on Item {

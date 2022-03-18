@@ -1,12 +1,11 @@
 // lib
-import { useQuery } from '@apollo/react-hooks';
-import { ApolloError } from 'apollo-boost';
+import { useQuery, ApolloError } from '@apollo/client';
 
 // hooks
 import { useLoginInfo } from 'contexts/LoginContext';
 
 // queries
-import { FETCH_USER_QUERY } from './query';
+import { FETCH_USER_QUERY } from 'queries/user';
 
 // types
 import { UserProfile } from 'types/profile';

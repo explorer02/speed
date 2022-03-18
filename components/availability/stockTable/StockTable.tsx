@@ -4,6 +4,9 @@ import * as React from 'react';
 // components
 import { ActionBar } from './ActionBar';
 
+// helpers
+import { getItemId } from 'helper/getter';
+
 // constants
 import { columnsConfig } from './stockTableConfig';
 
@@ -11,8 +14,6 @@ import { columnsConfig } from './stockTableConfig';
 import { Item } from 'types/store';
 import { Table } from 'reusable/table';
 import { ActionState, OnAction } from '../types';
-
-const getId = (item: Item): string => item.item._id;
 
 export const StockTable = ({
   items,
@@ -30,7 +31,7 @@ export const StockTable = ({
   onRowClick: (id: string) => void;
 }): JSX.Element => (
   <Table
-    getId={getId}
+    getId={getItemId}
     columnConfig={columnsConfig}
     items={items}
     sx={{ padding: '20px 80px' }}

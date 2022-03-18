@@ -4,6 +4,9 @@ import * as React from 'react';
 // components
 import { Box, Chip } from '@mui/material';
 
+// helpers
+import { getItemId, getItemLabel } from 'helper/getter';
+
 // types
 import { Order } from 'types/order';
 import { ColumnRendererProps } from 'reusable/table';
@@ -15,7 +18,7 @@ export const Items = ({ value }: ColumnRendererProps<Order>): JSX.Element => {
   return (
     <Box display="flex" gap={1} flexWrap="wrap">
       {items.map((item) => (
-        <Chip key={item.id} color="info" label={item.label} />
+        <Chip key={getItemId(item)} color="info" label={getItemLabel(item)} />
       ))}
     </Box>
   );

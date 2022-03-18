@@ -13,7 +13,7 @@ import { ProtectRoute } from 'containers/ProtectRoute';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { LoginProvider } from 'contexts/LoginContext';
 import { AppThemeProvider } from 'contexts/AppThemeProvider';
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider } from '@apollo/client';
 
 // config
 import { client } from 'config/apollo';

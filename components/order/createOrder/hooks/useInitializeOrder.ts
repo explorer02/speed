@@ -4,6 +4,9 @@ import * as React from 'react';
 // hooks
 import { useRouter } from 'next/router';
 
+// helpers
+import { getItemId } from 'helper/getter';
+
 // constants
 import { ORDER_PATH } from 'constants/paths';
 import { ACTION_TYPES } from './constants';
@@ -35,7 +38,7 @@ export const useInitializeOrder: UseInitializeOrder = ({
       const parsedItemIds = new Set(((itemIds as string) ?? '').split(','));
 
       const toBeSelectedItems = items
-        .filter((item) => parsedItemIds.has(item.id))
+        .filter((item) => parsedItemIds.has(getItemId(item)))
         .map((item) => ({ ...item, quantity: 1 }));
 
       replace(`${ORDER_PATH}`).then(() =>

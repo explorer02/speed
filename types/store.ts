@@ -16,6 +16,7 @@ export type Item = {
     unit: string;
     description: string;
   };
+  _id: string;
   quantity: number;
   price: number;
 };

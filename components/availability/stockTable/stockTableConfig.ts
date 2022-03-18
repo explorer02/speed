@@ -1,5 +1,6 @@
-// helper
+// helpers
 import { priceFormatter } from 'helper/formatter';
+import { getItemDescription, getItemLabel, getItemUnit } from 'helper/getter';
 
 // types
 import { Item } from 'types/store';
@@ -17,7 +18,7 @@ export const columnsConfig: ColumnsConfig<Item> = [
     id: COLUMNS.LABEL,
     label: 'Name',
     fluidWidth: 1,
-    valueGetter: (item): string => item.item.label,
+    valueGetter: getItemLabel,
   },
   {
     id: COLUMNS.PRICE,
@@ -29,12 +30,12 @@ export const columnsConfig: ColumnsConfig<Item> = [
     id: COLUMNS.QUANTITY,
     label: 'Quantity',
     fluidWidth: 1,
-    valueGetter: (item): string => `${item.quantity} ${item.item.unit}`,
+    valueGetter: (item): string => `${item.quantity} ${getItemUnit(item)}`,
   },
   {
     id: COLUMNS.DESCRIPTION,
     label: 'Description',
     fluidWidth: 4,
-    valueGetter: (item): string => item.item.description,
+    valueGetter: getItemDescription,
   },
 ];

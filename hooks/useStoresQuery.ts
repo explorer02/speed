@@ -1,6 +1,5 @@
 // lib
-import { useQuery } from '@apollo/react-hooks';
-import { ApolloError } from 'apollo-boost';
+import { useQuery, ApolloError } from '@apollo/client';
 
 // queries
 import { FETCH_ALL_STORES } from 'queries/store';

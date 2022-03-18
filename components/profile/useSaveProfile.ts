@@ -2,7 +2,7 @@
 import * as React from 'react';
 import _pick from 'lodash/pick';
 import _omit from 'lodash/omit';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 
 // hooks
 import { useLoginInfo } from 'contexts/LoginContext';

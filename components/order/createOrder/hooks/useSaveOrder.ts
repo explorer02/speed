@@ -1,35 +1,22 @@
 // lib
 import * as React from 'react';
+import _pick from 'lodash/pick';
 
 // hooks
-import {
-  useFirestoreCollectionMutation,
-  useFirestoreQueryData,
-} from '@react-query-firebase/firestore';
 import { useLoginInfo } from 'contexts/LoginContext';
 import { SnackbarState, useSnackbar } from 'reusable/snackbarOverlay';
+import { useFetchOrderQuery } from 'components/order/viewOrder/hooks/useFetchOrderQuery';
+import { OrderInsertInput, useCreateOrderMutation } from './useCreateOrderMutation';
+import { useRouter } from 'next/router';
 
 // helpers
-import { getOrderCollectionRef } from 'helper/docReference';
 import { getTotalAmount } from '../helper';
 
-// constants
-import { ORDER_STATUS } from 'constants/order';
-
 // types
-import { Order } from 'types/order';
 import { Item, Store } from 'types/store';
-import { useRouter } from 'next/router';
-import { ORDER_COLLECTION } from 'constants/collections';
 
-const adaptOrder = (selectedItems: Item[], selectedStore: Store): Order => ({
-  id: 'DUMMY_ID',
-  createdOn: Date.now(),
-  items: selectedItems,
-  storeId: selectedStore.id,
-  status: ORDER_STATUS.CREATED,
-  totalAmount: getTotalAmount(selectedItems),
-});
+const adaptItemsForSaving = (selectedItems: Item[]): OrderInsertInput['items'] =>
+  selectedItems.map((item) => ({ ..._pick(item, 'quantity', 'price'), item: item._id }));
 
 type UseSaveOrder = (props: { selectedItems: Item[]; selectedStore: Store }) => {
   onSave: () => Promise<void>;
@@ -44,33 +31,37 @@ export const useSaveOrder: UseSaveOrder = ({ selectedItems, selectedStore }) => 
 
   const { state: snackbarState, showSnackbar } = useSnackbar();
 
-  const userOrderCollectionRef = React.useMemo(() => getOrderCollectionRef(phone!), [phone]);
-  const { refetch: refetchOrders } = useFirestoreQueryData<Order>(
-    [ORDER_COLLECTION, phone],
-    userOrderCollectionRef,
-    {
-      subscribe: true,
-    },
-  );
-
-  const { mutateAsync: saveOrder, isLoading: isSavingOrder } =
-    useFirestoreCollectionMutation(userOrderCollectionRef);
+  const { saveOrder, loading } = useCreateOrderMutation();
+  const { refetch: refetchOrders } = useFetchOrderQuery({ skip: true });
 
   const onSave = React.useCallback(async () => {
     if (!phone) return;
-    const order = adaptOrder(selectedItems, selectedStore);
     showSnackbar('Please wait while your order is placing', 'info');
     try {
-      await saveOrder(order as Order);
+      await saveOrder({
+        store: { link: selectedStore._id },
+        user: { link: phone.substring(3) },
+        totalAmount: getTotalAmount(selectedItems),
+        items: adaptItemsForSaving(selectedItems),
+      });
+
       await refetchOrders();
       showSnackbar('Order Placed successfully :)', 'success');
-      setTimeout(() => {
-        push({ pathname, query: { tabId: 1 } });
-      }, 500);
+
+      push({ pathname, query: { tabId: 1 } });
     } catch {
       showSnackbar('Some Error ocurred :(', 'error');
     }
-  }, [pathname, phone, push, refetchOrders, saveOrder, selectedItems, selectedStore, showSnackbar]);
+  }, [
+    pathname,
+    phone,
+    push,
+    refetchOrders,
+    saveOrder,
+    selectedItems,
+    selectedStore._id,
+    showSnackbar,
+  ]);
 
-  return { onSave, isSavingOrder, snackbarState };
+  return { onSave, isSavingOrder: loading, snackbarState };
 };

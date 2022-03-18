@@ -8,6 +8,7 @@ import { Table } from 'reusable/table';
 // helpers
 import { priceFormatter } from 'helper/formatter';
 import { getColumnConfig } from './summaryTableConfig';
+import { getItemId } from 'helper/getter';
 import { getTotalAmount } from '../helper';
 
 import { Item, Store } from 'types/store';
@@ -24,6 +25,7 @@ export const OrderSummary = ({ store, items, onAction }: Props): JSX.Element => 
   const totalAmount = React.useMemo(() => getTotalAmount(items), [items]);
   return (
     <Table<Item>
+      getId={getItemId}
       columnConfig={columnsConfig}
       items={items}
       title="Order Summary"

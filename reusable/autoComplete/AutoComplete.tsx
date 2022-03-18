@@ -23,26 +23,25 @@ import { centerAll } from 'styles/styleObjects';
 // types
 import { StringAnyMap } from 'types/generic';
 
-// TODO: fix types
-type OptionProps = {
+type OptionProps<T> = {
   liProps: React.HTMLAttributes<HTMLLIElement>;
-  option: StringAnyMap;
+  option: T;
   state: AutocompleteRenderOptionState;
-  labelKey: string;
+  getOptionLabel: (item: T) => string;
   secondaryTextKey?: string;
 };
 
-const Option = ({
+const Option = <T extends StringAnyMap>({
   liProps,
   option,
   state: { inputValue },
-  labelKey,
+  getOptionLabel,
   secondaryTextKey,
-}: OptionProps): JSX.Element => {
+}: OptionProps<T>): JSX.Element => {
   const theme = useTheme();
 
-  const matches = match(option[labelKey], inputValue);
-  const parts = parse(option[labelKey], matches);
+  const matches = match(getOptionLabel(option), inputValue);
+  const parts = parse(getOptionLabel(option), matches);
 
   return (
     <ListItem {...liProps}>
@@ -68,13 +67,14 @@ const Option = ({
   );
 };
 
-export type AutoCompleteProps = {
-  items: StringAnyMap[];
-  selectedItem: StringAnyMap | StringAnyMap[];
-  onItemChange: (item: StringAnyMap) => void;
-  idKey: string;
+export type AutoCompleteProps<T extends StringAnyMap> = {
+  items: T[];
+  selectedItem: T | T[];
+  onItemChange: (item: T | T[]) => void;
+  idKey: keyof T & string;
   loading?: boolean;
-  labelKey: string;
+  labelKey?: keyof T & string;
+  getOptionLabel?: (item: T) => string;
   secondaryTextKey?: string;
   multiple?: boolean;
   label: string;
@@ -86,13 +86,14 @@ export type AutoCompleteProps = {
   disabled?: boolean;
 };
 
-export const AutoComplete = ({
+export const AutoComplete = <T extends StringAnyMap>({
   items,
   selectedItem,
   onItemChange,
   loading,
   idKey,
   labelKey,
+  getOptionLabel: _getOptionLabel,
   secondaryTextKey,
   multiple,
   label,
@@ -102,8 +103,8 @@ export const AutoComplete = ({
   disableClearable = true,
   disableCloseOnSelect,
   disabled,
-}: AutoCompleteProps): JSX.Element => {
-  const handleChange: UseAutocompleteProps<StringAnyMap, boolean, boolean, undefined>['onChange'] =
+}: AutoCompleteProps<T>): JSX.Element => {
+  const handleChange: UseAutocompleteProps<T, boolean, boolean, undefined>['onChange'] =
     React.useCallback(
       (ev, value) => {
         if (value) onItemChange(value);
@@ -111,7 +112,10 @@ export const AutoComplete = ({
       [onItemChange],
     );
 
-  const getOptionLabel = React.useCallback((item: StringAnyMap) => item[labelKey], [labelKey]);
+  const getOptionLabel = React.useMemo(
+    () => _getOptionLabel ?? ((item: T): string => (labelKey ? item[labelKey] : '')),
+    [_getOptionLabel, labelKey],
+  );
 
   const adaptedValues = React.useMemo(
     () => (multiple ? _castArray(selectedItem) : selectedItem),
@@ -119,7 +123,7 @@ export const AutoComplete = ({
   );
 
   const filterOptions = React.useCallback(
-    (options: StringAnyMap[]) => {
+    (options: T[]) => {
       const selectedOptionsId = new Set<string>(
         _castArray(selectedItem).map((item) => item[idKey]),
       );
@@ -128,10 +132,12 @@ export const AutoComplete = ({
     [idKey, selectedItem],
   );
 
+  console.log(items);
+
   return (
     <Box {...centerAll} width="100%" gap={3}>
       <Typography variant="body1">{label}</Typography>
-      <BaseAutoComplete<StringAnyMap, boolean, boolean, undefined>
+      <BaseAutoComplete<T, boolean, boolean, undefined>
         options={items}
         itemID={idKey}
         loading={loading}
@@ -142,7 +148,7 @@ export const AutoComplete = ({
         multiple={multiple}
         includeInputInList={includeInputInList}
         filterOptions={filterOptions}
-        value={adaptedValues as StringAnyMap[]}
+        value={adaptedValues}
         filterSelectedOptions={filterSelectedOptions}
         disableCloseOnSelect={disableCloseOnSelect}
         disabled={disabled}
@@ -154,7 +160,7 @@ export const AutoComplete = ({
             liProps={props}
             option={option}
             state={state}
-            labelKey={labelKey}
+            getOptionLabel={getOptionLabel}
             secondaryTextKey={secondaryTextKey}
           />
         )}
