@@ -8,11 +8,11 @@ export const LAYOUT: Layout = {
   children: [
     {
       type: ITEM_TYPE.ROW,
-      id: FIELDS.PHONE,
+      id: FIELDS.EMAIL,
     },
     {
       type: ITEM_TYPE.ROW,
-      id: FIELDS.OTP,
+      id: FIELDS.PASSWORD,
     },
   ],
 };

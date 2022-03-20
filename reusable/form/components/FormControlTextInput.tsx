@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useLatest } from 'react-use';
 
 // components
-import { FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/material';
+import { FormControl, FormHelperText, InputLabel, InputProps, OutlinedInput } from '@mui/material';
 
 // constants
 import { FORM_ACTIONS } from '../constants';
@@ -14,9 +14,7 @@ import { FormComponentProps } from '../FieldMap';
 type Props = FormComponentProps & {
   label: string;
   helperText?: string;
-  disabled?: boolean;
-  type?: string;
-};
+} & Pick<InputProps, 'placeholder' | 'startAdornment' | 'disabled' | 'type'>;
 
 export const FormControlTextInput = (props: Props): JSX.Element => {
   const {
@@ -28,6 +26,8 @@ export const FormControlTextInput = (props: Props): JSX.Element => {
     disabled = false,
     type = 'text',
     loading,
+    startAdornment,
+    placeholder,
   } = props;
 
   const latestProps = useLatest(props);
@@ -53,11 +53,13 @@ export const FormControlTextInput = (props: Props): JSX.Element => {
       </InputLabel>
       <OutlinedInput
         disabled={disabled || loading}
-        id="component-outlined"
+        id={id}
         value={value}
         onChange={handleChange}
         label={label}
         type={type}
+        startAdornment={startAdornment}
+        placeholder={placeholder}
       />
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>

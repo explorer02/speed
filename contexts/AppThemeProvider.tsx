@@ -5,7 +5,7 @@ import { createTheme, PaletteMode, ThemeOptions, ThemeProvider } from '@mui/mate
 import { useLocalStorage } from 'react-use';
 
 // colors
-import { grey, purple, teal } from '@mui/material/colors';
+import { grey, purple, indigo, deepOrange } from '@mui/material/colors';
 
 export const PALETTE_MODE = {
   LIGHT: 'light',
@@ -21,8 +21,8 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
     ...(mode === PALETTE_MODE.LIGHT
       ? {
           // palette values for light mode
-          primary: purple,
-          divider: purple[200],
+          primary: indigo,
+          secondary: purple,
           text: {
             primary: BLACK,
             secondary: grey[800],
@@ -30,8 +30,7 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
         }
       : {
           // palette values for dark mode
-          primary: teal,
-          divider: teal[700],
+          primary: deepOrange,
           background: {
             default: grey[900],
             paper: grey[900],

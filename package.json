@@ -39,7 +39,8 @@
     "react-content-loader": "^6.1.0",
     "react-dom": "17.0.2",
     "react-geocode": "^0.2.3",
-    "react-use": "^17.3.2"
+    "react-use": "^17.3.2",
+    "realm-web": "^1.7.0"
   },
   "devDependencies": {
     "@types/autosuggest-highlight": "^3.2.0",
