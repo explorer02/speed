@@ -28,7 +28,7 @@ export const Layout = ({ children }: { children?: any }): JSX.Element => {
       <Stack
         {...expandXY}
         id="layout"
-        ref={ref}
+        ref={ref as React.Ref<unknown>}
         spacing={GAP}
         bgcolor={theme.palette.background.default}
       >

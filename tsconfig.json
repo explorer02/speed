@@ -19,7 +19,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "baseUrl": ".",
-    "target": "es5"
+    "target": "es5",
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
