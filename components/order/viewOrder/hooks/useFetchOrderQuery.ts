@@ -15,7 +15,7 @@ import { FETCH_USER_ORDERS_QUERY } from 'queries/user';
 import { Order } from 'types/order';
 
 type TData = { user: { orders: Order[] } };
-type TVariable = { query: { phone: string } };
+type TVariable = { query: { _id: string } };
 
 type UseFetchOrderQuery = (
   options?: Pick<QueryHookOptions<TData, TVariable>, 'skip'>,
@@ -25,7 +25,7 @@ export const useFetchOrderQuery: UseFetchOrderQuery = (options) => {
   const { user, isLoggedIn } = useLoginInfo();
 
   const { data, ...queryResult } = useQuery<TData, TVariable>(FETCH_USER_ORDERS_QUERY, {
-    variables: { query: { phone: user?.phoneNumber.substring(3) ?? '' } },
+    variables: { query: { _id: user?.id ?? '' } },
     skip: !isLoggedIn || !user || options?.skip,
   });
 

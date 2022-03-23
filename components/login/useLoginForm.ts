@@ -1,5 +1,12 @@
 // lib
 import * as React from 'react';
+import { RealmApp } from 'config/realm';
+import _isEmpty from 'lodash/isEmpty';
+import { Credentials } from 'realm-web';
+
+// hooks
+import { SnackbarState, useSnackbar } from 'reusable/snackbarOverlay';
+import { useLoginInfo } from 'contexts/LoginContext';
 
 // constants
 import { FormAction, useForm } from 'reusable/form';
@@ -16,21 +23,72 @@ const INITIAL_VALUE: State = {
 const validator = (values: State): boolean =>
   !!values.email.match(/^\S.*@\S+$/)?.length && values.password.length >= 6;
 
-type UseLoginForm = () => {
+type UseLoginForm = (params: { isLoginMode: boolean }) => {
   onAction: (action: FormAction<State>) => void;
   values: State;
   isSubmitDisabled: boolean;
+  snackbarState: SnackbarState;
+  loading: boolean;
 };
 
-export const useLoginForm: UseLoginForm = () => {
-  const onSubmit = React.useCallback(() => {
-    console.log('submitting');
-  }, []);
+export const useLoginForm: UseLoginForm = ({ isLoginMode }) => {
+  const { state: snackbarState, showSnackbar } = useSnackbar();
+  const [loading, setLoading] = React.useState(false);
+
+  const { setLoginState } = useLoginInfo();
+
+  const handleLogin = React.useCallback(
+    async (values: State) => {
+      showSnackbar('Logging in', 'info');
+      setLoading(true);
+      try {
+        const user = await RealmApp.logIn(Credentials.emailPassword(values.email, values.password));
+
+        if (_isEmpty(user.customData)) {
+          await fetch('/api/createUser', {
+            body: JSON.stringify({
+              linkId: user.id,
+            }),
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+          });
+        }
+
+        showSnackbar('Success!', 'success');
+
+        setTimeout(() => {
+          setLoginState({ isLoggedIn: true, user });
+        }, 500);
+      } catch (err: any) {
+        showSnackbar(err?.error, 'error');
+      } finally {
+        setLoading(false);
+      }
+    },
+    [setLoginState, showSnackbar],
+  );
+
+  const handleRegister = React.useCallback(
+    async (values: State) => {
+      showSnackbar('Creating new User...', 'info');
+      setLoading(true);
+      try {
+        await RealmApp.emailPasswordAuth.registerUser(values);
+        showSnackbar('Success! Please check your email and confirm it', 'success');
+      } catch (err: any) {
+        showSnackbar(err?.error, 'error');
+      } finally {
+        setLoading(false);
+      }
+    },
+    [showSnackbar],
+  );
+
   const { values, onAction, isValidated } = useForm({
     initialValues: INITIAL_VALUE,
-    onSubmit,
+    onSubmit: isLoginMode ? handleLogin : handleRegister,
     validator,
   });
 
-  return { onAction, values, isSubmitDisabled: !isValidated };
+  return { onAction, values, isSubmitDisabled: !isValidated, snackbarState, loading };
 };

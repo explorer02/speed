@@ -21,12 +21,12 @@ export const LAYOUT: Layout = {
         {
           type: ITEM_TYPE.COLUMN,
           id: FIELDS.LOCATION.LATITUDE,
-          style: { xs: 5.5 },
+          style: { xs: 5 },
         },
         {
           type: ITEM_TYPE.COLUMN,
           id: FIELDS.LOCATION.LONGITUDE,
-          style: { xs: 5.5 },
+          style: { xs: 5 },
         },
         {
           type: ITEM_TYPE.COLUMN,

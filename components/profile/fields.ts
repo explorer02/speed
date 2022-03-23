@@ -42,7 +42,6 @@ export const FIELD_MAP = new FieldMapBuilder()
     Component: FormControlTextInput,
     componentProps: {
       label: 'Phone',
-      disabled: true,
     },
   })
   .addFieldConfig({

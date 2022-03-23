@@ -15,10 +15,10 @@ type UseProfileQuery = () => { data?: UserProfile; loading: boolean; error?: Apo
 export const useProfileQuery: UseProfileQuery = () => {
   const { user, isLoggedIn } = useLoginInfo();
 
-  const { data, loading, error } = useQuery<{ user: UserProfile }, { query: { phone: string } }>(
+  const { data, loading, error } = useQuery<{ user: UserProfile }, { query: { _id: string } }>(
     FETCH_USER_QUERY,
     {
-      variables: { query: { phone: user?.phoneNumber.substring(3) ?? '' } },
+      variables: { query: { _id: user?.id ?? '' } },
       skip: !isLoggedIn || !user,
     },
   );

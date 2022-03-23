@@ -12,7 +12,7 @@ export type Order = {
   items: Item[];
   totalAmount: number;
   createdOn: number;
-  updatedOn?: number;
+  updatedOn: number;
   status: ValueOf<typeof ORDER_STATUS>;
   user?: UserProfile;
 };

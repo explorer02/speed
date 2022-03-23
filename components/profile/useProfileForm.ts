@@ -2,7 +2,6 @@
 import * as React from 'react';
 import _cloneDeep from 'lodash/cloneDeep';
 import _set from 'lodash/set';
-import _merge from 'lodash/merge';
 
 // hooks
 import { useProfileQuery } from './useProfileQuery';
@@ -52,8 +51,7 @@ export const useProfileForm = (): {
 
   React.useEffect(() => {
     if (data) {
-      const newValues = _cloneDeep(INITIAL_VALUES);
-      setState(_merge(newValues, data));
+      setState(data);
     }
   }, [data]);
 

@@ -8,7 +8,7 @@ export const adaptItemsWithId = (items: Item[]): Item[] =>
 export const adaptOrderFromGraphQL = (orders: Order[]): Order[] =>
   orders.map((order) => ({
     ...order,
-    createdOn: Number(order.createdOn),
-    updatedOn: Number(order.updatedOn),
+    createdOn: new Date(order.createdOn).getTime(),
+    updatedOn: new Date(order.updatedOn).getTime(),
     items: adaptItemsWithId(order.items),
   }));

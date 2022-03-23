@@ -3,7 +3,6 @@ import * as React from 'react';
 import _orderBy from 'lodash/orderBy';
 
 // hooks
-import { useLoginInfo } from 'contexts/LoginContext';
 import { SnackbarState, useSnackbar } from 'reusable/snackbarOverlay';
 import { useRouter } from 'next/router';
 import { useCancelOrder } from './useCancelOrder';
@@ -40,8 +39,6 @@ const getQueryParamsFromOrder = (order: Order): { store: string; items: string }
 };
 
 export const useViewOrder: UseViewOrder = () => {
-  const { user } = useLoginInfo();
-  const phone = user?.phoneNumber;
 
   const { state: snackbarState, showSnackbar } = useSnackbar();
 
@@ -60,7 +57,7 @@ export const useViewOrder: UseViewOrder = () => {
           break;
 
         case ACTION_TYPES.VIEW_RECEIPT:
-          push(`${ORDER_PATH}/${getOrderId(payload.order)}?phone=${phone}`);
+          push(`${ORDER_PATH}/${getOrderId(payload.order)}`);
           break;
 
         case ACTION_TYPES.REPEAT_ORDER:
@@ -73,7 +70,7 @@ export const useViewOrder: UseViewOrder = () => {
           break;
       }
     },
-    [cancelOrder, push, phone, pathname, showSnackbar],
+    [cancelOrder, push, pathname, showSnackbar],
   );
 
   const adaptedData = React.useMemo(() => _orderBy(orders, 'createdOn', 'desc'), [orders]);

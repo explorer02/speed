@@ -3,11 +3,8 @@ import * as React from 'react';
 import _get from 'lodash/get';
 
 // components
-import { LoadingButton } from '@mui/lab';
 import { Button, Grid, Typography } from '@mui/material';
-
-// icon
-import DoneAllOutlinedIcon from '@mui/icons-material/DoneAllOutlined';
+import { LoadingButton } from 'reusable/loadingButton';
 
 // constants
 import { FORM_ACTIONS } from './constants';
@@ -196,13 +193,10 @@ export const Form = <T,>({
           <Grid item xs={12} md={6}>
             <LoadingButton
               onClick={submitForm}
-              loading={loading}
+              loading={!!loading}
               fullWidth
               variant="contained"
               size="medium"
-              sx={{ paddingX: 2, paddingY: 1 }}
-              startIcon={<DoneAllOutlinedIcon />}
-              loadingIndicator="Please wait..."
               disabled={config?.submit?.disabled}
             >
               {config?.submit?.label ?? 'Submit'}

@@ -29,7 +29,7 @@ type Response = {
 };
 type Variables = {
   query: { _id: string };
-  set: { status: ValueOf<typeof ORDER_STATUS>; updatedOn: string };
+  set: { status: ValueOf<typeof ORDER_STATUS>; updatedOn: Date };
 };
 
 type UseCancelOrder = () => { cancelOrder: (orderId: string) => Promise<void> };
@@ -46,7 +46,7 @@ export const useCancelOrder: UseCancelOrder = () => {
           },
           set: {
             status: ORDER_STATUS.CANCELLED,
-            updatedOn: Date.now().toString(),
+            updatedOn: new Date(),
           },
         },
       });

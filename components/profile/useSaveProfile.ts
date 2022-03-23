@@ -44,26 +44,25 @@ export const useSaveProfile = ({
 
   const [mutationFn, { loading }] = useMutation<
     { updateOneUser: UserProfile },
-    { query: { phone: string }; set: Partial<UserProfile> }
+    { query: { _id: string }; set: Partial<UserProfile> }
   >(SAVE_USER_MUTATION);
 
   const { user } = useLoginInfo();
-  const phone = user?.phoneNumber;
 
   const onSave = React.useCallback(
     async (profile: UserProfile) => {
-      if (!phone) return;
+      if (!user?.id) return;
       showSnackbar('Saving Profile...', 'info');
       try {
         await mutationFn({
-          variables: { query: { phone: phone.substring(3) }, set: adaptProfile(profile) },
+          variables: { query: { _id: user?.id ?? '' }, set: adaptProfile(profile) },
         });
         showSnackbar('Profile Saved Successfully :)', 'success');
       } catch {
         showSnackbar('Some error Ocurred :(', 'error');
       }
     },
-    [mutationFn, phone, showSnackbar],
+    [mutationFn, showSnackbar, user?.id],
   );
 
   const onAction = React.useCallback(

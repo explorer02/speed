@@ -43,6 +43,7 @@ const Header = (): JSX.Element => {
   const { value: isMenuOpen, set: showMenu, unset: hideMenu } = useToggle();
   const menuAnchorRef = React.useRef<HTMLButtonElement | null>(null);
 
+  // FIXME:
   const listEl = config.list.map((btn) => {
     const { startIcon: Icon } = btn;
     if (btn.loginRequired && !isLoggedIn) return undefined;
@@ -110,7 +111,7 @@ const Header = (): JSX.Element => {
           <Typography variant="h6">Speed</Typography>
         </Grid>
         <Grid item container xs="auto" gap={2} alignItems="center">
-          {listEl}
+          {typeof window !== 'undefined' ? listEl : null}
           {config.menu.length ? (
             <IconButton onClick={showMenu} ref={menuAnchorRef} size="small">
               <MenuIcon />

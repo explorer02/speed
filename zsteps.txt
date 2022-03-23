@@ -4,3 +4,5 @@ design like finology
 
 POPULATE FILE
 fix schema types
+fix header
+loading button usage

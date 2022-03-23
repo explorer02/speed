@@ -1,30 +1,61 @@
 // lib
 import * as React from 'react';
+import { User } from 'realm-web';
+import _noop from 'lodash/noop';
 
-// firebaseConfig
-import { auth } from 'firebaseConfig';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+
+// config
+import { RealmApp } from 'config/realm';
+
+// types
+import { UserProfile } from 'types/profile';
 
 type LoginInfo = {
-  loading?: boolean;
   isLoggedIn: boolean;
-  user: { phoneNumber: string } | null;
+  user: User<any, UserProfile> | null;
+  setLoginState: (params: Omit<LoginInfo, 'setLoginState'>) => void;
 };
 
-export const LoginContext = React.createContext<LoginInfo>({ isLoggedIn: false, user: null });
+const LoginContext = React.createContext<LoginInfo>({
+  isLoggedIn: false,
+  user: null,
+  setLoginState: _noop,
+});
 
 export const useLoginInfo = (): LoginInfo => React.useContext(LoginContext);
 
-const INITIAL_LOGIN_STATE: LoginInfo = { isLoggedIn: false, user: null, loading: true };
-
 export const LoginProvider = ({ children }: { children: JSX.Element }): JSX.Element => {
-  const [loginState, setLoginState] = React.useState<LoginInfo>(INITIAL_LOGIN_STATE);
+  const [loginState, setLoginState] = React.useState<Omit<LoginInfo, 'setLoginState'>>({
+    user: RealmApp.currentUser,
+    isLoggedIn: !!RealmApp.currentUser,
+  });
+  // TODO: fetch profile here
+
+  const value = React.useMemo(() => ({ ...loginState, setLoginState }), [loginState]);
+  const client = React.useMemo(
+    () =>
+      new ApolloClient({
+        uri: process.env.NEXT_PUBLIC_DB_URL,
+        headers: {
+          Authorization: `Bearer ${loginState.user?.accessToken}`,
+        },
+        cache: new InMemoryCache(),
+      }),
+    [loginState.user?.accessToken],
+  );
+
   React.useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        setLoginState({ isLoggedIn: true, user: user as any, loading: false });
-      } else setLoginState({ ...INITIAL_LOGIN_STATE, loading: false });
-    });
+    RealmApp.currentUser?.refreshAccessToken();
+    const id = setInterval(() => {
+      RealmApp.currentUser?.refreshAccessToken();
+    }, 25 * 60 * 1000);
+    return clearInterval(id);
   }, []);
 
-  return <LoginContext.Provider value={loginState}>{children}</LoginContext.Provider>;
+  return (
+    <ApolloProvider client={client}>
+      <LoginContext.Provider value={value}>{children}</LoginContext.Provider>
+    </ApolloProvider>
+  );
 };

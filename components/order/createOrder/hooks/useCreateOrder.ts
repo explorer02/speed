@@ -74,7 +74,7 @@ export const useCreateOrder: UseCreateOrder = ({ initialStore }) => {
     },
     [setSelectedItems],
   );
-
+  // TODO: uselocationquery
   useInitializeOrder({
     items,
     itemsLoading: loading,

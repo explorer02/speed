@@ -25,7 +25,7 @@ type UseSaveOrder = (props: { selectedItems: Item[]; selectedStore: Store }) => 
 };
 
 export const useSaveOrder: UseSaveOrder = ({ selectedItems, selectedStore }) => {
-  const phone = useLoginInfo().user?.phoneNumber;
+  const id = useLoginInfo().user?.id;
 
   const { push, pathname } = useRouter();
 
@@ -35,12 +35,12 @@ export const useSaveOrder: UseSaveOrder = ({ selectedItems, selectedStore }) => 
   const { refetch: refetchOrders } = useFetchOrderQuery({ skip: true });
 
   const onSave = React.useCallback(async () => {
-    if (!phone) return;
+    if (!id) return;
     showSnackbar('Please wait while your order is placing', 'info');
     try {
       await saveOrder({
         store: { link: selectedStore._id },
-        user: { link: phone.substring(3) },
+        user: { link: id },
         totalAmount: getTotalAmount(selectedItems),
         items: adaptItemsForSaving(selectedItems),
       });
@@ -53,8 +53,8 @@ export const useSaveOrder: UseSaveOrder = ({ selectedItems, selectedStore }) => 
       showSnackbar('Some Error ocurred :(', 'error');
     }
   }, [
+    id,
     pathname,
-    phone,
     push,
     refetchOrders,
     saveOrder,

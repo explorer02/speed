@@ -14,10 +14,10 @@ import { centerAll, expandXY } from 'styles/styleObjects';
 
 export const ProtectRoute = ({ children }: { children: JSX.Element }): JSX.Element => {
   const { replace, pathname } = useRouter();
-  const { isLoggedIn, loading } = useLoginInfo();
+  const { isLoggedIn } = useLoginInfo();
 
   const isProtectedPath = PROTECTED_PATHS.includes(pathname);
-  const shouldRedirectToHome = !loading && !isLoggedIn && isProtectedPath && pathname !== HOME_PATH;
+  const shouldRedirectToHome = !isLoggedIn && isProtectedPath && pathname !== HOME_PATH;
 
   React.useEffect(() => {
     if (shouldRedirectToHome) replace(HOME_PATH);
@@ -25,7 +25,7 @@ export const ProtectRoute = ({ children }: { children: JSX.Element }): JSX.Eleme
 
   if (!isProtectedPath) return children;
 
-  if (loading || shouldRedirectToHome)
+  if (shouldRedirectToHome)
     return (
       <Box {...expandXY} {...centerAll}>
         <CircularProgress size={100} />
