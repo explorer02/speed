@@ -6,7 +6,6 @@ import 'styles/globals.css';
 import '@fontsource/roboto';
 
 // components
-import { Layout } from 'containers/Layout';
 import { ProtectRoute } from 'containers/ProtectRoute';
 
 // providers
@@ -20,9 +19,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => (
   <AppThemeProvider>
     <LoginProvider>
       <ProtectRoute>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <Component {...pageProps} />
       </ProtectRoute>
     </LoginProvider>
   </AppThemeProvider>

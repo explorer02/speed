@@ -8,6 +8,7 @@ export const PROFILE_PATH = '/profile';
 export const LOCATE_PATH = '/locate';
 
 export const PROTECTED_PATHS = [HOME_PATH, PROFILE_PATH, ORDER_PATH, AVAILABILITY_PATH];
+export const UNPROTECTED_PATHS = [HOME_PATH, LOCATE_PATH];
 
 export const PAGE_TITLE = {
   [HOME_PATH]: 'Home',
