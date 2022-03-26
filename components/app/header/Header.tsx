@@ -21,7 +21,7 @@ import { DesktopModeButton } from './DesktopModeButton';
 import { IconButtonWithTooltip } from 'reusable/iconButtonWithTooltip';
 
 // hooks
-import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/router';
 import { useLoginInfo } from 'contexts/LoginContext';
 import { useToggle } from 'hooks/useToggle';
 import { useBreakpoint } from 'hooks/useBreakpoint';

@@ -3,25 +3,24 @@ import * as React from 'react';
 
 // components
 import { TableCell, TableRow } from '@mui/material';
-import { Table } from 'reusable/table';
+import { ColumnsConfig, Table, Props as TableProps } from 'reusable/table';
 
 // helpers
 import { priceFormatter } from 'helper/formatter';
-import { getColumnConfig } from './summaryTableConfig';
 import { getItemId } from 'helper/getter';
 import { getTotalAmount } from '../helper';
 
+// types
 import { Item, Store } from 'types/store';
-import { OnAction } from '../hooks/types';
 
 type Props = {
   store: Store;
   items: Item[];
-  onAction: OnAction;
+  columnsConfig: ColumnsConfig<Item>;
+  tableProps?: Partial<TableProps<Item>>;
 };
 
-export const OrderSummary = ({ store, items, onAction }: Props): JSX.Element => {
-  const columnsConfig = React.useMemo(() => getColumnConfig(onAction), [onAction]);
+export const OrderSummary = ({ store, items, columnsConfig, tableProps }: Props): JSX.Element => {
   const totalAmount = React.useMemo(() => getTotalAmount(items), [items]);
   return (
     <Table<Item>
@@ -38,6 +37,7 @@ export const OrderSummary = ({ store, items, onAction }: Props): JSX.Element => 
           <TableCell>{priceFormatter(totalAmount)}</TableCell>
         </TableRow>
       }
+      {...tableProps}
     />
   );
 };

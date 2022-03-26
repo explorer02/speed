@@ -4,7 +4,7 @@ import * as React from 'react';
 // components
 import { Button, Grid } from '@mui/material';
 import { AutoComplete, AutoCompleteProps } from 'reusable/autoComplete';
-import { OrderSummary } from './components/OrderSummary';
+import { OrderSummaryContainer } from './components/OrderSummaryContainer';
 import { SnackBarOverlay } from 'reusable/snackbarOverlay';
 
 // hooks
@@ -88,7 +88,7 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
           </Grid>
         </Grid>
         <Grid item xs={12} lg={6}>
-          <OrderSummary store={selectedStore} items={selectedItems} onAction={onAction} />
+          <OrderSummaryContainer store={selectedStore} items={selectedItems} onAction={onAction} />
         </Grid>
       </Grid>
     </>

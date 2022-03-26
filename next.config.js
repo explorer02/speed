@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-/** @type {impor t('next').NextConfig} */
+/** @type {import('next').NextConfig} */
 
 // const Uglify = require('uglifyjs-webpack-plugin');
 
@@ -49,6 +49,11 @@
 
 //     return c;
 //   },
+// });
+
+// module.exports = withBundleAnalyzer({
+//   reactStrictMode: true,
+//   swcMinify: true,
 // });
 
 module.exports = {

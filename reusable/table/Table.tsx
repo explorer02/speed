@@ -24,11 +24,11 @@ import { ColumnsConfig } from './Config';
 
 type BaseEntityType = StringAnyMap;
 
-type Props<T extends BaseEntityType> = {
+export type Props<T extends BaseEntityType> = {
   getId: (entity: T) => string;
-  title?: string;
-  caption?: string;
-  subCaption?: string;
+  title?: React.ReactNode;
+  caption?: React.ReactNode;
+  subCaption?: React.ReactNode;
   columnConfig: ColumnsConfig<T>;
   items: T[];
   selectedItems?: Set<string>;
@@ -41,7 +41,7 @@ type Props<T extends BaseEntityType> = {
 
 const Title = <T extends BaseEntityType>({ title }: Pick<Props<T>, 'title'>): JSX.Element | null =>
   title ? (
-    <Typography {...centerHorizontally} variant="h5">
+    <Typography component="div" {...centerHorizontally} variant="h5">
       {title}
     </Typography>
   ) : null;
@@ -52,8 +52,16 @@ const Caption = <T extends BaseEntityType>({
 }: Pick<Props<T>, 'caption' | 'subCaption'>): JSX.Element | null =>
   caption || subCaption ? (
     <Stack>
-      {caption ? <Typography variant="body1">{caption}</Typography> : null}
-      {subCaption ? <Typography variant="body2">{subCaption}</Typography> : null}
+      {caption ? (
+        <Typography component="div" variant="body1">
+          {caption}
+        </Typography>
+      ) : null}
+      {subCaption ? (
+        <Typography component="div" variant="body2">
+          {subCaption}
+        </Typography>
+      ) : null}
     </Stack>
   ) : null;
 

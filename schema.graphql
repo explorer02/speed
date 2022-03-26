@@ -1,207 +1,130 @@
-input UserAddressQueryInput {
-  landmark_in: [String]
-  pinCode_gt: String
-  street_exists: Boolean
-  houseNumber_gte: String
-  landmark_nin: [String]
-  landmark: String
-  street_gte: String
-  area_gt: String
-  locality_nin: [String]
-  pinCode_exists: Boolean
-  street_lt: String
-  landmark_gte: String
-  state_in: [String]
-  houseNumber_gt: String
-  street_in: [String]
-  locality: String
-  pinCode_in: [String]
-  street_ne: String
-  houseNumber_lte: String
-  OR: [UserAddressQueryInput!]
-  area_lt: String
-  pinCode_nin: [String]
-  houseNumber: String
-  pinCode_lt: String
-  city_lt: String
-  city_exists: Boolean
-  area_in: [String]
-  street_nin: [String]
-  landmark_gt: String
-  houseNumber_lt: String
-  state_gt: String
-  state_gte: String
-  city_gte: String
-  area_nin: [String]
-  pinCode: String
-  locality_lte: String
-  street_gt: String
-  area_gte: String
-  pinCode_ne: String
-  houseNumber_nin: [String]
-  locality_gt: String
-  AND: [UserAddressQueryInput!]
-  houseNumber_exists: Boolean
-  locality_exists: Boolean
-  street: String
-  area_ne: String
-  state_lt: String
-  state_ne: String
-  city_in: [String]
-  locality_lt: String
-  pinCode_gte: String
-  pinCode_lte: String
-  city_ne: String
-  houseNumber_ne: String
-  city: String
-  landmark_lte: String
-  state_exists: Boolean
-  city_lte: String
-  houseNumber_in: [String]
-  locality_ne: String
-  state_nin: [String]
-  city_nin: [String]
-  locality_in: [String]
-  area_exists: Boolean
-  landmark_ne: String
-  city_gt: String
-  landmark_lt: String
-  area_lte: String
-  state_lte: String
-  street_lte: String
-  area: String
-  state: String
-  locality_gte: String
-  landmark_exists: Boolean
+input OrderItemQueryInput {
+  quantity_gt: Int
+  price_gte: Float
+  quantity_ne: Int
+  price: Float
+  price_in: [Float]
+  OR: [OrderItemQueryInput!]
+  item_gte: ObjectId
+  item_ne: ObjectId
+  price_ne: Float
+  quantity_exists: Boolean
+  item: ObjectId
+  price_exists: Boolean
+  item_nin: [ObjectId]
+  price_lte: Float
+  quantity_lte: Int
+  quantity: Int
+  item_lte: ObjectId
+  quantity_gte: Int
+  item_gt: ObjectId
+  item_exists: Boolean
+  price_lt: Float
+  item_in: [ObjectId]
+  quantity_nin: [Int]
+  quantity_in: [Int]
+  AND: [OrderItemQueryInput!]
+  price_gt: Float
+  quantity_lt: Int
+  price_nin: [Float]
+  item_lt: ObjectId
 }
-enum UserSortByInput {
-  CREATEDON_ASC
-  LINKID_ASC
-  _ID_DESC
-  CREATEDON_DESC
-  LINKID_DESC
-  NAME_ASC
-  NAME_DESC
-  PHONE_ASC
-  PHONE_DESC
-  _ID_ASC
-}
-input UserAddressUpdateInput {
-  landmark: String
-  state: String
-  street_unset: Boolean
-  pinCode_unset: Boolean
-  houseNumber: String
-  city_unset: Boolean
-  state_unset: Boolean
-  area: String
-  city: String
-  houseNumber_unset: Boolean
-  street: String
-  area_unset: Boolean
-  locality: String
-  locality_unset: Boolean
-  landmark_unset: Boolean
-  pinCode: String
-}
-scalar ObjectId
 input StoreQueryInput {
-  orders_in: [OrderQueryInput]
-  items_nin: [StoreItemQueryInput]
-  name_gte: String
-  _id_in: [ObjectId]
-  items: [StoreItemQueryInput]
-  address: String
-  name_nin: [String]
-  name_lte: String
-  _id: ObjectId
+  name: String
+  _id_gt: ObjectId
+  _id_gte: ObjectId
+  items_in: [StoreItemQueryInput]
+  address_exists: Boolean
+  address_gte: String
   _id_nin: [ObjectId]
   location_exists: Boolean
-  orders: [OrderQueryInput]
-  name_exists: Boolean
-  _id_exists: Boolean
-  name_in: [String]
-  _id_gte: ObjectId
-  _id_lt: ObjectId
+  name_ne: String
+  location: StoreLocationQueryInput
+  name_gte: String
+  AND: [StoreQueryInput!]
+  name_nin: [String]
+  _id_ne: ObjectId
+  address: String
   orders_nin: [OrderQueryInput]
+  items_nin: [StoreItemQueryInput]
+  items_exists: Boolean
+  _id_in: [ObjectId]
+  address_lt: String
+  _id_lt: ObjectId
+  name_gt: String
   orders_exists: Boolean
+  name_exists: Boolean
+  OR: [StoreQueryInput!]
+  _id: ObjectId
+  orders_in: [OrderQueryInput]
   address_nin: [String]
   address_in: [String]
-  name_lt: String
-  name_ne: String
-  address_lt: String
-  AND: [StoreQueryInput!]
-  address_exists: Boolean
-  items_in: [StoreItemQueryInput]
+  _id_exists: Boolean
   _id_lte: ObjectId
-  OR: [StoreQueryInput!]
-  _id_ne: ObjectId
-  address_ne: String
-  name: String
-  location: StoreLocationQueryInput
-  name_gt: String
   address_gt: String
+  orders: [OrderQueryInput]
+  name_lte: String
+  address_ne: String
+  name_lt: String
+  items: [StoreItemQueryInput]
+  name_in: [String]
   address_lte: String
-  items_exists: Boolean
-  _id_gt: ObjectId
-  address_gte: String
 }
-type InsertManyPayload {
-  insertedIds: [ObjectId]!
-}
-enum StoreSortByInput {
-  ADDRESS_ASC
-  ADDRESS_DESC
-  NAME_ASC
-  NAME_DESC
-  _ID_ASC
-  _ID_DESC
-}
-input OrderItemUpdateInput {
-  price_inc: Float
-  price_unset: Boolean
-  quantity: Int
-  quantity_inc: Int
-  quantity_unset: Boolean
-  item: ObjectId
-  item_unset: Boolean
-  price: Float
-}
-input UserInsertInput {
-  createdOn: Long
+type User {
+  _id: ObjectId
+  address: UserAddress
+  createdOn: DateTime
   linkId: String
-  location: UserLocationInsertInput
+  location: UserLocation
   name: String
-  orders: UserOrdersRelationInput
+  orders: [Order]
   phone: String
+}
+type Item {
   _id: ObjectId
-  address: UserAddressInsertInput
+  description: String
+  label: String
+  unit: String
 }
-input OrderInsertInput {
-  status: String
-  store: OrderStoreRelationInput
-  totalAmount: Float
-  updatedOn: Long
-  user: OrderUserRelationInput
+input ItemQueryInput {
+  unit_in: [String]
+  unit_ne: String
+  description_gte: String
   _id: ObjectId
-  createdOn: Long
-  items: [OrderItemInsertInput]
-}
-input StoreLocationInsertInput {
-  lat: Float
-  lng: Float
-}
-input StoreOrdersRelationInput {
-  create: [OrderInsertInput]
-  link: [ObjectId]
-}
-input StoreLocationUpdateInput {
-  lng_inc: Float
-  lng_unset: Boolean
-  lat: Float
-  lat_inc: Float
-  lat_unset: Boolean
-  lng: Float
+  unit_nin: [String]
+  _id_in: [ObjectId]
+  _id_ne: ObjectId
+  _id_gte: ObjectId
+  description_nin: [String]
+  label_nin: [String]
+  description_exists: Boolean
+  _id_gt: ObjectId
+  description_gt: String
+  _id_lte: ObjectId
+  label_lt: String
+  unit_lte: String
+  label_lte: String
+  label_gte: String
+  description_in: [String]
+  _id_exists: Boolean
+  label_gt: String
+  unit_exists: Boolean
+  description_ne: String
+  description_lte: String
+  _id_nin: [ObjectId]
+  label_exists: Boolean
+  OR: [ItemQueryInput!]
+  AND: [ItemQueryInput!]
+  unit: String
+  unit_lt: String
+  description_lt: String
+  unit_gte: String
+  label_ne: String
+  description: String
+  label: String
+  _id_lt: ObjectId
+  unit_gt: String
+  label_in: [String]
 }
 type Mutation {
   createOrder(input: OrderInsertInput): Order
@@ -230,26 +153,155 @@ type Mutation {
   updateManyStores(query: StoreQueryInput, set: StoreUpdateInput!): UpdateManyPayload
   updateManyUsers(query: UserQueryInput, set: UserUpdateInput!): UpdateManyPayload
   updateOneItem(query: ItemQueryInput, set: ItemUpdateInput!): Item
-  updateOneOrder(query: OrderQueryInput, set: OrderUpdateInput!): Order
+  updateOneOrder(set: OrderUpdateInput!, query: OrderQueryInput): Order
   updateOneStore(query: StoreQueryInput, set: StoreUpdateInput!): Store
   updateOneUser(query: UserQueryInput, set: UserUpdateInput!): User
   upsertOneItem(query: ItemQueryInput, data: ItemInsertInput!): Item
   upsertOneOrder(query: OrderQueryInput, data: OrderInsertInput!): Order
   upsertOneStore(query: StoreQueryInput, data: StoreInsertInput!): Store
-  upsertOneUser(data: UserInsertInput!, query: UserQueryInput): User
+  upsertOneUser(query: UserQueryInput, data: UserInsertInput!): User
 }
-input OrderItemInsertInput {
+input StoreItemInsertInput {
+  item: ObjectId
   price: Float
   quantity: Int
+}
+input OrderUpdateInput {
+  user: OrderUserRelationInput
+  store: OrderStoreRelationInput
+  updatedOn_unset: Boolean
+  _id_unset: Boolean
+  createdOn_unset: Boolean
+  items: [OrderItemUpdateInput]
+  totalAmount_inc: Float
+  status_unset: Boolean
+  totalAmount: Float
+  updatedOn: DateTime
+  _id: ObjectId
+  items_unset: Boolean
+  user_unset: Boolean
+  store_unset: Boolean
+  totalAmount_unset: Boolean
+  createdOn: DateTime
+  status: String
+}
+input ItemUpdateInput {
+  _id: ObjectId
+  _id_unset: Boolean
+  description: String
+  description_unset: Boolean
+  label: String
+  label_unset: Boolean
+  unit: String
+  unit_unset: Boolean
+}
+input StoreItemQueryInput {
+  price_gte: Float
+  quantity_in: [Int]
+  price_gt: Float
+  price_exists: Boolean
+  price_ne: Float
+  item_lt: ObjectId
+  item_exists: Boolean
   item: ObjectId
+  quantity: Int
+  quantity_lt: Int
+  price_lte: Float
+  quantity_ne: Int
+  item_in: [ObjectId]
+  AND: [StoreItemQueryInput!]
+  price: Float
+  quantity_gte: Int
+  price_nin: [Float]
+  OR: [StoreItemQueryInput!]
+  item_gte: ObjectId
+  item_nin: [ObjectId]
+  price_lt: Float
+  item_lte: ObjectId
+  quantity_lte: Int
+  item_gt: ObjectId
+  price_in: [Float]
+  quantity_nin: [Int]
+  quantity_exists: Boolean
+  item_ne: ObjectId
+  quantity_gt: Int
 }
-input OrderStoreRelationInput {
-  create: StoreInsertInput
-  link: ObjectId
+input StoreInsertInput {
+  address: String
+  items: [StoreItemInsertInput]
+  location: StoreLocationInsertInput
+  name: String
+  orders: StoreOrdersRelationInput
+  _id: ObjectId
 }
-input UserOrdersRelationInput {
-  create: [OrderInsertInput]
-  link: [ObjectId]
+input StoreLocationUpdateInput {
+  lat_unset: Boolean
+  lat_inc: Float
+  lng: Float
+  lng_inc: Float
+  lng_unset: Boolean
+  lat: Float
+}
+enum ItemSortByInput {
+  LABEL_ASC
+  LABEL_DESC
+  UNIT_ASC
+  UNIT_DESC
+  _ID_ASC
+  _ID_DESC
+  DESCRIPTION_ASC
+  DESCRIPTION_DESC
+}
+input OrderItemInsertInput {
+  quantity: Int
+  item: ObjectId
+  price: Float
+}
+input UserAddressUpdateInput {
+  pinCode: String
+  city_unset: Boolean
+  pinCode_unset: Boolean
+  houseNumber: String
+  landmark_unset: Boolean
+  street_unset: Boolean
+  locality: String
+  state: String
+  area_unset: Boolean
+  landmark: String
+  area: String
+  locality_unset: Boolean
+  street: String
+  houseNumber_unset: Boolean
+  city: String
+  state_unset: Boolean
+}
+scalar DateTime
+input StoreLocationQueryInput {
+  lng_in: [Float]
+  lat_lte: Float
+  lat_gt: Float
+  lng: Float
+  lat: Float
+  lng_gte: Float
+  lng_nin: [Float]
+  lat_nin: [Float]
+  lat_lt: Float
+  AND: [StoreLocationQueryInput!]
+  lng_exists: Boolean
+  lat_in: [Float]
+  lat_ne: Float
+  lat_exists: Boolean
+  lat_gte: Float
+  lng_lte: Float
+  OR: [StoreLocationQueryInput!]
+  lng_gt: Float
+  lng_lt: Float
+  lng_ne: Float
+}
+type OrderItem {
+  item: Item
+  price: Float
+  quantity: Int
 }
 input UserAddressInsertInput {
   landmark: String
@@ -261,203 +313,179 @@ input UserAddressInsertInput {
   city: String
   houseNumber: String
 }
-input StoreLocationQueryInput {
-  lat_ne: Float
-  lng_ne: Float
-  AND: [StoreLocationQueryInput!]
-  lat_in: [Float]
-  lng: Float
-  lng_in: [Float]
-  lng_lte: Float
-  lat_exists: Boolean
-  OR: [StoreLocationQueryInput!]
-  lat_gt: Float
-  lat_gte: Float
-  lng_gte: Float
-  lng_nin: [Float]
-  lng_exists: Boolean
-  lat_lte: Float
-  lng_lt: Float
-  lat_nin: [Float]
-  lng_gt: Float
-  lat: Float
-  lat_lt: Float
-}
-type Item {
-  _id: ObjectId
-  description: String
-  label: String
-  unit: String
-}
-input ItemQueryInput {
-  _id_exists: Boolean
-  label: String
-  description_in: [String]
-  label_ne: String
-  _id_ne: ObjectId
-  label_lte: String
-  label_gte: String
-  label_nin: [String]
-  _id_lte: ObjectId
-  label_exists: Boolean
-  unit_in: [String]
-  description_exists: Boolean
-  description: String
-  unit: String
-  unit_exists: Boolean
-  _id_lt: ObjectId
-  description_ne: String
-  AND: [ItemQueryInput!]
-  description_gte: String
-  unit_gt: String
-  description_gt: String
-  unit_lte: String
-  _id_gt: ObjectId
-  label_in: [String]
-  _id_nin: [ObjectId]
-  label_gt: String
-  _id: ObjectId
-  label_lt: String
-  unit_nin: [String]
-  unit_lt: String
-  _id_in: [ObjectId]
-  unit_ne: String
-  description_nin: [String]
-  OR: [ItemQueryInput!]
-  description_lte: String
-  unit_gte: String
-  description_lt: String
-  _id_gte: ObjectId
-}
-input UserLocationInsertInput {
-  lng: Float
-  lat: Float
-}
-input UserUpdateInput {
-  location_unset: Boolean
-  orders: UserOrdersRelationInput
-  linkId: String
-  linkId_unset: Boolean
-  name: String
-  name_unset: Boolean
-  location: UserLocationUpdateInput
-  address_unset: Boolean
-  address: UserAddressUpdateInput
-  orders_unset: Boolean
-  _id: ObjectId
-  _id_unset: Boolean
-  phone: String
-  createdOn: Long
-  phone_unset: Boolean
-  createdOn_unset: Boolean
-}
 input StoreUpdateInput {
-  _id_unset: Boolean
-  items: [StoreItemUpdateInput]
-  items_unset: Boolean
-  orders_unset: Boolean
-  _id: ObjectId
-  location: StoreLocationUpdateInput
   location_unset: Boolean
+  address_unset: Boolean
+  orders: StoreOrdersRelationInput
+  _id_unset: Boolean
+  items_unset: Boolean
   name_unset: Boolean
+  orders_unset: Boolean
+  items: [StoreItemUpdateInput]
+  location: StoreLocationUpdateInput
+  _id: ObjectId
   address: String
   name: String
-  orders: StoreOrdersRelationInput
-  address_unset: Boolean
+}
+type Query {
+  item(query: ItemQueryInput): Item
+  items(query: ItemQueryInput, limit: Int = 100, sortBy: ItemSortByInput): [Item]!
+  order(query: OrderQueryInput): Order
+  orders(query: OrderQueryInput, limit: Int = 100, sortBy: OrderSortByInput): [Order]!
+  store(query: StoreQueryInput): Store
+  stores(query: StoreQueryInput, limit: Int = 100, sortBy: StoreSortByInput): [Store]!
+  user(query: UserQueryInput): User
+  users(query: UserQueryInput, limit: Int = 100, sortBy: UserSortByInput): [User]!
+}
+scalar ObjectId
+type StoreLocation {
+  lat: Float
+  lng: Float
+}
+enum OrderSortByInput {
+  TOTALAMOUNT_ASC
+  USER_ASC
+  USER_DESC
+  UPDATEDON_ASC
+  STATUS_DESC
+  STORE_ASC
+  TOTALAMOUNT_DESC
+  CREATEDON_DESC
+  STATUS_ASC
+  UPDATEDON_DESC
+  STORE_DESC
+  _ID_ASC
+  _ID_DESC
+  CREATEDON_ASC
+}
+type Store {
+  _id: ObjectId
+  address: String
+  items: [StoreItem]
+  location: StoreLocation
+  name: String
+  orders: [Order]
 }
 type StoreItem {
   item: Item
   price: Float
   quantity: Int
 }
-input StoreItemUpdateInput {
-  quantity_inc: Int
-  quantity_unset: Boolean
-  item: ObjectId
-  item_unset: Boolean
-  price: Float
-  price_inc: Float
-  price_unset: Boolean
-  quantity: Int
+enum UserSortByInput {
+  _ID_ASC
+  CREATEDON_ASC
+  LINKID_DESC
+  NAME_ASC
+  PHONE_ASC
+  _ID_DESC
+  CREATEDON_DESC
+  LINKID_ASC
+  NAME_DESC
+  PHONE_DESC
 }
-input OrderQueryInput {
-  totalAmount_nin: [Float]
-  updatedOn_gte: Long
-  updatedOn_nin: [Long]
-  status_lte: String
-  updatedOn_ne: Long
-  store: StoreQueryInput
-  totalAmount_lt: Float
-  _id_lte: ObjectId
-  updatedOn_exists: Boolean
-  createdOn_exists: Boolean
-  status_gt: String
-  _id_exists: Boolean
-  status: String
-  totalAmount_lte: Float
-  createdOn_lt: Long
-  createdOn_in: [Long]
-  store_exists: Boolean
-  createdOn_ne: Long
-  status_nin: [String]
-  items_nin: [OrderItemQueryInput]
-  totalAmount: Float
-  user: UserQueryInput
-  _id_lt: ObjectId
-  createdOn_nin: [Long]
-  updatedOn_lte: Long
-  _id: ObjectId
-  items: [OrderItemQueryInput]
-  createdOn_gte: Long
-  totalAmount_in: [Float]
-  status_ne: String
-  _id_gte: ObjectId
-  status_exists: Boolean
-  AND: [OrderQueryInput!]
-  items_in: [OrderItemQueryInput]
-  createdOn: Long
-  user_exists: Boolean
-  _id_nin: [ObjectId]
-  _id_gt: ObjectId
-  OR: [OrderQueryInput!]
-  _id_ne: ObjectId
-  createdOn_lte: Long
-  updatedOn_lt: Long
-  createdOn_gt: Long
-  updatedOn_in: [Long]
-  updatedOn: Long
-  totalAmount_exists: Boolean
-  totalAmount_gt: Float
-  _id_in: [ObjectId]
-  status_in: [String]
-  updatedOn_gt: Long
-  totalAmount_ne: Float
-  status_lt: String
-  totalAmount_gte: Float
-  status_gte: String
-  items_exists: Boolean
+input OrderUserRelationInput {
+  create: UserInsertInput
+  link: ObjectId
+}
+input OrderStoreRelationInput {
+  link: ObjectId
+  create: StoreInsertInput
+}
+type InsertManyPayload {
+  insertedIds: [ObjectId]!
 }
 input UserLocationQueryInput {
+  lat_lt: Float
+  lng_exists: Boolean
+  lat_in: [Float]
   lng: Float
-  OR: [UserLocationQueryInput!]
-  lat_lte: Float
-  lng_in: [Float]
-  AND: [UserLocationQueryInput!]
-  lat: Float
+  lng_ne: Float
   lng_nin: [Float]
-  lat_ne: Float
-  lat_gte: Float
-  lat_exists: Boolean
+  lat_lte: Float
   lat_gt: Float
   lng_gte: Float
-  lat_in: [Float]
-  lng_lt: Float
-  lng_ne: Float
-  lng_gt: Float
-  lng_exists: Boolean
-  lat_nin: [Float]
-  lat_lt: Float
   lng_lte: Float
+  lng_in: [Float]
+  lat_ne: Float
+  lat: Float
+  AND: [UserLocationQueryInput!]
+  lat_gte: Float
+  lng_gt: Float
+  lat_exists: Boolean
+  lat_nin: [Float]
+  lng_lt: Float
+  OR: [UserLocationQueryInput!]
+}
+input UserQueryInput {
+  OR: [UserQueryInput!]
+  orders_nin: [OrderQueryInput]
+  phone_gt: String
+  createdOn_gt: DateTime
+  name: String
+  linkId_ne: String
+  createdOn_in: [DateTime]
+  linkId_nin: [String]
+  address: UserAddressQueryInput
+  orders_exists: Boolean
+  phone_lte: String
+  _id_nin: [ObjectId]
+  linkId_gte: String
+  name_gt: String
+  location_exists: Boolean
+  location: UserLocationQueryInput
+  phone_gte: String
+  linkId: String
+  createdOn_lte: DateTime
+  createdOn: DateTime
+  phone_in: [String]
+  phone_exists: Boolean
+  createdOn_lt: DateTime
+  name_lt: String
+  name_exists: Boolean
+  _id_lte: ObjectId
+  _id_in: [ObjectId]
+  orders: [OrderQueryInput]
+  linkId_lt: String
+  linkId_gt: String
+  _id_gte: ObjectId
+  name_nin: [String]
+  _id_lt: ObjectId
+  linkId_exists: Boolean
+  name_in: [String]
+  _id: ObjectId
+  phone: String
+  _id_ne: ObjectId
+  address_exists: Boolean
+  createdOn_exists: Boolean
+  orders_in: [OrderQueryInput]
+  name_ne: String
+  _id_exists: Boolean
+  phone_nin: [String]
+  phone_ne: String
+  linkId_in: [String]
+  _id_gt: ObjectId
+  createdOn_ne: DateTime
+  linkId_lte: String
+  name_gte: String
+  AND: [UserQueryInput!]
+  name_lte: String
+  phone_lt: String
+  createdOn_nin: [DateTime]
+  createdOn_gte: DateTime
+}
+input UserInsertInput {
+  address: UserAddressInsertInput
+  createdOn: DateTime
+  linkId: String
+  location: UserLocationInsertInput
+  name: String
+  orders: UserOrdersRelationInput
+  phone: String
+  _id: ObjectId
+}
+input StoreLocationInsertInput {
+  lng: Float
+  lat: Float
 }
 input ItemInsertInput {
   _id: ObjectId
@@ -465,137 +493,195 @@ input ItemInsertInput {
   label: String
   unit: String
 }
-input UserLocationUpdateInput {
-  lng: Float
-  lng_unset: Boolean
-  lng_inc: Float
-  lat: Float
-  lat_inc: Float
-  lat_unset: Boolean
-}
-input StoreInsertInput {
-  address: String
-  items: [StoreItemInsertInput]
-  location: StoreLocationInsertInput
-  name: String
-  orders: StoreOrdersRelationInput
+input OrderInsertInput {
+  updatedOn: DateTime
+  user: OrderUserRelationInput
   _id: ObjectId
+  createdOn: DateTime
+  items: [OrderItemInsertInput]
+  status: String
+  store: OrderStoreRelationInput
+  totalAmount: Float
 }
-input StoreItemInsertInput {
-  price: Float
-  quantity: Int
-  item: ObjectId
-}
-input OrderUserRelationInput {
-  create: UserInsertInput
-  link: ObjectId
-}
-type StoreLocation {
-  lat: Float
-  lng: Float
-}
-scalar Long
-type UserLocation {
-  lat: Float
-  lng: Float
-}
-type OrderItem {
-  item: Item
-  price: Float
-  quantity: Int
-}
-enum OrderSortByInput {
-  _ID_DESC
-  TOTALAMOUNT_ASC
-  TOTALAMOUNT_DESC
-  USER_DESC
-  CREATEDON_ASC
-  CREATEDON_DESC
-  STORE_DESC
-  STATUS_ASC
-  STATUS_DESC
-  STORE_ASC
-  USER_ASC
-  _ID_ASC
-  UPDATEDON_ASC
-  UPDATEDON_DESC
-}
-input StoreItemQueryInput {
-  price_in: [Float]
-  item_lt: ObjectId
-  quantity_in: [Int]
-  price_lte: Float
-  quantity_lte: Int
-  item_in: [ObjectId]
-  item_gt: ObjectId
-  quantity_exists: Boolean
-  item: ObjectId
-  item_lte: ObjectId
-  price_gte: Float
-  quantity_lt: Int
-  AND: [StoreItemQueryInput!]
-  quantity: Int
-  OR: [StoreItemQueryInput!]
-  quantity_ne: Int
-  item_exists: Boolean
-  quantity_gt: Int
-  price: Float
-  price_lt: Float
-  quantity_gte: Int
-  price_exists: Boolean
-  item_ne: ObjectId
-  item_nin: [ObjectId]
-  price_gt: Float
-  item_gte: ObjectId
-  price_ne: Float
-  quantity_nin: [Int]
-  price_nin: [Float]
-}
-type DeleteManyPayload {
-  deletedCount: Int!
+input StoreOrdersRelationInput {
+  create: [OrderInsertInput]
+  link: [ObjectId]
 }
 type UpdateManyPayload {
   matchedCount: Int!
   modifiedCount: Int!
 }
-input OrderUpdateInput {
-  updatedOn_unset: Boolean
-  totalAmount: Float
-  _id_unset: Boolean
-  store: OrderStoreRelationInput
-  totalAmount_unset: Boolean
-  status_unset: Boolean
-  createdOn: Long
-  items: [OrderItemUpdateInput]
-  _id: ObjectId
-  status: String
-  user: OrderUserRelationInput
-  items_unset: Boolean
-  store_unset: Boolean
-  totalAmount_inc: Float
-  updatedOn: Long
-  createdOn_unset: Boolean
-  user_unset: Boolean
+input StoreItemUpdateInput {
+  item: ObjectId
+  item_unset: Boolean
+  price: Float
+  price_unset: Boolean
+  price_inc: Float
+  quantity: Int
+  quantity_inc: Int
+  quantity_unset: Boolean
 }
-type Query {
-  item(query: ItemQueryInput): Item
-  items(query: ItemQueryInput, limit: Int = 100, sortBy: ItemSortByInput): [Item]!
-  order(query: OrderQueryInput): Order
-  orders(limit: Int = 100, sortBy: OrderSortByInput, query: OrderQueryInput): [Order]!
-  store(query: StoreQueryInput): Store
-  stores(query: StoreQueryInput, limit: Int = 100, sortBy: StoreSortByInput): [Store]!
-  user(query: UserQueryInput): User
-  users(query: UserQueryInput, limit: Int = 100, sortBy: UserSortByInput): [User]!
+type DeleteManyPayload {
+  deletedCount: Int!
+}
+input UserOrdersRelationInput {
+  link: [ObjectId]
+  create: [OrderInsertInput]
+}
+input OrderQueryInput {
+  status_gt: String
+  OR: [OrderQueryInput!]
+  status_lte: String
+  _id_gt: ObjectId
+  status: String
+  user_exists: Boolean
+  createdOn_gt: DateTime
+  totalAmount_lte: Float
+  _id_in: [ObjectId]
+  _id_exists: Boolean
+  createdOn_in: [DateTime]
+  totalAmount_ne: Float
+  status_nin: [String]
+  totalAmount_exists: Boolean
+  _id_lte: ObjectId
+  createdOn_nin: [DateTime]
+  totalAmount_nin: [Float]
+  updatedOn_in: [DateTime]
+  status_in: [String]
+  items_nin: [OrderItemQueryInput]
+  totalAmount_gt: Float
+  status_gte: String
+  updatedOn_lt: DateTime
+  createdOn_exists: Boolean
+  _id_ne: ObjectId
+  store: StoreQueryInput
+  items: [OrderItemQueryInput]
+  _id_gte: ObjectId
+  totalAmount_gte: Float
+  createdOn_ne: DateTime
+  _id_lt: ObjectId
+  totalAmount_lt: Float
+  createdOn_lt: DateTime
+  updatedOn_ne: DateTime
+  createdOn_lte: DateTime
+  store_exists: Boolean
+  status_lt: String
+  updatedOn_exists: Boolean
+  _id_nin: [ObjectId]
+  items_exists: Boolean
+  updatedOn: DateTime
+  _id: ObjectId
+  user: UserQueryInput
+  totalAmount: Float
+  updatedOn_gt: DateTime
+  status_ne: String
+  updatedOn_nin: [DateTime]
+  totalAmount_in: [Float]
+  createdOn_gte: DateTime
+  AND: [OrderQueryInput!]
+  createdOn: DateTime
+  status_exists: Boolean
+  items_in: [OrderItemQueryInput]
+  updatedOn_gte: DateTime
+  updatedOn_lte: DateTime
+}
+input UserAddressQueryInput {
+  houseNumber_lt: String
+  state_gt: String
+  OR: [UserAddressQueryInput!]
+  state_gte: String
+  houseNumber_gt: String
+  landmark_in: [String]
+  state_lt: String
+  area_exists: Boolean
+  area_in: [String]
+  locality_ne: String
+  landmark_gt: String
+  pinCode_nin: [String]
+  houseNumber_exists: Boolean
+  pinCode_gt: String
+  houseNumber_nin: [String]
+  street_lte: String
+  landmark_exists: Boolean
+  state_nin: [String]
+  city_nin: [String]
+  street_ne: String
+  area_nin: [String]
+  houseNumber_ne: String
+  locality_gt: String
+  street_lt: String
+  street_in: [String]
+  locality: String
+  landmark: String
+  city_gte: String
+  area_lte: String
+  houseNumber: String
+  city_ne: String
+  houseNumber_gte: String
+  area_gt: String
+  city_lte: String
+  street_nin: [String]
+  state_exists: Boolean
+  landmark_ne: String
+  area_ne: String
+  city_lt: String
+  pinCode_lt: String
+  state_lte: String
+  city_in: [String]
+  street_gte: String
+  street_gt: String
+  pinCode_ne: String
+  locality_exists: Boolean
+  houseNumber_lte: String
+  locality_in: [String]
+  state_ne: String
+  locality_nin: [String]
+  pinCode: String
+  locality_lte: String
+  city: String
+  locality_lt: String
+  street: String
+  landmark_lte: String
+  locality_gte: String
+  state_in: [String]
+  area: String
+  city_exists: Boolean
+  landmark_nin: [String]
+  state: String
+  city_gt: String
+  pinCode_in: [String]
+  area_gte: String
+  landmark_gte: String
+  pinCode_lte: String
+  pinCode_gte: String
+  landmark_lt: String
+  area_lt: String
+  street_exists: Boolean
+  AND: [UserAddressQueryInput!]
+  pinCode_exists: Boolean
+  houseNumber_in: [String]
+}
+type UserLocation {
+  lat: Float
+  lng: Float
 }
 type Order {
   _id: ObjectId
-  createdOn: Long
+  createdOn: DateTime
   items: [OrderItem]
   status: String
   store: Store
   totalAmount: Float
-  updatedOn: Long
+  updatedOn: DateTime
   user: User
+}
+enum StoreSortByInput {
+  NAME_DESC
+  _ID_ASC
+  _ID_DESC
+  ADDRESS_ASC
+  ADDRESS_DESC
+  NAME_ASC
 }
 type UserAddress {
   area: String
@@ -607,129 +693,43 @@ type UserAddress {
   state: String
   street: String
 }
-enum ItemSortByInput {
-  UNIT_ASC
-  UNIT_DESC
-  _ID_ASC
-  _ID_DESC
-  DESCRIPTION_ASC
-  DESCRIPTION_DESC
-  LABEL_ASC
-  LABEL_DESC
-}
-input UserQueryInput {
-  phone_in: [String]
-  linkId_gte: String
-  createdOn_gt: Long
-  name_ne: String
-  name_lt: String
-  _id_ne: ObjectId
-  orders_in: [OrderQueryInput]
-  _id_gt: ObjectId
-  _id_gte: ObjectId
-  _id_in: [ObjectId]
-  linkId_gt: String
-  _id: ObjectId
-  linkId_lt: String
-  location: UserLocationQueryInput
-  name_nin: [String]
-  createdOn_in: [Long]
-  orders_exists: Boolean
+input UserUpdateInput {
   name: String
-  name_exists: Boolean
-  phone_gte: String
-  createdOn_lte: Long
+  _id: ObjectId
+  location: UserLocationUpdateInput
   phone: String
-  name_lte: String
-  linkId_lte: String
-  phone_gt: String
-  createdOn_gte: Long
-  linkId_nin: [String]
-  _id_lt: ObjectId
-  name_gte: String
-  phone_lt: String
-  createdOn_ne: Long
-  address_exists: Boolean
-  linkId_exists: Boolean
-  orders: [OrderQueryInput]
-  phone_nin: [String]
-  createdOn_lt: Long
-  orders_nin: [OrderQueryInput]
-  location_exists: Boolean
-  createdOn_nin: [Long]
-  address: UserAddressQueryInput
-  linkId: String
-  linkId_ne: String
-  createdOn: Long
-  _id_exists: Boolean
-  _id_nin: [ObjectId]
-  phone_exists: Boolean
-  phone_lte: String
-  name_gt: String
-  _id_lte: ObjectId
-  OR: [UserQueryInput!]
-  AND: [UserQueryInput!]
-  linkId_in: [String]
-  phone_ne: String
-  name_in: [String]
-  createdOn_exists: Boolean
-}
-input OrderItemQueryInput {
-  price_gt: Float
-  item_lte: ObjectId
-  item: ObjectId
-  OR: [OrderItemQueryInput!]
-  item_in: [ObjectId]
-  quantity_exists: Boolean
-  item_ne: ObjectId
-  item_lt: ObjectId
-  price_ne: Float
-  price_exists: Boolean
-  quantity_ne: Int
-  price_lte: Float
-  price_in: [Float]
-  quantity_nin: [Int]
-  quantity_in: [Int]
-  quantity_gte: Int
-  price: Float
-  quantity: Int
-  AND: [OrderItemQueryInput!]
-  item_gte: ObjectId
-  quantity_lte: Int
-  quantity_lt: Int
-  item_exists: Boolean
-  price_nin: [Float]
-  item_nin: [ObjectId]
-  price_gte: Float
-  price_lt: Float
-  item_gt: ObjectId
-  quantity_gt: Int
-}
-type User {
-  _id: ObjectId
-  address: UserAddress
-  createdOn: Long
-  linkId: String
-  location: UserLocation
-  name: String
-  orders: [Order]
-  phone: String
-}
-type Store {
-  _id: ObjectId
-  address: String
-  items: [StoreItem]
-  location: StoreLocation
-  name: String
-  orders: [Order]
-}
-input ItemUpdateInput {
-  description: String
-  description_unset: Boolean
-  label: String
-  label_unset: Boolean
-  unit: String
-  unit_unset: Boolean
-  _id: ObjectId
+  phone_unset: Boolean
   _id_unset: Boolean
+  name_unset: Boolean
+  orders_unset: Boolean
+  address: UserAddressUpdateInput
+  createdOn: DateTime
+  createdOn_unset: Boolean
+  location_unset: Boolean
+  linkId_unset: Boolean
+  linkId: String
+  address_unset: Boolean
+  orders: UserOrdersRelationInput
+}
+input UserLocationUpdateInput {
+  lat_inc: Float
+  lat_unset: Boolean
+  lng: Float
+  lng_inc: Float
+  lng_unset: Boolean
+  lat: Float
+}
+input UserLocationInsertInput {
+  lat: Float
+  lng: Float
+}
+input OrderItemUpdateInput {
+  item_unset: Boolean
+  price: Float
+  price_inc: Float
+  price_unset: Boolean
+  quantity: Int
+  quantity_inc: Int
+  quantity_unset: Boolean
+  item: ObjectId
 }

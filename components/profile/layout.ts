@@ -31,7 +31,7 @@ export const LAYOUT: Layout = {
         {
           type: ITEM_TYPE.COLUMN,
           id: FIELDS.LOCATION.RECENTER,
-          style: { xs: 1 },
+          style: { xs: 2 },
         },
         {
           type: ITEM_TYPE.COLUMN,

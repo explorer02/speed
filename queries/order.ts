@@ -15,10 +15,20 @@ export const USER_ORDER_FRAGMENT = gql`
     store {
       _id
       name
+      address
     }
     totalAmount
     createdOn
     updatedOn
     status
   }
+`;
+
+export const FETCH_ONE_ORDER = gql`
+  query FetchOrder($query: OrderQueryInput!) {
+    order(query: $query) {
+      ...OrderFields
+    }
+  }
+  ${USER_ORDER_FRAGMENT}
 `;

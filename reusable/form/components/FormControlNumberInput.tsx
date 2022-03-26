@@ -77,7 +77,7 @@ export const FormControlNumberInput = (props: Props): JSX.Element => {
       <InputComponent
         disabled={disabled || loading}
         id="component-outlined"
-        value={value}
+        value={value ?? ''}
         onChange={handleChange}
         label={label}
         inputRef={inputRef}

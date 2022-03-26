@@ -35,7 +35,7 @@ const HOME: NavItem = {
 const AVAILABILITY = {
   key: 'availability',
   title: 'Availability',
-  loginRequired: false,
+  loginRequired: true,
   path: AVAILABILITY_PATH,
   startIcon: TrendingUpOutlinedIcon,
 };

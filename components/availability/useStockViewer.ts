@@ -4,7 +4,7 @@ import _orderBy from 'lodash/orderBy';
 
 // hooks
 import { useRefreshTimer } from './useRefreshTimer';
-import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/router';
 import { useStateWithRef } from 'hooks/useStateWithRef';
 import { useStoreQueryWithItems } from 'hooks/useStoreQueryWithItems';
 

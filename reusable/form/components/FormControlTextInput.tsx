@@ -54,7 +54,7 @@ export const FormControlTextInput = (props: Props): JSX.Element => {
       <OutlinedInput
         disabled={disabled || loading}
         id={id}
-        value={value}
+        value={value ?? ''}
         onChange={handleChange}
         label={label}
         type={type}
