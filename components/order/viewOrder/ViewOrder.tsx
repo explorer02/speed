@@ -3,14 +3,14 @@ import * as React from 'react';
 
 // components
 import { Table } from 'reusable/table';
+import { SnackBarOverlay } from 'reusable/snackbarOverlay';
+
+// hooks
+import { useViewOrder } from './hooks/useViewOrder';
 
 // helpers
 import { getColumnsConfig } from './tableConfig';
 import { getOrderId } from 'helper/getter';
-
-// types
-import { useViewOrder } from './hooks/useViewOrder';
-import { SnackBarOverlay } from 'reusable/snackbarOverlay';
 
 export const ViewOrder = (): JSX.Element => {
   const { data, isLoading, onAction, snackbarState } = useViewOrder();

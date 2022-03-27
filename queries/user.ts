@@ -37,6 +37,7 @@ export const FETCH_USER_QUERY = gql`
 export const FETCH_USER_ORDERS_QUERY = gql`
   query FetchUserOrders($query: UserQueryInput) {
     user(query: $query) {
+      _id
       orders {
         ...OrderFields
       }

@@ -4,12 +4,13 @@ import * as React from 'react';
 // components
 import { Box, Typography } from '@mui/material';
 import { LoadingButton } from 'reusable/loadingButton';
+import { CommonPageLayout, SLOT_NAMES } from 'containers/CommonPageLayout';
 
 // config
 import { RealmApp } from 'config/realm';
 
 // constants
-import { centerVertically, expandXY } from 'styles/styleObjects';
+import { centerVertically } from 'styles/styleObjects';
 
 // types
 import { GetServerSideProps } from 'next';
@@ -33,25 +34,27 @@ const ConfirmUser = ({ token, tokenId }: { token: string; tokenId: string }): JS
   }, [token, tokenId]);
 
   return (
-    <Box {...expandXY}>
-      <Box gap={2} {...centerVertically} mt={4} flexDirection="column">
-        <LoadingButton
-          loading={state.loading}
-          variant="contained"
-          sx={{ width: '200px' }}
-          onClick={onConfirm}
-        >
-          Confirm User
-        </LoadingButton>
-        <Typography>
-          {state.error ? `${state.error}. Please try again later` : null}
-          {state.isConfirmed ? 'User Confirmed' : null}
-          {!state.error && !state.isConfirmed
-            ? 'Please Click this button to confirm your account'
-            : null}
-        </Typography>
-      </Box>
-    </Box>
+    <CommonPageLayout title="Verify Account">
+      <CommonPageLayout.Slot name={SLOT_NAMES.MAIN}>
+        <Box gap={2} {...centerVertically} mt={4} flexDirection="column">
+          <LoadingButton
+            loading={state.loading}
+            variant="contained"
+            sx={{ width: '200px' }}
+            onClick={onConfirm}
+          >
+            Confirm User
+          </LoadingButton>
+          <Typography>
+            {state.error ? `${state.error}. Please try again later` : null}
+            {state.isConfirmed ? 'User Confirmed' : null}
+            {!state.error && !state.isConfirmed
+              ? 'Please Click this button to confirm your account'
+              : null}
+          </Typography>
+        </Box>
+      </CommonPageLayout.Slot>
+    </CommonPageLayout>
   );
 };
 

@@ -4,6 +4,7 @@ import * as React from 'react';
 // components
 import { Box } from '@mui/material';
 import { ViewSingleOrder } from 'components/order/viewSingleOrder';
+import { CommonPageLayout, SLOT_NAMES } from 'containers/CommonPageLayout';
 
 // config
 import { API_CLIENT } from 'config/apollo';
@@ -19,9 +20,13 @@ import { GetServerSideProps } from 'next';
 import { Order } from 'types/order';
 
 const OrderPreview = ({ order }: { order: Order }): JSX.Element => (
-  <Box {...expandXY} py={4} px={10}>
-    <ViewSingleOrder order={order} />
-  </Box>
+  <CommonPageLayout title="View Receipt">
+    <CommonPageLayout.Slot name={SLOT_NAMES.MAIN}>
+      <Box {...expandXY} py={4} px={10}>
+        <ViewSingleOrder order={order} />
+      </Box>
+    </CommonPageLayout.Slot>
+  </CommonPageLayout>
 );
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {

@@ -13,3 +13,8 @@ Next Steps
 3) Admin Route
 4) Unprotected routes in ProtectRouteComponent
 5) Profile Form Layout
+6) fix Locate us Page scroll
+7) fix order page
+8) padding in all pages
+9) Redesign Stock Availability page
+10) order page actions

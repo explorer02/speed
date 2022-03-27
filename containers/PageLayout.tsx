@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 // components
-import { Box, StackProps, useTheme } from '@mui/material';
+import { Box, BoxProps, StackProps, useTheme } from '@mui/material';
 
 // constants
 import { expandXY } from 'styles/styleObjects';
@@ -39,18 +39,18 @@ export const PageLayout = ({
       overflow="hidden"
     >
       {sidebarSlot ? (
-        <Box width={SIDEBAR_WIDTH} height="100%" id="sidebar_container">
+        <Box width={SIDEBAR_WIDTH} height="100%" id="sidebar_container" sx={sidebarSlot?.props?.sx}>
           {sidebarSlot?.props?.children}
         </Box>
       ) : null}
       <Box flex="1 0 0" height="100%" display="flex" flexDirection="column" overflow="auto">
         <Box id="header_container">
           {headerSlot ? (
-            <Box height={HEADER_HEIGHT} width="100%" marginBottom={2}>
+            <Box height={HEADER_HEIGHT} width="100%" marginBottom={2} sx={headerSlot?.props?.sx}>
               {headerSlot?.props?.children}
             </Box>
           ) : null}
-          <Box flex="1 0 0" id="main_container" pl={2}>
+          <Box flex="1 0 0" id="main_container" pl={2} sx={mainSlot?.props?.sx}>
             {mainSlot ? mainSlot?.props?.children : null}
           </Box>
         </Box>
@@ -59,7 +59,11 @@ export const PageLayout = ({
   );
 };
 
-type SlotType = (props: { name: ValueOf<typeof SLOT_NAMES>; children?: JSX.Element }) => null;
+type SlotType = (props: {
+  name: ValueOf<typeof SLOT_NAMES>;
+  children?: JSX.Element;
+  sx?: BoxProps['sx'];
+}) => null;
 
 const Slot: SlotType = ((): null => null) as SlotType;
 

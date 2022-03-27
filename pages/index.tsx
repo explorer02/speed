@@ -3,28 +3,17 @@ import * as React from 'react';
 
 // components
 import { Box } from '@mui/material';
-import { LoginForm } from 'components/login/LoginForm';
-
-// hooks
-import { useLoginInfo } from 'contexts/LoginContext';
-
-// constants
-import { centerAll } from 'styles/styleObjects';
+import { CommonPageLayout, SLOT_NAMES } from 'containers/CommonPageLayout';
 
 // types
 import { NextPage } from 'next';
 
-const Home: NextPage = () => {
-  const { isLoggedIn } = useLoginInfo();
-  return isLoggedIn ? (
-    <Box>Home</Box>
-  ) : (
-    <Box width="100%" pt={8} {...centerAll}>
-      <Box width={450} maxWidth="90%">
-        <LoginForm />
-      </Box>
-    </Box>
-  );
-};
+const Home: NextPage = () => (
+  <CommonPageLayout title="Home">
+    <CommonPageLayout.Slot name={SLOT_NAMES.MAIN}>
+      <Box>Home</Box>
+    </CommonPageLayout.Slot>
+  </CommonPageLayout>
+);
 
 export default Home;

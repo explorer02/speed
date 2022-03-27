@@ -6,19 +6,11 @@ import { Typography, Box } from '@mui/material';
 import { LightModeButton } from './LightModeButton';
 
 // constants
-import { centerVertically, expandXY } from 'styles/styleObjects';
+import { centerVertically } from 'styles/styleObjects';
 
 const Header = ({ title }: { title: string }): JSX.Element => (
-  <Box
-    {...expandXY}
-    {...centerVertically}
-    justifyContent="space-between"
-    id="header"
-    pl={4}
-    pr={2}
-    pt={2}
-  >
-    <Typography variant="h5" fontWeight={600}>
+  <Box {...centerVertically} justifyContent="space-between" id="header" px={4} pt={2}>
+    <Typography variant="h6" fontWeight={600}>
       {title}
     </Typography>
     <LightModeButton />
