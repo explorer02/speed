@@ -3,7 +3,7 @@ import { TableCell, TableRow } from '@mui/material';
 import { ContentLoader } from 'reusable/contentLoader';
 
 // types
-import { ColumnsConfig } from './Config';
+import { ColumnsConfig } from './types';
 
 const ROW_HEIGHT = 50;
 const ROW_GAP = 20;

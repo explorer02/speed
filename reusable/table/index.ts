@@ -1,2 +1,2 @@
 export * from './Table';
-export * from './Config';
+export * from './types';
