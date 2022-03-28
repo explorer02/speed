@@ -1,9 +1,9 @@
 // lib
-import * as React from 'react';
+import { memo } from 'react';
 
 // components
-import { Typography, Grid, ButtonGroup, Button } from '@mui/material';
-import { SnackBarOverlay, useSnackbar } from 'reusable/snackbarOverlay';
+import { Grid, Button } from '@mui/material';
+import { SnackBarOverlay } from 'reusable/snackbarOverlay';
 
 // hooks
 import { useLoginForm } from './useLoginForm';
@@ -16,31 +16,25 @@ import { LAYOUT } from './layout';
 import { FIELD_MAP } from './fields';
 import { Form } from 'reusable/form';
 
-const LoginForm = (): JSX.Element => {
+const LoginForm = ({ onSuccess }: { onSuccess?: () => void }): JSX.Element => {
   const { value: isLoginMode, set: setLoginMode, unset: setRegisterMode } = useToggle(true);
 
   const { onAction, values, isSubmitDisabled, snackbarState, loading } = useLoginForm({
     isLoginMode,
+    onSuccess,
+    setLoginMode,
   });
 
   return (
     <>
       <div id="sign-in-button" />
       <SnackBarOverlay {...snackbarState} />
-      <Grid container gap={5} justifyContent="center">
+      <Grid container gap={5} justifyContent="center" p={2}>
         <Grid item container justifyContent="center" alignItems="center" gap={2} direction="row">
-          <Button
-            sx={{ fontSize: '25px' }}
-            onClick={setLoginMode}
-            variant={isLoginMode ? 'outlined' : 'text'}
-          >
+          <Button onClick={setLoginMode} variant={isLoginMode ? 'outlined' : 'text'}>
             Login
           </Button>
-          <Button
-            sx={{ fontSize: '25px' }}
-            onClick={setRegisterMode}
-            variant={!isLoginMode ? 'outlined' : 'text'}
-          >
+          <Button onClick={setRegisterMode} variant={!isLoginMode ? 'outlined' : 'text'}>
             Register
           </Button>
         </Grid>
@@ -62,7 +56,7 @@ const LoginForm = (): JSX.Element => {
   );
 };
 
-const MemoizedLoginForm = React.memo(LoginForm);
+const MemoizedLoginForm = memo(LoginForm);
 MemoizedLoginForm.displayName = 'MemoizedLoginForm';
 
 export { MemoizedLoginForm as LoginForm };

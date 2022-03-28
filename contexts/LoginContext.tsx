@@ -1,5 +1,5 @@
 // lib
-import * as React from 'react';
+import { createContext, useContext, useState, useMemo, useCallback, useEffect } from 'react';
 import { User } from 'realm-web';
 import _noop from 'lodash/noop';
 
@@ -14,26 +14,34 @@ import { UserProfile } from 'types/profile';
 type LoginInfo = {
   isLoggedIn: boolean;
   user: User<any, UserProfile> | null;
-  setLoginState: (params: Omit<LoginInfo, 'setLoginState'>) => void;
+  setLoginState: (params: Pick<LoginInfo, 'isLoggedIn' | 'user'>) => void;
+  logout: () => void;
 };
 
-const LoginContext = React.createContext<LoginInfo>({
+const LoginContext = createContext<LoginInfo>({
   isLoggedIn: false,
   user: null,
   setLoginState: _noop,
+  logout: _noop,
 });
 
-export const useLoginInfo = (): LoginInfo => React.useContext(LoginContext);
+export const useLoginInfo = (): LoginInfo => useContext(LoginContext);
 
 export const LoginProvider = ({ children }: { children: JSX.Element }): JSX.Element => {
-  const [loginState, setLoginState] = React.useState<Omit<LoginInfo, 'setLoginState'>>({
+  const [loginState, setLoginState] = useState<Pick<LoginInfo, 'user' | 'isLoggedIn'>>({
     user: RealmApp.currentUser,
     isLoggedIn: !!RealmApp.currentUser,
   });
   // TODO: fetch profile here
 
-  const value = React.useMemo(() => ({ ...loginState, setLoginState }), [loginState]);
-  const client = React.useMemo(
+  const logout = useCallback(async () => {
+    await RealmApp.currentUser?.logOut().then(() => {
+      setLoginState({ user: null, isLoggedIn: false });
+    });
+  }, []);
+
+  const value = useMemo(() => ({ ...loginState, setLoginState, logout }), [loginState, logout]);
+  const client = useMemo(
     () =>
       new ApolloClient({
         uri: process.env.NEXT_PUBLIC_DB_URL,
@@ -45,7 +53,7 @@ export const LoginProvider = ({ children }: { children: JSX.Element }): JSX.Elem
     [loginState.user?.accessToken],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     RealmApp.currentUser?.refreshAccessToken();
     const id = setInterval(() => {
       RealmApp.currentUser?.refreshAccessToken();

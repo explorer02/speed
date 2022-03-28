@@ -4,12 +4,8 @@ design like finology
 
 POPULATE FILE
 fix schema types
-fix header
-loading button usage
 
 Next Steps
-1) Add login Modal
-2) Add page Layout to all components
 3) Admin Route
 4) Unprotected routes in ProtectRouteComponent
 5) Profile Form Layout

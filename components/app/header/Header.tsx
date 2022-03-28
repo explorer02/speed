@@ -1,9 +1,10 @@
 // lib
-import * as React from 'react';
+import { memo } from 'react';
 
 // components
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, NoSsr } from '@mui/material';
 import { LightModeButton } from './LightModeButton';
+import { Login } from '../sidebar/components/Login';
 
 // constants
 import { centerVertically } from 'styles/styleObjects';
@@ -13,9 +14,14 @@ const Header = ({ title }: { title: string }): JSX.Element => (
     <Typography variant="h6" fontWeight={600}>
       {title}
     </Typography>
-    <LightModeButton />
+    <Box>
+      <NoSsr>
+        <Login sx={{ mr: 2 }} />
+        <LightModeButton />
+      </NoSsr>
+    </Box>
   </Box>
 );
 
-const MemoizedHeader = React.memo(Header);
+const MemoizedHeader = memo(Header);
 export { MemoizedHeader as Header };
