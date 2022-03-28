@@ -11,9 +11,7 @@ import { centerVertically } from 'styles/styleObjects';
 
 const Header = ({ title }: { title: string }): JSX.Element => (
   <Box {...centerVertically} justifyContent="space-between" id="header" px={4} pt={2}>
-    <Typography variant="h6" fontWeight={600}>
-      {title}
-    </Typography>
+    <Typography variant="h6">{title}</Typography>
     <Box>
       <NoSsr>
         <Login sx={{ mr: 2 }} />

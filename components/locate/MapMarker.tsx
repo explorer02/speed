@@ -19,7 +19,6 @@ type MarkerProps = {
   selected?: boolean;
 };
 
-// TODO: popover on marker
 export const MapMarker = ({ selected, datum }: MarkerProps): JSX.Element => {
   const { value: open, set: showPopover, unset: hidePopover } = useToggle(false);
   const anchorRef = React.useRef<HTMLButtonElement | null>(null);
@@ -45,7 +44,7 @@ export const MapMarker = ({ selected, datum }: MarkerProps): JSX.Element => {
           horizontal: 'center',
         }}
       >
-        <StoreListItem store={datum} showOpenInNewTab={false} />
+        <StoreListItem store={datum} />
       </Popover>
     </>
   );

@@ -10,7 +10,10 @@ import { NextPage } from 'next';
 
 const Profile: NextPage = () => (
   <CommonPageLayout title="Profile">
-    <CommonPageLayout.Slot name={SLOT_NAMES.MAIN}>
+    <CommonPageLayout.Slot
+      name={SLOT_NAMES.MAIN}
+      sx={{ display: 'flex', justifyContent: 'center' }}
+    >
       <ProfileForm sx={{ width: 700, maxWidth: '90%' }} />
     </CommonPageLayout.Slot>
   </CommonPageLayout>

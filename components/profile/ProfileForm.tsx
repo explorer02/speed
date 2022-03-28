@@ -1,5 +1,5 @@
 // lib
-import * as React from 'react';
+import { memo } from 'react';
 
 // components
 import { Box } from '@mui/material';
@@ -44,7 +44,7 @@ const ProfileForm = ({ sx }: { sx?: SxProps }): JSX.Element => {
   );
 };
 
-const MemoizedProfileForm = React.memo(ProfileForm);
+const MemoizedProfileForm = memo(ProfileForm);
 MemoizedProfileForm.displayName = 'MemoizedProfileForm';
 
 export { MemoizedProfileForm as ProfileForm };

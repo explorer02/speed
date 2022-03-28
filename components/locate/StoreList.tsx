@@ -1,12 +1,9 @@
 // lib
-import * as React from 'react';
+import { memo } from 'react';
 
 // components
 import { Box, Typography } from '@mui/material';
 import { StoreListItem } from './StoreListItem';
-
-// constants
-import { centerAll, expandXY } from 'styles/styleObjects';
 
 // type
 import { Store } from 'types/store';
@@ -20,9 +17,9 @@ const StoreList = ({
   selectedStore?: Store;
   onClick?: (store: Store) => void;
 }): JSX.Element => (
-  <Box {...expandXY} {...centerAll} flexDirection="column">
-    <Typography variant="h5">Stores</Typography>
-    <Box sx={{ width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
+  <Box>
+    <Typography variant="h6">Stores</Typography>
+    <Box display="flex" flexWrap="wrap" gap={4} mt={2}>
       {stores.map((store) => (
         <StoreListItem
           key={store._id}
@@ -35,5 +32,5 @@ const StoreList = ({
   </Box>
 );
 
-const MemoizedStoreList = React.memo(StoreList);
+const MemoizedStoreList = memo(StoreList);
 export { MemoizedStoreList as StoreList };

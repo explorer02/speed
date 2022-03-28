@@ -1,8 +1,8 @@
 // lib
-import * as React from 'react';
+import { useCallback } from 'react';
 
 // components
-import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { ListItemButton, ListItemText } from '@mui/material';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
@@ -13,46 +13,41 @@ export const StoreListItem = ({
   selected,
   store,
   onClick,
-  showOpenInNewTab = true,
 }: {
   selected?: boolean;
   store: Store;
   onClick?: (_store: Store) => void;
-  showOpenInNewTab?: boolean;
 }): JSX.Element => {
-  const handleClick = React.useCallback(() => {
+  const handleClick = useCallback(() => {
     onClick?.(store);
   }, [onClick, store]);
+
   return (
     <ListItemButton
       selected={selected}
       key={store._id}
       onClick={handleClick}
-      sx={{ width: 400, flexGrow: 0 }}
+      sx={{ flexGrow: 0, borderRadius: 2, cursor: onClick ? 'pointer' : 'default' }}
+      disableRipple={!onClick}
     >
-      <ListItemIcon>
-        <StorefrontIcon fontSize="small" />
-      </ListItemIcon>
+      <StorefrontIcon fontSize="small" color="action" />
       <ListItemText
-        sx={{ maxWidth: 300 }}
+        sx={{ maxWidth: 300, marginX: 3 }}
         primaryTypographyProps={{ variant: 'body2' }}
         secondaryTypographyProps={{ variant: 'caption' }}
         primary={store.name}
         secondary={store.address}
       />
-      {showOpenInNewTab ? (
-        <ListItemIcon
-          sx={{ marginLeft: 2 }}
-          onClick={(): void => {
-            window.open(
-              `https://maps.google.com/?q=${store.location.lat},${store.location.lng}`,
-              '_blank',
-            );
-          }}
-        >
-          <OpenInNewIcon fontSize="small" />
-        </ListItemIcon>
-      ) : null}
+      <OpenInNewIcon
+        color="action"
+        fontSize="small"
+        onClick={(): void => {
+          window.open(
+            `https://maps.google.com/?q=${store.location.lat},${store.location.lng}`,
+            '_blank',
+          );
+        }}
+      />
     </ListItemButton>
   );
 };
