@@ -1,5 +1,5 @@
 // lib
-import * as React from 'react';
+import { ReactNode, Children } from 'react';
 
 // components
 import { Box, BoxProps, StackProps, useTheme } from '@mui/material';
@@ -21,12 +21,12 @@ export const PageLayout = ({
   children,
   sx,
 }: {
-  children?: React.ReactNode;
+  children?: ReactNode;
   sx?: StackProps['sx'];
 }): JSX.Element => {
   const theme = useTheme();
 
-  const childrenArr = React.Children.toArray(children) as JSX.Element[];
+  const childrenArr = Children.toArray(children) as JSX.Element[];
   const sidebarSlot = childrenArr.find((child) => child?.props?.name === SLOT_NAMES.SIDEBAR);
   const mainSlot = childrenArr.find((child) => child?.props?.name === SLOT_NAMES.MAIN);
   const headerSlot = childrenArr.find((child) => child?.props?.name === SLOT_NAMES.HEADER);
@@ -44,15 +44,19 @@ export const PageLayout = ({
         </Box>
       ) : null}
       <Box flex="1 0 0" height="100%" display="flex" flexDirection="column" overflow="auto">
-        <Box id="header_container">
-          {headerSlot ? (
-            <Box height={HEADER_HEIGHT} width="100%" marginBottom={2} sx={headerSlot?.props?.sx}>
-              {headerSlot?.props?.children}
-            </Box>
-          ) : null}
-          <Box flex="1 0 0" id="main_container" pl={2} sx={mainSlot?.props?.sx}>
-            {mainSlot ? mainSlot?.props?.children : null}
+        {headerSlot ? (
+          <Box
+            id="header_container"
+            height={HEADER_HEIGHT}
+            width="100%"
+            marginBottom={2}
+            sx={headerSlot?.props?.sx}
+          >
+            {headerSlot?.props?.children}
           </Box>
+        ) : null}
+        <Box flex="1 0 0" id="main_container" pl={2} sx={mainSlot?.props?.sx}>
+          {mainSlot ? mainSlot?.props?.children : null}
         </Box>
       </Box>
     </Box>

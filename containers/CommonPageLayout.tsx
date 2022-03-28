@@ -1,5 +1,5 @@
 // lib
-import * as React from 'react';
+import { ReactNode } from 'react';
 
 // components
 import { PageLayout, SLOT_NAMES as BASE_SLOT_NAMES } from './PageLayout';
@@ -11,7 +11,7 @@ export const CommonPageLayout = ({
   children,
 }: {
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }): JSX.Element => (
   <PageLayout>
     <PageLayout.Slot name={BASE_SLOT_NAMES.HEADER}>
