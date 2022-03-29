@@ -1,5 +1,5 @@
 // lib
-import * as React from 'react';
+import { useMemo } from 'react';
 
 // components
 import { OrderSummary } from './OrderSummary';
@@ -17,7 +17,14 @@ type Props = {
 };
 
 export const OrderSummaryContainer = ({ store, items, onAction }: Props): JSX.Element => {
-  const columnsConfig = React.useMemo(() => getColumnConfig(onAction), [onAction]);
+  const columnsConfig = useMemo(() => getColumnConfig(onAction), [onAction]);
 
-  return <OrderSummary store={store} items={items} columnsConfig={columnsConfig} />;
+  return (
+    <OrderSummary
+      store={store}
+      items={items}
+      columnsConfig={columnsConfig}
+      tableProps={{ emptyRowContent: 'Please Select at least one item' }}
+    />
+  );
 };

@@ -15,6 +15,7 @@ export const SLOT_NAMES = {
   SIDEBAR: 'sidebar',
   MAIN: 'main',
   HEADER: 'header',
+  ACTION: 'action',
 } as const;
 
 export const PageLayout = ({
@@ -30,6 +31,7 @@ export const PageLayout = ({
   const sidebarSlot = childrenArr.find((child) => child?.props?.name === SLOT_NAMES.SIDEBAR);
   const mainSlot = childrenArr.find((child) => child?.props?.name === SLOT_NAMES.MAIN);
   const headerSlot = childrenArr.find((child) => child?.props?.name === SLOT_NAMES.HEADER);
+  const actionSlot = childrenArr.find((child) => child?.props?.name === SLOT_NAMES.ACTION);
 
   return (
     <Box
@@ -53,6 +55,17 @@ export const PageLayout = ({
             sx={headerSlot?.props?.sx}
           >
             {headerSlot?.props?.children}
+          </Box>
+        ) : null}
+        {actionSlot ? (
+          <Box
+            id="action_container"
+            width="100%"
+            marginBottom={2}
+            flexShrink={0}
+            sx={actionSlot?.props?.sx}
+          >
+            {actionSlot?.props?.children}
           </Box>
         ) : null}
         <Box flex="1 0 0" id="main_container" pl={2} sx={mainSlot?.props?.sx}>

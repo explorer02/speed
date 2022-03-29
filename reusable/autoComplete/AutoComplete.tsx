@@ -1,5 +1,5 @@
 // lib
-import * as React from 'react';
+import { useMemo, useCallback } from 'react';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import _castArray from 'lodash/castArray';
@@ -105,24 +105,24 @@ export const AutoComplete = <T extends StringAnyMap>({
   disabled,
 }: AutoCompleteProps<T>): JSX.Element => {
   const handleChange: UseAutocompleteProps<T, boolean, boolean, undefined>['onChange'] =
-    React.useCallback(
+    useCallback(
       (ev, value) => {
         if (value) onItemChange(value);
       },
       [onItemChange],
     );
 
-  const getOptionLabel = React.useMemo(
+  const getOptionLabel = useMemo(
     () => _getOptionLabel ?? ((item: T): string => (labelKey ? item[labelKey] : '')),
     [_getOptionLabel, labelKey],
   );
 
-  const adaptedValues = React.useMemo(
+  const adaptedValues = useMemo(
     () => (multiple ? _castArray(selectedItem) : selectedItem),
     [multiple, selectedItem],
   );
 
-  const filterOptions = React.useCallback(
+  const filterOptions = useCallback(
     (options: T[]) => {
       const selectedOptionsId = new Set<string>(
         _castArray(selectedItem).map((item) => item[idKey]),
@@ -131,8 +131,6 @@ export const AutoComplete = <T extends StringAnyMap>({
     },
     [idKey, selectedItem],
   );
-
-  console.log(items);
 
   return (
     <Box {...centerAll} width="100%" gap={3}>

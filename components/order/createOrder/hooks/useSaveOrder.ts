@@ -1,16 +1,18 @@
 // lib
-import * as React from 'react';
+import { useCallback } from 'react';
 import _pick from 'lodash/pick';
 
 // hooks
 import { useLoginInfo } from 'contexts/LoginContext';
 import { SnackbarState, useSnackbar } from 'reusable/snackbarOverlay';
-import { useFetchOrderQuery } from 'components/order/viewOrder/hooks/useFetchOrderQuery';
 import { OrderInsertInput, useCreateOrderMutation } from './useCreateOrderMutation';
 import { useRouter } from 'next/router';
 
 // helpers
 import { getTotalAmount } from '../helper';
+
+// constants
+import { ORDER_PATH } from 'constants/paths';
 
 // types
 import { Item, Store } from 'types/store';
@@ -27,14 +29,13 @@ type UseSaveOrder = (props: { selectedItems: Item[]; selectedStore: Store }) => 
 export const useSaveOrder: UseSaveOrder = ({ selectedItems, selectedStore }) => {
   const id = useLoginInfo().user?.id;
 
-  const { push, pathname } = useRouter();
+  const { push } = useRouter();
 
   const { state: snackbarState, showSnackbar } = useSnackbar();
 
-  const { saveOrder, loading } = useCreateOrderMutation();
-  const { refetch: refetchOrders } = useFetchOrderQuery({ skip: true });
+  const { saveOrder, loading: isSavingOrder } = useCreateOrderMutation();
 
-  const onSave = React.useCallback(async () => {
+  const onSave = useCallback(async () => {
     if (!id) return;
     showSnackbar('Please wait while your order is placing', 'info');
     try {
@@ -45,23 +46,13 @@ export const useSaveOrder: UseSaveOrder = ({ selectedItems, selectedStore }) => 
         items: adaptItemsForSaving(selectedItems),
       });
 
-      await refetchOrders();
       showSnackbar('Order Placed successfully :)', 'success');
 
-      push({ pathname, query: { tabId: 1 } });
+      push(ORDER_PATH);
     } catch {
       showSnackbar('Some Error ocurred :(', 'error');
     }
-  }, [
-    id,
-    pathname,
-    push,
-    refetchOrders,
-    saveOrder,
-    selectedItems,
-    selectedStore._id,
-    showSnackbar,
-  ]);
+  }, [id, push, saveOrder, selectedItems, selectedStore._id, showSnackbar]);
 
-  return { onSave, isSavingOrder: loading, snackbarState };
+  return { onSave, isSavingOrder, snackbarState };
 };

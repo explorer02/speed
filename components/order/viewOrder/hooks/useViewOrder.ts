@@ -1,5 +1,5 @@
 // lib
-import * as React from 'react';
+import { useCallback, useMemo } from 'react';
 import _orderBy from 'lodash/orderBy';
 
 // hooks
@@ -14,7 +14,7 @@ import { getItemId, getOrderId } from 'helper/getter';
 // constants
 import { EMPTY_ARRAY } from 'constants/empty';
 import { ACTION_TYPES } from './constants';
-import { ORDER_PATH } from 'constants/paths';
+import { CREATE_ORDER_PATH, ORDER_PATH } from 'constants/paths';
 
 // types
 import { Order } from 'types/order';
@@ -39,16 +39,15 @@ const getQueryParamsFromOrder = (order: Order): { store: string; items: string }
 };
 
 export const useViewOrder: UseViewOrder = () => {
-
   const { state: snackbarState, showSnackbar } = useSnackbar();
 
   const { data: orders = EMPTY_ARRAY as Order[], loading } = useFetchOrderQuery();
 
-  const { push, pathname } = useRouter();
+  const { push } = useRouter();
 
   const { cancelOrder } = useCancelOrder();
 
-  const onAction: OnAction = React.useCallback(
+  const onAction: OnAction = useCallback(
     (action) => {
       const { type, payload } = action;
       switch (type) {
@@ -63,17 +62,17 @@ export const useViewOrder: UseViewOrder = () => {
         case ACTION_TYPES.REPEAT_ORDER:
           // FIXME:
           const queryParams = getQueryParamsFromOrder(payload.order);
-          push(pathname, { query: queryParams });
+          push(CREATE_ORDER_PATH, { query: queryParams });
           break;
 
         default:
           break;
       }
     },
-    [cancelOrder, push, pathname, showSnackbar],
+    [cancelOrder, push, showSnackbar],
   );
 
-  const adaptedData = React.useMemo(() => _orderBy(orders, 'createdOn', 'desc'), [orders]);
+  const adaptedData = useMemo(() => _orderBy(orders, 'createdOn', 'desc'), [orders]);
 
   return {
     data: adaptedData,

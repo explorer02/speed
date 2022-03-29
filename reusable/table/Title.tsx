@@ -12,7 +12,7 @@ export const Title = <T extends StringAnyMap>({
   title,
 }: Pick<Props<T>, 'title'>): JSX.Element | null =>
   title ? (
-    <Typography component="div" {...centerHorizontally} variant="h5">
+    <Typography component="div" {...centerHorizontally} variant="h6">
       {title}
     </Typography>
   ) : null;

@@ -30,7 +30,7 @@ export const getColumnConfig = (onAction: OnAction): ColumnsConfig<Item> => [
   {
     id: COLUMNS.PRICE,
     label: 'Price',
-    fluidWidth: 1,
+    fluidWidth: 2,
     valueGetter: (item): string => priceFormatter(item.price),
   },
   {

@@ -37,7 +37,7 @@ export const useCreateOrderMutation: UseCreateOrderMutation = () => {
   const [mutationFn, { loading }] = useMutation<
     { createOrder: StringAnyMap },
     { input: OrderInsertInput }
-  >(CREATE_ORDER_MUTATION);
+  >(CREATE_ORDER_MUTATION, { refetchQueries: ['FetchUserOrders'], awaitRefetchQueries: true });
   const saveOrder = useCallback(
     (input: OrderInsertInput): Promise<StringAnyMap> =>
       mutationFn({

@@ -1,5 +1,5 @@
 // lib
-import * as React from 'react';
+import { useEffect } from 'react';
 
 // hooks
 import { useRouter } from 'next/router';
@@ -8,7 +8,6 @@ import { useRouter } from 'next/router';
 import { getItemId } from 'helper/getter';
 
 // constants
-import { ORDER_PATH } from 'constants/paths';
 import { ACTION_TYPES } from './constants';
 
 // types
@@ -30,7 +29,7 @@ export const useInitializeOrder: UseInitializeOrder = ({
 }) => {
   const { query: queryParams, replace } = useRouter();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const storeId = queryParams.store;
 
     if (storeId && selectedStoreId === storeId && !itemsLoading) {
@@ -41,14 +40,15 @@ export const useInitializeOrder: UseInitializeOrder = ({
         .filter((item) => parsedItemIds.has(getItemId(item)))
         .map((item) => ({ ...item, quantity: 1 }));
 
-      replace(`${ORDER_PATH}`).then(() =>
-        onAction({
-          type: ACTION_TYPES.UPDATE_ITEMS,
-          payload: {
-            items: toBeSelectedItems,
-          },
-        }),
-      );
+      // FIXME:
+      console.log(items, toBeSelectedItems, parsedItemIds);
+
+      onAction({
+        type: ACTION_TYPES.UPDATE_ITEMS,
+        payload: {
+          items: toBeSelectedItems,
+        },
+      });
     }
   }, [
     items,

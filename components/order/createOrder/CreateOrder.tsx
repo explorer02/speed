@@ -1,11 +1,12 @@
 // lib
-import * as React from 'react';
+import { useMemo } from 'react';
 
 // components
-import { Button, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { AutoComplete, AutoCompleteProps } from 'reusable/autoComplete';
 import { OrderSummaryContainer } from './components/OrderSummaryContainer';
 import { SnackBarOverlay } from 'reusable/snackbarOverlay';
+import { LoadingButton } from 'reusable/loadingButton';
 
 // hooks
 import { useCreateOrder } from './hooks/useCreateOrder';
@@ -21,7 +22,7 @@ import { Item, Store } from 'types/store';
 export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
   const { query: queryParams } = useRouter();
 
-  const initialStore = React.useMemo(() => {
+  const initialStore = useMemo(() => {
     const storeId = queryParams.store;
     if (!storeId) return stores[0];
     return stores.find((store) => store._id === storeId) ?? stores[0];
@@ -46,8 +47,8 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
   return (
     <>
       <SnackBarOverlay {...snackbarState} />
-      <Grid spacing={4} container justifyContent="space-between" id="create-order">
-        <Grid item container direction="column" spacing={4} xs={12} lg={6}>
+      <Grid spacing={8} container justifyContent="space-between" id="create-order">
+        <Grid item container direction="column" spacing={4} xs={12} xl={5}>
           <Grid item>
             <AutoComplete
               items={stores}
@@ -77,17 +78,19 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
               disableCloseOnSelect
             />
           </Grid>
-          <Grid item container justifyContent="center" mb={8}>
-            <Button
+          <Grid item container justifyContent="center">
+            <LoadingButton
               variant="outlined"
-              disabled={selectedItems.length === 0 || isSavingOrder}
+              disabled={selectedItems.length === 0}
               onClick={onSaveOrder}
+              loading={isSavingOrder}
+              sx={{ width: 150 }}
             >
               Place Order
-            </Button>
+            </LoadingButton>
           </Grid>
         </Grid>
-        <Grid item xs={12} lg={6}>
+        <Grid item xs={12} xl={7}>
           <OrderSummaryContainer store={selectedStore} items={selectedItems} onAction={onAction} />
         </Grid>
       </Grid>

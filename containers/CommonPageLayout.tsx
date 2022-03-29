@@ -26,6 +26,7 @@ export const CommonPageLayout = ({
 
 export const SLOT_NAMES = {
   MAIN: BASE_SLOT_NAMES.MAIN,
+  ACTION: BASE_SLOT_NAMES.ACTION,
 };
 
 CommonPageLayout.Slot = PageLayout.Slot;
