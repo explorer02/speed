@@ -11,19 +11,22 @@ import { ProtectRoute } from 'containers/ProtectRoute';
 // providers
 import { LoginProvider } from 'contexts/LoginContext';
 import { AppThemeProvider } from 'contexts/AppThemeProvider';
+import { SelectedOrderProvider } from 'contexts/SelectedOrderContext';
+import { AdminProvider } from 'contexts/AdminContext';
 
 // types
 import { AppProps } from 'next/app';
-import { SelectedOrderProvider } from 'contexts/SelectedOrderContext';
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => (
   <AppThemeProvider>
     <LoginProvider>
-      <ProtectRoute>
-        <SelectedOrderProvider>
-          <Component {...pageProps} />
-        </SelectedOrderProvider>
-      </ProtectRoute>
+      <AdminProvider>
+        <ProtectRoute>
+          <SelectedOrderProvider>
+            <Component {...pageProps} />
+          </SelectedOrderProvider>
+        </ProtectRoute>
+      </AdminProvider>
     </LoginProvider>
   </AppThemeProvider>
 );

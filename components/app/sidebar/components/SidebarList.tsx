@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { useToggle } from 'hooks/useToggle';
 import { useLoginInfo } from 'contexts/LoginContext';
 import { useRouter } from 'next/router';
+import { useAdminInfo } from 'contexts/AdminContext';
 
 // constants
 import { SidebarItem, SIDEBAR_ITEMS } from '../config';
@@ -32,13 +33,28 @@ const ListItem = ({
   );
 };
 
+const isItemEnabled = ({
+  item,
+  isLoggedIn,
+  isAdmin,
+}: {
+  item: SidebarItem;
+  isLoggedIn: boolean;
+  isAdmin: boolean;
+}): boolean => {
+  if (!isAdmin && item.isAdminPath) return false;
+  if (!isLoggedIn && item.loginRequired) return false;
+  return true;
+};
+
 export const SidebarList = (): JSX.Element => {
   const { isLoggedIn } = useLoginInfo();
+  const { isAdmin } = useAdminInfo();
   const { pathname } = useRouter();
 
   const items = useMemo(
-    () => SIDEBAR_ITEMS.filter((item) => (isLoggedIn && item.loginRequired) || !item.loginRequired),
-    [isLoggedIn],
+    () => SIDEBAR_ITEMS.filter((item) => isItemEnabled({ item, isLoggedIn, isAdmin })),
+    [isAdmin, isLoggedIn],
   );
 
   return (

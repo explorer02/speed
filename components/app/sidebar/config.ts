@@ -4,6 +4,7 @@ import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined';
 import NoteAltOutlinedIcon from '@mui/icons-material/NoteAltOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 // constants
 import {
@@ -12,6 +13,7 @@ import {
   LOCATE_PATH,
   ORDER_PATH,
   PROFILE_PATH,
+  ADMIN_PATH,
 } from 'constants/paths';
 
 // types
@@ -22,6 +24,7 @@ export type SidebarItem = {
   loginRequired: boolean;
   path: string;
   Icon: SvgIconComponent;
+  isAdminPath?: boolean;
 };
 
 const HOME: SidebarItem = {
@@ -50,6 +53,7 @@ const PROFILE: SidebarItem = {
   path: PROFILE_PATH,
   Icon: AccountCircleOutlinedIcon,
 };
+
 const LOCATE: SidebarItem = {
   title: 'Locate Us',
   loginRequired: false,
@@ -57,4 +61,12 @@ const LOCATE: SidebarItem = {
   Icon: LocationOnOutlinedIcon,
 };
 
-export const SIDEBAR_ITEMS = [HOME, AVAILABILITY, ORDER, PROFILE, LOCATE];
+const ADMIN: SidebarItem = {
+  title: 'Admin',
+  loginRequired: true,
+  path: ADMIN_PATH,
+  Icon: AdminPanelSettingsIcon,
+  isAdminPath: true,
+};
+
+export const SIDEBAR_ITEMS = [HOME, AVAILABILITY, ORDER, PROFILE, LOCATE, ADMIN];

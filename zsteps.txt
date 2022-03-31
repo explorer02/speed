@@ -7,9 +7,20 @@ fix schema types
 
 Next Steps
 3) Admin Route
+    - Design
+    - Create Item
+    - Update Base Item
+    - Normal/Batch Update Items
+    - Create Store
+    - Update Store
+    - View Orders - Aggregate and Print
+    - Update Orders
+    - See user info
+
 9) Redesign Stock Availability page
 11) mobile layout
 13) save order as draft in LS
 14) user permissions
 15) uplift logic for login and signin actions
 16) Availability page action
+17) Availability page create order
