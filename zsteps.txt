@@ -7,9 +7,9 @@ fix schema types
 
 Next Steps
 3) Admin Route
-4) Unprotected routes in ProtectRouteComponent
-8) padding in all pages
 9) Redesign Stock Availability page
-10) order page actions
 11) mobile layout
-12) fix repeat order action
+13) save order as draft in LS
+14) user permissions
+15) uplift logic for login and signin actions
+16) Availability page action

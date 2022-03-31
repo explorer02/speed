@@ -14,12 +14,15 @@ import { AppThemeProvider } from 'contexts/AppThemeProvider';
 
 // types
 import { AppProps } from 'next/app';
+import { SelectedOrderProvider } from 'contexts/SelectedOrderContext';
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => (
   <AppThemeProvider>
     <LoginProvider>
       <ProtectRoute>
-        <Component {...pageProps} />
+        <SelectedOrderProvider>
+          <Component {...pageProps} />
+        </SelectedOrderProvider>
       </ProtectRoute>
     </LoginProvider>
   </AppThemeProvider>

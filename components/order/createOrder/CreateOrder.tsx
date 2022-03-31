@@ -1,6 +1,3 @@
-// lib
-import { useMemo } from 'react';
-
 // components
 import { Grid } from '@mui/material';
 import { AutoComplete, AutoCompleteProps } from 'reusable/autoComplete';
@@ -11,7 +8,6 @@ import { LoadingButton } from 'reusable/loadingButton';
 // hooks
 import { useCreateOrder } from './hooks/useCreateOrder';
 import { useSaveOrder } from './hooks/useSaveOrder';
-import { useRouter } from 'next/router';
 
 // helpers
 import { getItemLabel } from 'helper/getter';
@@ -20,14 +16,6 @@ import { getItemLabel } from 'helper/getter';
 import { Item, Store } from 'types/store';
 
 export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
-  const { query: queryParams } = useRouter();
-
-  const initialStore = useMemo(() => {
-    const storeId = queryParams.store;
-    if (!storeId) return stores[0];
-    return stores.find((store) => store._id === storeId) ?? stores[0];
-  }, [queryParams.store, stores]);
-
   const {
     selectedItems,
     selectedStore,
@@ -36,7 +24,7 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
     items,
     itemsLoading,
     onAction,
-  } = useCreateOrder({ initialStore });
+  } = useCreateOrder({ stores });
 
   const {
     onSave: onSaveOrder,
@@ -52,7 +40,7 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
           <Grid item>
             <AutoComplete
               items={stores}
-              selectedItem={selectedStore}
+              selectedItem={selectedStore ?? stores[0]}
               onItemChange={onStoreChange as AutoCompleteProps<Store>['onItemChange']}
               idKey="_id"
               labelKey="name"

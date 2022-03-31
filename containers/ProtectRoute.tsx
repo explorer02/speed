@@ -9,14 +9,15 @@ import { useLoginInfo } from 'contexts/LoginContext';
 import { useRouter } from 'next/router';
 
 // constants
-import { HOME_PATH, PROTECTED_PATHS } from 'constants/paths';
+import { HOME_PATH, UNPROTECTED_PATHS } from 'constants/paths';
 import { centerAll, expandXY } from 'styles/styleObjects';
 
 export const ProtectRoute = ({ children }: { children: JSX.Element }): JSX.Element => {
   const { replace, pathname } = useRouter();
   const { isLoggedIn } = useLoginInfo();
 
-  const isProtectedPath = PROTECTED_PATHS.includes(pathname);
+  const isProtectedPath = !UNPROTECTED_PATHS.includes(pathname);
+
   const shouldRedirectToHome = !isLoggedIn && isProtectedPath && pathname !== HOME_PATH;
 
   React.useEffect(() => {
