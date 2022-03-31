@@ -13,7 +13,7 @@ import { Item, Store } from 'types/store';
 
 type StoreWithItems = Store & { items: Item[] };
 
-type UseSingleStoreQuery = (params: { _id: string }) => Omit<
+type UseSingleStoreQuery = (params: { _id?: string }) => Omit<
   QueryResult<{ store: StoreWithItems }, { query: { _id: string } }>,
   'data'
 > & {
@@ -26,9 +26,10 @@ export const useStoreQueryWithItems: UseSingleStoreQuery = ({ _id }) => {
     {
       variables: {
         query: {
-          _id,
+          _id: _id ?? '',
         },
       },
+      skip: !_id,
     },
   );
   const adaptedData = useMemo(

@@ -20,7 +20,7 @@ import { Item, Store } from 'types/store';
 const adaptItemsForSaving = (selectedItems: Item[]): OrderInsertInput['items'] =>
   selectedItems.map((item) => ({ ..._pick(item, 'quantity', 'price'), item: item._id }));
 
-type UseSaveOrder = (props: { selectedItems: Item[]; selectedStore: Store }) => {
+type UseSaveOrder = (props: { selectedItems: Item[]; selectedStore?: Store }) => {
   onSave: () => Promise<void>;
   isSavingOrder: boolean;
   snackbarState: SnackbarState;
@@ -40,7 +40,7 @@ export const useSaveOrder: UseSaveOrder = ({ selectedItems, selectedStore }) => 
     showSnackbar('Please wait while your order is placing', 'info');
     try {
       await saveOrder({
-        store: { link: selectedStore._id },
+        store: { link: selectedStore?._id ?? '' },
         user: { link: id },
         totalAmount: getTotalAmount(selectedItems),
         items: adaptItemsForSaving(selectedItems),
@@ -52,7 +52,7 @@ export const useSaveOrder: UseSaveOrder = ({ selectedItems, selectedStore }) => 
     } catch {
       showSnackbar('Some Error ocurred :(', 'error');
     }
-  }, [id, push, saveOrder, selectedItems, selectedStore._id, showSnackbar]);
+  }, [id, push, saveOrder, selectedItems, selectedStore?._id, showSnackbar]);
 
   return { onSave, isSavingOrder, snackbarState };
 };

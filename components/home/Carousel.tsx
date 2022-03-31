@@ -11,7 +11,7 @@ import { expandXY } from 'styles/styleObjects';
 
 const Carousel = (): JSX.Element => (
   <Box {...expandXY} position="relative">
-    <Image src={Midhope} alt="" layout="fill" />
+    <Image src={Midhope} alt="" layout="fill" loading="lazy" />
   </Box>
 );
 

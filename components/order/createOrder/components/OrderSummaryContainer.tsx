@@ -11,7 +11,7 @@ import { Item, Store } from 'types/store';
 import { OnAction } from '../hooks/types';
 
 type Props = {
-  store: Store;
+  store?: Store;
   items: Item[];
   onAction: OnAction;
 };

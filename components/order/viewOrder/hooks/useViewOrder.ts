@@ -7,14 +7,15 @@ import { SnackbarState, useSnackbar } from 'reusable/snackbarOverlay';
 import { useRouter } from 'next/router';
 import { useCancelOrder } from './useCancelOrder';
 import { useFetchOrderQuery } from './useFetchOrderQuery';
+import { useRepeatOrder } from './useRepeatOrder';
 
 // helpers
-import { getItemId, getOrderId } from 'helper/getter';
+import { getOrderId } from 'helper/getter';
 
 // constants
 import { EMPTY_ARRAY } from 'constants/empty';
 import { ACTION_TYPES } from './constants';
-import { CREATE_ORDER_PATH, ORDER_PATH } from 'constants/paths';
+import { ORDER_PATH } from 'constants/paths';
 
 // types
 import { Order } from 'types/order';
@@ -27,21 +28,12 @@ type UseViewOrder = () => {
   snackbarState: SnackbarState;
 };
 
-const getQueryParamsFromOrder = (order: Order): { store: string; items: string } => {
-  const selectedStoreId = order.store._id;
-  const selectedItemsId = [...order.items.map(getItemId)].join();
-  const queryParams = {
-    store: selectedStoreId,
-    items: selectedItemsId,
-    tabId: 0,
-  };
-  return queryParams;
-};
-
 export const useViewOrder: UseViewOrder = () => {
   const { state: snackbarState, showSnackbar } = useSnackbar();
 
   const { data: orders = EMPTY_ARRAY as Order[], loading } = useFetchOrderQuery();
+
+  const repeatOrder = useRepeatOrder();
 
   const { push } = useRouter();
 
@@ -60,16 +52,14 @@ export const useViewOrder: UseViewOrder = () => {
           break;
 
         case ACTION_TYPES.REPEAT_ORDER:
-          // FIXME:
-          const queryParams = getQueryParamsFromOrder(payload.order);
-          push(CREATE_ORDER_PATH, { query: queryParams });
+          repeatOrder(payload.order);
           break;
 
         default:
           break;
       }
     },
-    [cancelOrder, push, showSnackbar],
+    [cancelOrder, push, repeatOrder, showSnackbar],
   );
 
   const adaptedData = useMemo(() => _orderBy(orders, 'createdOn', 'desc'), [orders]);

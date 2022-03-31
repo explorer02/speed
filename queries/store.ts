@@ -9,15 +9,6 @@ const ITEM_FRAGMENT = gql`
   }
 `;
 
-const STORE_ITEMS = gql`
-  fragment StoreItemFields on StoreItem {
-    item {
-      ...ItemFields
-    }
-  }
-  ${ITEM_FRAGMENT}
-`;
-
 const STORE_FRAGMENT = gql`
   fragment StoreFields on Store {
     _id
@@ -44,12 +35,14 @@ export const FETCH_STORE_WITH_ITEMS = gql`
     store(query: $query) {
       ...StoreFields
       items {
-        ...StoreItemFields
+        item {
+          ...ItemFields
+        }
         price
         quantity
       }
     }
   }
   ${STORE_FRAGMENT}
-  ${STORE_ITEMS}
+  ${ITEM_FRAGMENT}
 `;

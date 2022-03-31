@@ -1,11 +1,13 @@
 // lib
-import * as React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import _difference from 'lodash/difference';
 
 // hooks
-import { useInitializeOrder } from './useInitializeOrder';
 import { useStoreQueryWithItems } from 'hooks/useStoreQueryWithItems';
 import { useStateWithRef } from 'hooks/useStateWithRef';
+
+// helpers
+import { areItemsSame } from 'helper/getter';
 
 // constants
 import { EMPTY_ARRAY } from 'constants/empty';
@@ -14,28 +16,46 @@ import { ACTION_TYPES } from './constants';
 // types
 import { Item, Store } from 'types/store';
 import { Action, OnAction } from './types';
+import { useSelectedOrderInfo } from 'contexts/SelectedOrderContext';
 
-type UseCreateOrder = (props: { initialStore: Store }) => {
+type UseCreateOrder = (props: { stores: Store[] }) => {
   items: Item[];
   selectedItems: Item[];
-  selectedStore: Store;
+  selectedStore?: Store;
   itemsLoading: boolean;
   onStoreChange: (store: Store) => void;
   onItemChange: (items: Item[]) => void;
   onAction: OnAction;
 };
 
-export const useCreateOrder: UseCreateOrder = ({ initialStore }) => {
-  const [selectedStore, setSelectedStore] = React.useState(initialStore);
+export const useCreateOrder: UseCreateOrder = ({ stores }) => {
+  const [selectedStore, setSelectedStore] = useState<Store>();
   const [selectedItems, setSelectedItems, selectedItemsRef] = useStateWithRef(
     EMPTY_ARRAY as Item[],
   );
 
-  const { data: storeWithItems, loading } = useStoreQueryWithItems({ _id: selectedStore._id });
+  const { data: storeWithItems, loading } = useStoreQueryWithItems({ _id: selectedStore?._id });
 
   const items = storeWithItems?.items ?? (EMPTY_ARRAY as Item[]);
 
-  const onAction = React.useCallback(
+  const { selectedOrder, setSelectedOrder } = useSelectedOrderInfo();
+
+  useEffect(() => {
+    if (selectedOrder && !selectedStore) {
+      const initialStore = stores.find((s) => s._id === selectedOrder.store._id) as Store;
+      setSelectedStore(initialStore);
+    }
+    if (selectedOrder && !loading && selectedStore) {
+      const initialItems = selectedOrder.items.map((i1) => {
+        const storeItem = items.find((i2) => areItemsSame(i1, i2)) as Item;
+        return { ...storeItem, quantity: i1.quantity };
+      });
+      setSelectedItems(initialItems);
+      setSelectedOrder();
+    }
+  }, [items, loading, selectedOrder, selectedStore, setSelectedItems, setSelectedOrder, stores]);
+
+  const onAction = useCallback(
     (action: Action) => {
       switch (action.type) {
         case ACTION_TYPES.CHANGE_STORE:
@@ -74,15 +94,8 @@ export const useCreateOrder: UseCreateOrder = ({ initialStore }) => {
     },
     [setSelectedItems],
   );
-  // TODO: uselocationquery
-  useInitializeOrder({
-    items,
-    itemsLoading: loading,
-    onAction,
-    selectedStoreId: selectedStore._id,
-  });
 
-  const onStoreChange = React.useCallback(
+  const onStoreChange = useCallback(
     (store: Store) => {
       onAction({
         type: ACTION_TYPES.CHANGE_STORE,
@@ -94,7 +107,7 @@ export const useCreateOrder: UseCreateOrder = ({ initialStore }) => {
     [onAction],
   );
 
-  const onItemChange = React.useCallback(
+  const onItemChange = useCallback(
     (_items: Item[]) => {
       const prevItems = selectedItemsRef.current;
       let updatedItems = _items;

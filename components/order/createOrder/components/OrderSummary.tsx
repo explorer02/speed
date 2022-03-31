@@ -1,5 +1,5 @@
 // lib
-import * as React from 'react';
+import { useMemo } from 'react';
 
 // components
 import { TableCell, TableRow } from '@mui/material';
@@ -14,22 +14,22 @@ import { getTotalAmount } from '../helper';
 import { Item, Store } from 'types/store';
 
 type Props = {
-  store: Store;
+  store?: Store;
   items: Item[];
   columnsConfig: ColumnsConfig<Item>;
   tableProps?: Partial<TableProps<Item>>;
 };
 
 export const OrderSummary = ({ store, items, columnsConfig, tableProps }: Props): JSX.Element => {
-  const totalAmount = React.useMemo(() => getTotalAmount(items), [items]);
+  const totalAmount = useMemo(() => getTotalAmount(items), [items]);
   return (
     <Table<Item>
       getId={getItemId}
       columnConfig={columnsConfig}
       items={items}
       title="Order Summary"
-      caption={store.name}
-      subCaption={store.address}
+      caption={store?.name}
+      subCaption={store?.address}
       postEntityRows={
         <TableRow>
           <TableCell rowSpan={3} />
