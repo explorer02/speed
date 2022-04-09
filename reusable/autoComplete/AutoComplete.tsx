@@ -17,6 +17,9 @@ import {
   useTheme,
 } from '@mui/material';
 
+// hooks
+import { useOverrides, Override } from 'overrides';
+
 // constants
 import { centerAll } from 'styles/styleObjects';
 
@@ -68,9 +71,9 @@ const Option = <T extends StringAnyMap>({
 };
 
 export type AutoCompleteProps<T extends StringAnyMap> = {
-  items: T[];
-  selectedItem: T | T[];
-  onItemChange: (item: T | T[]) => void;
+  options: T[];
+  selectedOptions: T | T[];
+  onOptionChange: (item: T | T[]) => void;
   idKey: keyof T & string;
   loading?: boolean;
   labelKey?: keyof T & string;
@@ -84,12 +87,17 @@ export type AutoCompleteProps<T extends StringAnyMap> = {
   disableClearable?: boolean;
   disableCloseOnSelect?: boolean;
   disabled?: boolean;
+  overrides?: {
+    Container?: Override<StringAnyMap>;
+    Label?: Override<StringAnyMap>;
+    Input?: Override<StringAnyMap>;
+  };
 };
 
 export const AutoComplete = <T extends StringAnyMap>({
-  items,
-  selectedItem,
-  onItemChange,
+  options,
+  selectedOptions,
+  onOptionChange,
   loading,
   idKey,
   labelKey,
@@ -103,13 +111,14 @@ export const AutoComplete = <T extends StringAnyMap>({
   disableClearable = true,
   disableCloseOnSelect,
   disabled,
+  overrides,
 }: AutoCompleteProps<T>): JSX.Element => {
   const handleChange: UseAutocompleteProps<T, boolean, boolean, undefined>['onChange'] =
     useCallback(
       (ev, value) => {
-        if (value) onItemChange(value);
+        if (value) onOptionChange(value);
       },
-      [onItemChange],
+      [onOptionChange],
     );
 
   const getOptionLabel = useMemo(
@@ -118,25 +127,29 @@ export const AutoComplete = <T extends StringAnyMap>({
   );
 
   const adaptedValues = useMemo(
-    () => (multiple ? _castArray(selectedItem) : selectedItem),
-    [multiple, selectedItem],
+    () => (multiple ? _castArray(selectedOptions) : selectedOptions),
+    [multiple, selectedOptions],
   );
 
   const filterOptions = useCallback(
-    (options: T[]) => {
+    (_options: T[]) => {
       const selectedOptionsId = new Set<string>(
-        _castArray(selectedItem).map((item) => item[idKey]),
+        _castArray(selectedOptions).map((item) => item[idKey]),
       );
-      return options.filter((item) => !selectedOptionsId.has(item[idKey]));
+      return _options.filter((item) => !selectedOptionsId.has(item[idKey]));
     },
-    [idKey, selectedItem],
+    [idKey, selectedOptions],
   );
 
+  const [Container] = useOverrides(overrides?.Container, Box);
+  const [Label] = useOverrides(overrides?.Label, Typography);
+  const [Input] = useOverrides(overrides?.Input, TextField);
+
   return (
-    <Box {...centerAll} width="100%" gap={3}>
-      <Typography variant="body1">{label}</Typography>
+    <Container {...centerAll} gap={3}>
+      <Label variant="body1">{label}</Label>
       <BaseAutoComplete<T, boolean, boolean, undefined>
-        options={items}
+        options={options}
         itemID={idKey}
         loading={loading}
         sx={{ width: `${inputWidth}px`, flexShrink: 1 }}
@@ -151,7 +164,7 @@ export const AutoComplete = <T extends StringAnyMap>({
         disableCloseOnSelect={disableCloseOnSelect}
         disabled={disabled}
         noOptionsText="No more options.. :("
-        renderInput={(params): JSX.Element => <TextField {...params} label="" variant="standard" />}
+        renderInput={(params): JSX.Element => <Input {...params} label="" variant="standard" />}
         renderOption={(props, option, state): JSX.Element => (
           <Option
             key={option[idKey]}
@@ -163,6 +176,6 @@ export const AutoComplete = <T extends StringAnyMap>({
           />
         )}
       />
-    </Box>
+    </Container>
   );
 };

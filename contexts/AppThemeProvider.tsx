@@ -1,10 +1,14 @@
 // lib
-import * as React from 'react';
+import { useContext, useMemo, createContext } from 'react';
 import _noop from 'lodash/noop';
-import { createTheme, PaletteMode, ThemeOptions, ThemeProvider } from '@mui/material';
-import { useLocalStorage } from 'react-use';
 
-// colors
+// components
+import { createTheme, PaletteMode, ThemeOptions, ThemeProvider } from '@mui/material';
+
+// hooks
+import { useLocalStorage } from 'hooks/useLocalStorage';
+
+// constants
 import { grey, purple, indigo, deepOrange } from '@mui/material/colors';
 
 export const PALETTE_MODE = {
@@ -50,12 +54,12 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
 
 type ColorMode = { mode: PaletteMode; toggleColorMode: () => void };
 
-const ColorModeContext = React.createContext<ColorMode>({
+const ColorModeContext = createContext<ColorMode>({
   mode: PALETTE_MODE.LIGHT,
   toggleColorMode: _noop,
 });
 
-export const useColorMode = (): ColorMode => React.useContext(ColorModeContext);
+export const useColorMode = (): ColorMode => useContext(ColorModeContext);
 
 export const AppThemeProvider = ({ children }: { children: JSX.Element }): JSX.Element => {
   const [mode = PALETTE_MODE.LIGHT, setMode] = useLocalStorage<PaletteMode>(
@@ -63,7 +67,7 @@ export const AppThemeProvider = ({ children }: { children: JSX.Element }): JSX.E
     PALETTE_MODE.LIGHT,
   );
 
-  const colorMode: ColorMode = React.useMemo(
+  const colorMode: ColorMode = useMemo(
     () => ({
       mode,
       toggleColorMode: (): void => {
@@ -74,7 +78,7 @@ export const AppThemeProvider = ({ children }: { children: JSX.Element }): JSX.E
   );
 
   // Update the theme only if the mode changes
-  const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
   return (
     <ThemeProvider theme={theme}>

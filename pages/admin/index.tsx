@@ -10,13 +10,16 @@ import { getStaticPropsForStoreList } from 'helper/staticPropsGetter';
 
 // types
 import { Store } from 'types/store';
+import { StoreListProvider } from 'contexts/StoreListContext';
 
 const AdminPage = ({ stores }: { stores: Store[] }): JSX.Element => (
-  <CommonPageLayout title="Admin">
-    <CommonPageLayout.Slot name={SLOT_NAMES.MAIN}>
-      <AdminContainer />
-    </CommonPageLayout.Slot>
-  </CommonPageLayout>
+  <StoreListProvider value={{ storeList: stores }}>
+    <CommonPageLayout title="Admin">
+      <CommonPageLayout.Slot name={SLOT_NAMES.MAIN} sx={{ paddingLeft: 4, paddingTop: 2 }}>
+        <AdminContainer />
+      </CommonPageLayout.Slot>
+    </CommonPageLayout>
+  </StoreListProvider>
 );
 
 export const getStaticProps = getStaticPropsForStoreList;

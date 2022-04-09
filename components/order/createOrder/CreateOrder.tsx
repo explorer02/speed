@@ -39,9 +39,9 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
         <Grid item container direction="column" spacing={4} xs={12} xl={5}>
           <Grid item>
             <AutoComplete
-              items={stores}
-              selectedItem={selectedStore ?? stores[0]}
-              onItemChange={onStoreChange as AutoCompleteProps<Store>['onItemChange']}
+              options={stores}
+              selectedOptions={selectedStore ?? stores[0]}
+              onOptionChange={onStoreChange as AutoCompleteProps<Store>['onOptionChange']}
               idKey="_id"
               labelKey="name"
               label="Select Store"
@@ -52,9 +52,9 @@ export const CreateOrder = ({ stores }: { stores: Store[] }): JSX.Element => {
           </Grid>
           <Grid item>
             <AutoComplete
-              items={items}
-              selectedItem={selectedItems}
-              onItemChange={onItemChange as AutoCompleteProps<Item>['onItemChange']}
+              options={items}
+              selectedOptions={selectedItems}
+              onOptionChange={onItemChange as AutoCompleteProps<Item>['onOptionChange']}
               idKey="_id"
               getOptionLabel={getItemLabel}
               label="Select Items"

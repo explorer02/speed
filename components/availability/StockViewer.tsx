@@ -1,6 +1,3 @@
-// lib
-import * as React from 'react';
-
 // components
 import { Box, Stack } from '@mui/material';
 import { StockTable } from './stockTable';
@@ -37,9 +34,9 @@ export const StockViewer = ({ stores }: { stores: Store[] }): JSX.Element => {
     <Stack gap={6} py={2} {...expandXY} sx={{ position: 'relative' }}>
       <Box flexShrink={0}>
         <AutoComplete
-          items={stores}
-          selectedItem={selectedStore}
-          onItemChange={onStoreChange as AutoCompleteProps<Store>['onItemChange']}
+          options={stores}
+          selectedOptions={selectedStore}
+          onOptionChange={onStoreChange as AutoCompleteProps<Store>['onOptionChange']}
           idKey="_id"
           labelKey="name"
           label="Select Store"

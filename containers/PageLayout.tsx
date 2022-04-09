@@ -1,5 +1,5 @@
 // lib
-import { ReactNode, Children } from 'react';
+import { ReactNode, Children, useState, useEffect } from 'react';
 
 // components
 import { Box, BoxProps, StackProps, useTheme } from '@mui/material';
@@ -26,6 +26,11 @@ export const PageLayout = ({
   sx?: StackProps['sx'];
 }): JSX.Element => {
   const theme = useTheme();
+  const [background, setBackground] = useState('');
+
+  useEffect(() => {
+    setBackground(theme.palette.background.default);
+  }, [theme.palette.background.default]);
 
   const childrenArr = Children.toArray(children) as JSX.Element[];
   const sidebarSlot = childrenArr.find((child) => child?.props?.name === SLOT_NAMES.SIDEBAR);
@@ -34,12 +39,7 @@ export const PageLayout = ({
   const actionSlot = childrenArr.find((child) => child?.props?.name === SLOT_NAMES.ACTION);
 
   return (
-    <Box
-      {...expandXY}
-      sx={{ ...sx, background: theme.palette.background.default }}
-      display="flex"
-      overflow="hidden"
-    >
+    <Box {...expandXY} sx={{ ...sx, background }} display="flex" overflow="hidden">
       {sidebarSlot ? (
         <Box width={SIDEBAR_WIDTH} height="100%" id="sidebar_container" sx={sidebarSlot?.props?.sx}>
           {sidebarSlot?.props?.children}
