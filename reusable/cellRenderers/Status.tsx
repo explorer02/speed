@@ -12,7 +12,9 @@ import { Order } from 'types/order';
 import { ColumnRendererProps } from 'reusable/table';
 import { ValueOf } from 'types/generic';
 
-export const Status = ({ value }: ColumnRendererProps<Order>): JSX.Element => {
+type Props = ColumnRendererProps<Order> & Pick<ChipProps, 'disabled' | 'onClick'>;
+
+export const Status = ({ value, disabled, onClick }: Props): JSX.Element => {
   const orderStatus = value as ValueOf<typeof ORDER_STATUS>;
 
   let color: ChipProps['color'] = 'default';
@@ -33,5 +35,12 @@ export const Status = ({ value }: ColumnRendererProps<Order>): JSX.Element => {
       break;
   }
 
-  return <Chip color={color} label={ORDER_STATUS_LABELS[orderStatus]} />;
+  return (
+    <Chip
+      color={color}
+      label={ORDER_STATUS_LABELS[orderStatus]}
+      disabled={disabled}
+      onClick={onClick}
+    />
+  );
 };

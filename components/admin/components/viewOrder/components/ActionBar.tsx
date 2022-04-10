@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useCallback } from 'react';
 
 // components
-import { Box } from '@mui/material';
+import { Box, BoxProps } from '@mui/material';
 import { DateTimePicker } from 'reusable/dateTimePicker';
 import { AutoComplete, AutoCompleteProps } from 'reusable/autoComplete';
 import { LoadingButton } from 'reusable/loadingButton';
@@ -14,13 +14,13 @@ import { useStoreList } from 'contexts/StoreListContext';
 
 // constants
 import { ORDER_STATUS_LIST } from 'constants/order';
-import { ACTION_TYPES } from './constants';
+import { ACTION_TYPES } from '../constants';
 
 // types
-import { ActionState, OnAction } from './types';
+import { ActionState, OnAction } from '../types';
 import { Store } from 'types/store';
 
-type Props = { state: ActionState; onAction: OnAction };
+type Props = { state: ActionState; onAction: OnAction; loading: boolean } & Pick<BoxProps, 'sx'>;
 
 const AUTOCOMPLETE_OVERRIDES = {
   Label: { component: (): null => null },
@@ -32,7 +32,7 @@ const AUTOCOMPLETE_OVERRIDES = {
   },
 };
 
-export const ActionBar = ({ state, onAction }: Props): JSX.Element => {
+export const ActionBar = ({ state, onAction, loading, sx }: Props): JSX.Element => {
   const onStartTimeChange = useCallback(
     (date: number) => {
       onAction({
@@ -72,10 +72,16 @@ export const ActionBar = ({ state, onAction }: Props): JSX.Element => {
     [onAction],
   );
 
+  const onSubmit = useCallback(() => {
+    onAction({
+      type: ACTION_TYPES.SUBMIT,
+    });
+  }, [onAction]);
+
   const { storeList } = useStoreList();
 
   return (
-    <Box display="flex" gap={4} pr={4} alignItems="center">
+    <Box display="flex" gap={4} pr={4} alignItems="center" sx={sx}>
       <AutoComplete
         options={storeList}
         selectedOptions={state.selectedStore}
@@ -109,7 +115,7 @@ export const ActionBar = ({ state, onAction }: Props): JSX.Element => {
         title="Status"
         selectedValues={state.statuses}
       />
-      <LoadingButton loading={false} variant="outlined" sx={{ width: 100 }}>
+      <LoadingButton loading={loading} variant="outlined" sx={{ width: 100 }} onClick={onSubmit}>
         Submit
       </LoadingButton>
     </Box>

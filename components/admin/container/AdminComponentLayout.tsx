@@ -29,7 +29,7 @@ export const AdminComponentLayout = ({
         <Box
           id="admin_component_header_container"
           width="100%"
-          marginBottom={2}
+          marginBottom={4}
           sx={headerSlot?.props?.sx}
         >
           {headerSlot?.props?.children}
@@ -45,7 +45,7 @@ export const AdminComponentLayout = ({
 
 type SlotType = (props: {
   name: ValueOf<typeof SLOT_NAMES>;
-  children?: JSX.Element;
+  children?: ReactNode;
   sx?: BoxProps['sx'];
 }) => null;
 

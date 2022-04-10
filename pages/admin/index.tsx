@@ -15,7 +15,10 @@ import { StoreListProvider } from 'contexts/StoreListContext';
 const AdminPage = ({ stores }: { stores: Store[] }): JSX.Element => (
   <StoreListProvider value={{ storeList: stores }}>
     <CommonPageLayout title="Admin">
-      <CommonPageLayout.Slot name={SLOT_NAMES.MAIN} sx={{ paddingLeft: 4, paddingTop: 2 }}>
+      <CommonPageLayout.Slot
+        name={SLOT_NAMES.MAIN}
+        sx={{ paddingX: 4, paddingTop: 2, paddingBottom: 4 }}
+      >
         <AdminContainer />
       </CommonPageLayout.Slot>
     </CommonPageLayout>

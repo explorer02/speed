@@ -1,24 +1,24 @@
 // components
+import { Actions } from './cellRenderer/actions';
 import { Items } from 'reusable/cellRenderers/Items';
 import { Status } from 'reusable/cellRenderers/Status';
-import { Actions } from './cellRenderer/Actions';
 
 // helpers
 import { formatRelativeTime, priceFormatter } from 'helper/formatter';
-import { getStoreNameFromOrder } from 'helper/getter';
+import { getUserNameFromOrder } from 'helper/getter';
 
 // types
 import { ColumnsConfig } from 'reusable/table';
 import { Order } from 'types/order';
-import { OnAction } from './hooks/types';
+import { OnAction } from '../../types';
 
 export const COLUMNS = {
   SNO: 'Sno',
+  USER_NAME: 'userName',
   TIME: 'createdOn',
-  STORE: 'storeId',
   ITEMS: 'items',
-  AMOUNT: 'amount',
   STATUS: 'status',
+  AMOUNT: 'amount',
   ACTIONS: 'actions',
 } as const;
 
@@ -30,16 +30,16 @@ export const getColumnsConfig = ({ onAction }: { onAction: OnAction }): ColumnsC
     valueGetter: (_, index) => `${index + 1})`,
   },
   {
+    id: COLUMNS.USER_NAME,
+    label: 'User',
+    fluidWidth: 1,
+    valueGetter: getUserNameFromOrder,
+  },
+  {
     id: COLUMNS.TIME,
     label: 'Created Time',
     fluidWidth: 1,
     valueGetter: (order) => formatRelativeTime(order.createdOn),
-  },
-  {
-    id: COLUMNS.STORE,
-    label: 'Store',
-    fluidWidth: 2,
-    valueGetter: getStoreNameFromOrder,
   },
   {
     id: COLUMNS.ITEMS,
@@ -61,11 +61,8 @@ export const getColumnsConfig = ({ onAction }: { onAction: OnAction }): ColumnsC
   },
   {
     id: COLUMNS.ACTIONS,
-    label: '',
+    label: 'Actions',
     fluidWidth: 1,
     renderer: Actions,
-    rendererProps: {
-      onAction,
-    },
   },
 ];

@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { STORE_ORDER_FRAGMENT } from './order';
 
 const ITEM_FRAGMENT = gql`
   fragment ItemFields on Item {

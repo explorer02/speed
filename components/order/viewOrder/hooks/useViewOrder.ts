@@ -5,7 +5,7 @@ import _orderBy from 'lodash/orderBy';
 // hooks
 import { SnackbarState, useSnackbar } from 'reusable/snackbarOverlay';
 import { useRouter } from 'next/router';
-import { useCancelOrder } from './useCancelOrder';
+import { useUpdateOrderStatus } from 'hooks/UpdateOrderStatus';
 import { useFetchOrderQuery } from './useFetchOrderQuery';
 import { useRepeatOrder } from './useRepeatOrder';
 
@@ -16,6 +16,7 @@ import { getOrderId } from 'helper/getter';
 import { EMPTY_ARRAY } from 'constants/empty';
 import { ACTION_TYPES } from './constants';
 import { ORDER_PATH } from 'constants/paths';
+import { ORDER_STATUS } from 'constants/order';
 
 // types
 import { Order } from 'types/order';
@@ -37,14 +38,16 @@ export const useViewOrder: UseViewOrder = () => {
 
   const { push } = useRouter();
 
-  const { cancelOrder } = useCancelOrder();
+  const [updateOrder] = useUpdateOrderStatus();
 
   const onAction: OnAction = useCallback(
     (action) => {
       const { type, payload } = action;
       switch (type) {
         case ACTION_TYPES.CANCEL_ORDER:
-          cancelOrder(payload.order._id).then(() => showSnackbar('Order Cancelled!', 'info'));
+          updateOrder(payload.order._id, ORDER_STATUS.CANCELLED).then(() =>
+            showSnackbar('Order Cancelled!', 'info'),
+          );
           break;
 
         case ACTION_TYPES.VIEW_RECEIPT:
@@ -59,7 +62,7 @@ export const useViewOrder: UseViewOrder = () => {
           break;
       }
     },
-    [cancelOrder, push, repeatOrder, showSnackbar],
+    [push, repeatOrder, showSnackbar, updateOrder],
   );
 
   const adaptedData = useMemo(() => _orderBy(orders, 'createdOn', 'desc'), [orders]);

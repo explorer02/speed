@@ -1,5 +1,5 @@
 // lib
-import { gql, useMutation } from '@apollo/client';
+import { gql, MutationResult, useMutation } from '@apollo/client';
 import { useCallback } from 'react';
 
 // constants
@@ -27,25 +27,28 @@ type Response = {
     totalAmount: number;
   };
 };
+
 type Variables = {
   query: { _id: string };
   set: { status: ValueOf<typeof ORDER_STATUS>; updatedOn: Date };
 };
 
-type UseCancelOrder = () => { cancelOrder: (orderId: string) => Promise<void> };
+type UpdateFn = (orderId: string, status: ValueOf<typeof ORDER_STATUS>) => Promise<void>;
 
-export const useCancelOrder: UseCancelOrder = () => {
-  const [mutationFn] = useMutation<Response, Variables>(CANCEL_ORDER_MUTATION);
+type UseUpdateOrderStatus = () => [UpdateFn, MutationResult<Response>];
 
-  const cancelOrder = useCallback(
-    async (orderId: string) => {
+export const useUpdateOrderStatus: UseUpdateOrderStatus = () => {
+  const [mutationFn, mutationResult] = useMutation<Response, Variables>(CANCEL_ORDER_MUTATION);
+
+  const updateOrder: UpdateFn = useCallback(
+    async (orderId, status) => {
       mutationFn({
         variables: {
           query: {
             _id: orderId,
           },
           set: {
-            status: ORDER_STATUS.CANCELLED,
+            status,
             updatedOn: new Date(),
           },
         },
@@ -54,5 +57,5 @@ export const useCancelOrder: UseCancelOrder = () => {
     [mutationFn],
   );
 
-  return { cancelOrder };
+  return [updateOrder, mutationResult];
 };
