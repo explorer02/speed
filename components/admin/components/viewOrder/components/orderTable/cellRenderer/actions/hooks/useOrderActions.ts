@@ -2,7 +2,7 @@
 import { useCallback } from 'react';
 
 // hooks
-import { useUpdateOrderStatus } from 'hooks/UpdateOrderStatus';
+import { useUpdateOrderStatus } from 'hooks/useUpdateOrderStatus';
 import { useSnackbar } from 'contexts/snackbarContext';
 
 // constants

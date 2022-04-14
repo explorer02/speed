@@ -16,7 +16,7 @@ export const CommonPageLayout = ({
   children: ReactNode;
 }): JSX.Element => (
   <>
-    <NextNProgress color={blue[400]} />
+    <NextNProgress color={blue[700]} height={4} />
     <PageLayout>
       <PageLayout.Slot name={BASE_SLOT_NAMES.HEADER}>
         <Header title={title} />

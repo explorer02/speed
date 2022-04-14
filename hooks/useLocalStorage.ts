@@ -12,7 +12,7 @@ export const useLocalStorage = <T>(
     if (!isBrowserMode()) {
       return initialValue;
     }
-    return getFromLocalStorage(key);
+    return getFromLocalStorage(key) ?? initialValue;
   });
   const setValue = useCallback(
     (value) => {

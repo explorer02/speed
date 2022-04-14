@@ -24,7 +24,7 @@ export type Action =
       };
     }
   | {
-      type: typeof ACTION_TYPES.SUBMIT;
+      type: typeof ACTION_TYPES.SUBMIT | typeof ACTION_TYPES.RESET;
     };
 
 export type OnAction = (action: Action) => void;

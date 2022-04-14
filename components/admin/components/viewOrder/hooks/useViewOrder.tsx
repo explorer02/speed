@@ -7,6 +7,9 @@ import { useStoreList } from 'contexts/StoreListContext';
 import { useLocalStorage } from 'hooks/useLocalStorage';
 import { useFetchStoreOrders } from './useFetchStoreOrders';
 
+// helpers
+import { getFromLocalStorage } from 'helper/localStorage';
+
 // constants
 import { ORDER_STATUS } from 'constants/order';
 import { ACTION_TYPES } from '../constants';
@@ -23,10 +26,12 @@ type UseViewOrder = () => {
   loading: boolean;
 };
 
+const LOCAL_STORAGE_KEY = 'admin_view_order_state';
+
 export const useViewOrder: UseViewOrder = () => {
   const { storeList } = useStoreList();
 
-  const initialState: ActionState = useMemo(
+  const resetState = useMemo(
     () => ({
       selectedStore: storeList[0],
       startTime: dayjs().startOf('day').toDate().getTime(),
@@ -36,29 +41,22 @@ export const useViewOrder: UseViewOrder = () => {
     [storeList],
   );
 
-  // TODO: handle error
-  const [queryFn, { data, loading }] = useFetchStoreOrders();
+  const initialState: ActionState = useMemo(
+    () => getFromLocalStorage(LOCAL_STORAGE_KEY) ?? resetState,
+    [resetState],
+  );
 
-  const [actionState, setActionState] = useLocalStorage('admin_view_order_state', initialState);
+  // TODO: handle error
+  const { fetchOrder, data, loading } = useFetchStoreOrders(initialState);
+
+  const [actionState, setActionState] = useLocalStorage(LOCAL_STORAGE_KEY, initialState);
 
   const stateRef = useRef(actionState);
   stateRef.current = actionState;
 
   const onSubmit = useCallback(() => {
-    // FIXME:  read from cache rather than network call everytime
-    queryFn({
-      variables: {
-        query: {
-          createdOn_gte: new Date(stateRef.current.startTime),
-          createdOn_lte: new Date(stateRef.current.endTime),
-          status_in: stateRef.current.statuses,
-          store: {
-            _id: stateRef.current.selectedStore._id,
-          },
-        },
-      },
-    });
-  }, [queryFn]);
+    fetchOrder(stateRef.current);
+  }, [fetchOrder]);
 
   const onAction = useCallback(
     (action: Action) => {
@@ -99,11 +97,15 @@ export const useViewOrder: UseViewOrder = () => {
           onSubmit();
           break;
 
+        case ACTION_TYPES.RESET:
+          setActionState(resetState);
+          break;
+
         default:
           break;
       }
     },
-    [initialState, onSubmit, setActionState],
+    [initialState, onSubmit, resetState, setActionState],
   );
 
   return {

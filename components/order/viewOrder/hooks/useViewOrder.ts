@@ -5,7 +5,7 @@ import _orderBy from 'lodash/orderBy';
 // hooks
 import { useSnackbar } from 'contexts/snackbarContext';
 import { useRouter } from 'next/router';
-import { useUpdateOrderStatus } from 'hooks/UpdateOrderStatus';
+import { useUpdateOrderStatus } from 'hooks/useUpdateOrderStatus';
 import { useFetchOrderQuery } from './useFetchOrderQuery';
 import { useRepeatOrder } from './useRepeatOrder';
 

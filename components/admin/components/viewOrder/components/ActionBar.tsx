@@ -8,6 +8,7 @@ import { DateTimePicker } from 'reusable/dateTimePicker';
 import { AutoComplete, AutoCompleteProps } from 'reusable/autoComplete';
 import { LoadingButton } from 'reusable/loadingButton';
 import { MultiSelect } from 'reusable/multiSelect';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 // hooks
 import { useStoreList } from 'contexts/StoreListContext';
@@ -19,6 +20,7 @@ import { ACTION_TYPES } from '../constants';
 // types
 import { ActionState, OnAction } from '../types';
 import { Store } from 'types/store';
+import { IconButtonWithTooltip } from 'reusable/iconButtonWithTooltip';
 
 type Props = { state: ActionState; onAction: OnAction; loading: boolean } & Pick<BoxProps, 'sx'>;
 
@@ -78,6 +80,12 @@ export const ActionBar = ({ state, onAction, loading, sx }: Props): JSX.Element 
     });
   }, [onAction]);
 
+  const onReset = useCallback(() => {
+    onAction({
+      type: ACTION_TYPES.RESET,
+    });
+  }, [onAction]);
+
   const { storeList } = useStoreList();
 
   return (
@@ -118,6 +126,9 @@ export const ActionBar = ({ state, onAction, loading, sx }: Props): JSX.Element 
       <LoadingButton loading={loading} variant="outlined" sx={{ width: 100 }} onClick={onSubmit}>
         Submit
       </LoadingButton>
+      <IconButtonWithTooltip title="Reset" color="primary" onClick={onReset}>
+        <RestartAltIcon />
+      </IconButtonWithTooltip>
     </Box>
   );
 };
