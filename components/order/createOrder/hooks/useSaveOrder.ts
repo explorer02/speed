@@ -4,7 +4,7 @@ import _pick from 'lodash/pick';
 
 // hooks
 import { useLoginInfo } from 'contexts/LoginContext';
-import { SnackbarState, useSnackbar } from 'reusable/snackbarOverlay';
+import { useSnackbar } from 'contexts/snackbarContext';
 import { OrderInsertInput, useCreateOrderMutation } from './useCreateOrderMutation';
 import { useRouter } from 'next/router';
 
@@ -23,7 +23,6 @@ const adaptItemsForSaving = (selectedItems: Item[]): OrderInsertInput['items'] =
 type UseSaveOrder = (props: { selectedItems: Item[]; selectedStore?: Store }) => {
   onSave: () => Promise<void>;
   isSavingOrder: boolean;
-  snackbarState: SnackbarState;
 };
 
 export const useSaveOrder: UseSaveOrder = ({ selectedItems, selectedStore }) => {
@@ -31,13 +30,13 @@ export const useSaveOrder: UseSaveOrder = ({ selectedItems, selectedStore }) => 
 
   const { push } = useRouter();
 
-  const { state: snackbarState, showSnackbar } = useSnackbar();
+  const { onInfo, onFailure, onSuccess } = useSnackbar();
 
   const { saveOrder, loading: isSavingOrder } = useCreateOrderMutation();
 
   const onSave = useCallback(async () => {
     if (!id) return;
-    showSnackbar('Please wait while your order is placing', 'info');
+    onInfo('Please wait while your order is placing');
     try {
       await saveOrder({
         store: { link: selectedStore?._id ?? '' },
@@ -46,13 +45,13 @@ export const useSaveOrder: UseSaveOrder = ({ selectedItems, selectedStore }) => 
         items: adaptItemsForSaving(selectedItems),
       });
 
-      showSnackbar('Order Placed successfully :)', 'success');
+      onSuccess('Order Placed successfully :)');
 
       push(ORDER_PATH);
     } catch {
-      showSnackbar('Some Error ocurred :(', 'error');
+      onFailure('Some Error ocurred :(');
     }
-  }, [id, push, saveOrder, selectedItems, selectedStore?._id, showSnackbar]);
+  }, [id, onFailure, onInfo, onSuccess, push, saveOrder, selectedItems, selectedStore?._id]);
 
-  return { onSave, isSavingOrder, snackbarState };
+  return { onSave, isSavingOrder };
 };

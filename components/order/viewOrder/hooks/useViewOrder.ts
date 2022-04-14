@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react';
 import _orderBy from 'lodash/orderBy';
 
 // hooks
-import { SnackbarState, useSnackbar } from 'reusable/snackbarOverlay';
+import { useSnackbar } from 'contexts/snackbarContext';
 import { useRouter } from 'next/router';
 import { useUpdateOrderStatus } from 'hooks/UpdateOrderStatus';
 import { useFetchOrderQuery } from './useFetchOrderQuery';
@@ -26,11 +26,10 @@ type UseViewOrder = () => {
   data: Order[];
   isLoading: boolean;
   onAction: OnAction;
-  snackbarState: SnackbarState;
 };
 
 export const useViewOrder: UseViewOrder = () => {
-  const { state: snackbarState, showSnackbar } = useSnackbar();
+  const { onInfo } = useSnackbar();
 
   const { data: orders = EMPTY_ARRAY as Order[], loading } = useFetchOrderQuery();
 
@@ -46,7 +45,7 @@ export const useViewOrder: UseViewOrder = () => {
       switch (type) {
         case ACTION_TYPES.CANCEL_ORDER:
           updateOrder(payload.order._id, ORDER_STATUS.CANCELLED).then(() =>
-            showSnackbar('Order Cancelled!', 'info'),
+            onInfo('Order Cancelled!'),
           );
           break;
 
@@ -62,7 +61,7 @@ export const useViewOrder: UseViewOrder = () => {
           break;
       }
     },
-    [push, repeatOrder, showSnackbar, updateOrder],
+    [onInfo, push, repeatOrder, updateOrder],
   );
 
   const adaptedData = useMemo(() => _orderBy(orders, 'createdOn', 'desc'), [orders]);
@@ -71,6 +70,5 @@ export const useViewOrder: UseViewOrder = () => {
     data: adaptedData,
     isLoading: loading,
     onAction,
-    snackbarState,
   };
 };

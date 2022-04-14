@@ -3,7 +3,6 @@ import { memo } from 'react';
 
 // components
 import { Grid, Button } from '@mui/material';
-import { SnackBarOverlay } from 'reusable/snackbarOverlay';
 
 // hooks
 import { useLoginForm } from './useLoginForm';
@@ -19,40 +18,36 @@ import { Form } from 'reusable/form';
 const LoginForm = ({ onSuccess }: { onSuccess?: () => void }): JSX.Element => {
   const { value: isLoginMode, set: setLoginMode, unset: setRegisterMode } = useToggle(true);
 
-  const { onAction, values, isSubmitDisabled, snackbarState, loading } = useLoginForm({
+  const { onAction, values, isSubmitDisabled,  loading } = useLoginForm({
     isLoginMode,
     onSuccess,
     setLoginMode,
   });
 
   return (
-    <>
-      <div id="sign-in-button" />
-      <SnackBarOverlay {...snackbarState} />
-      <Grid container gap={5} justifyContent="center" p={2}>
-        <Grid item container justifyContent="center" alignItems="center" gap={2} direction="row">
-          <Button onClick={setLoginMode} variant={isLoginMode ? 'outlined' : 'text'}>
-            Login
-          </Button>
-          <Button onClick={setRegisterMode} variant={!isLoginMode ? 'outlined' : 'text'}>
-            Register
-          </Button>
-        </Grid>
-        <Form
-          layout={LAYOUT}
-          fieldMap={FIELD_MAP}
-          onAction={onAction}
-          value={values}
-          loading={loading}
-          config={{
-            submit: {
-              disabled: isSubmitDisabled,
-              label: isLoginMode ? 'Login' : 'Register',
-            },
-          }}
-        />
+    <Grid container gap={5} justifyContent="center" p={2}>
+      <Grid item container justifyContent="center" alignItems="center" gap={2} direction="row">
+        <Button onClick={setLoginMode} variant={isLoginMode ? 'outlined' : 'text'}>
+          Login
+        </Button>
+        <Button onClick={setRegisterMode} variant={!isLoginMode ? 'outlined' : 'text'}>
+          Register
+        </Button>
       </Grid>
-    </>
+      <Form
+        layout={LAYOUT}
+        fieldMap={FIELD_MAP}
+        onAction={onAction}
+        value={values}
+        loading={loading}
+        config={{
+          submit: {
+            disabled: isSubmitDisabled,
+            label: isLoginMode ? 'Login' : 'Register',
+          },
+        }}
+      />
+    </Grid>
   );
 };
 

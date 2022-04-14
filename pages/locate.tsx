@@ -4,7 +4,7 @@ import { useState } from 'react';
 // components
 import { Stack, Box } from '@mui/material';
 import { MapRenderer, StoreList } from 'components/locate';
-import { CommonPageLayout, SLOT_NAMES } from 'containers/CommonPageLayout';
+import { CommonPageLayout, SLOT_NAMES } from 'containers/pageLayout/CommonPageLayout';
 
 // helpers
 import { getStaticPropsForStoreList } from 'helper/staticPropsGetter';

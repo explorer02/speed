@@ -15,8 +15,24 @@ export const SnackBarOverlay = ({
   message: string;
   severity?: AlertProps['severity'];
 }): JSX.Element => (
-  <Snackbar open={open} autoHideDuration={5000} onClose={onClose} sx={{ maxWidth: '100%' }}>
-    <Alert onClose={onClose} severity={severity} sx={{ width: '100%' }}>
+  <Snackbar
+    open={open}
+    autoHideDuration={5000}
+    onClose={onClose}
+    sx={{ maxWidth: '100%' }}
+    message={message}
+  >
+    <Alert
+      onClose={onClose}
+      severity={severity}
+      variant="filled"
+      sx={{
+        width: '100%',
+        paddingY: 1,
+        paddingX: 2,
+        borderRadius: '8px',
+      }}
+    >
       {message}
     </Alert>
   </Snackbar>

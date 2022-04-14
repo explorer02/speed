@@ -1,6 +1,6 @@
 // components
 import { CreateOrder } from 'components/order/createOrder';
-import { CommonPageLayout, SLOT_NAMES } from 'containers/CommonPageLayout';
+import { CommonPageLayout, SLOT_NAMES } from 'containers/pageLayout/CommonPageLayout';
 
 // helpers
 import { getStaticPropsForStoreList } from 'helper/staticPropsGetter';

@@ -4,7 +4,7 @@ import * as React from 'react';
 // components
 import { Box, Typography } from '@mui/material';
 import { LoadingButton } from 'reusable/loadingButton';
-import { CommonPageLayout, SLOT_NAMES } from 'containers/CommonPageLayout';
+import { CommonPageLayout, SLOT_NAMES } from 'containers/pageLayout/CommonPageLayout';
 
 // config
 import { RealmApp } from 'config/realm';

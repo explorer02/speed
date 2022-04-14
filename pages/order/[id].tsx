@@ -4,7 +4,7 @@ import * as React from 'react';
 // components
 import { Box } from '@mui/material';
 import { ViewSingleOrder } from 'components/order/viewSingleOrder';
-import { CommonPageLayout, SLOT_NAMES } from 'containers/CommonPageLayout';
+import { CommonPageLayout, SLOT_NAMES } from 'containers/pageLayout/CommonPageLayout';
 
 // config
 import { API_CLIENT } from 'config/apollo';

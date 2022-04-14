@@ -1,9 +1,9 @@
 // lib
-import { useMemo, useCallback, Suspense, memo } from 'react';
+import { memo } from 'react';
 
 // components
 import { Box, Drawer, NoSsr } from '@mui/material';
-import { SIDEBAR_WIDTH } from 'containers/constants';
+import { SIDEBAR_WIDTH } from 'containers/pageLayout/constants';
 import { SidebarList } from './components/SidebarList';
 import { Hero } from './components/Hero';
 import { Login } from './components/Login';

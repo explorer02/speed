@@ -3,7 +3,7 @@ import * as React from 'react';
 
 // components
 import { StockViewer } from 'components/availability';
-import { CommonPageLayout, SLOT_NAMES } from 'containers/CommonPageLayout';
+import { CommonPageLayout, SLOT_NAMES } from 'containers/pageLayout/CommonPageLayout';
 
 // helpers
 import { getStaticPropsForStoreList } from 'helper/staticPropsGetter';

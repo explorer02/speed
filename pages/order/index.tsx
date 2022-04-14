@@ -2,7 +2,7 @@
 import { ViewOrder } from 'components/order/viewOrder';
 import Link from 'next/link';
 import { Button } from '@mui/material';
-import { CommonPageLayout, SLOT_NAMES } from 'containers/CommonPageLayout';
+import { CommonPageLayout, SLOT_NAMES } from 'containers/pageLayout/CommonPageLayout';
 
 // constants
 import { CREATE_ORDER_PATH } from 'constants/paths';

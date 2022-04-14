@@ -1,6 +1,5 @@
 // lib
-import * as React from 'react';
-import _noop from 'lodash/noop';
+import { useCallback } from 'react';
 
 // hooks
 import { useSafeState } from 'hooks/useSafeState';
@@ -12,32 +11,31 @@ export type SnackbarState = {
   open: boolean;
   severity: AlertColor;
   message: string;
-  onClose: () => void;
 };
 
-const INITIAL_STATE: SnackbarState = { open: false, severity: 'info', message: '', onClose: _noop };
+const INITIAL_STATE: SnackbarState = { open: false, severity: 'info', message: '' };
 
-type UseSnackbar = () => {
+type UseSnackbarControls = () => {
   state: SnackbarState;
   showSnackbar: (message: string, severity: AlertColor) => void;
   hideSnackbar: () => void;
 };
 
-export const useSnackbar: UseSnackbar = () => {
+export const useSnackbarControls: UseSnackbarControls = () => {
   const [state, setState] = useSafeState<SnackbarState>(INITIAL_STATE);
 
-  const showSnackbar = React.useCallback(
+  const showSnackbar = useCallback(
     (message: string, severity: AlertColor): void => {
       setState((prev) => ({ ...prev, severity, message, open: true }));
     },
     [setState],
   );
-  const hideSnackbar = React.useCallback(() => {
+  const hideSnackbar = useCallback(() => {
     setState((prev) => ({ ...prev, open: false }));
   }, [setState]);
 
   return {
-    state: React.useMemo(() => ({ ...state, onClose: hideSnackbar }), [hideSnackbar, state]),
+    state,
     showSnackbar,
     hideSnackbar,
   };

@@ -6,7 +6,7 @@ import { useMutation } from '@apollo/client';
 
 // hooks
 import { useLoginInfo } from 'contexts/LoginContext';
-import { SnackbarState, useSnackbar } from 'reusable/snackbarOverlay';
+import { useSnackbar } from 'contexts/snackbarContext';
 
 // helpers
 import { stripTypename } from 'helper/stripTypenames';
@@ -36,11 +36,10 @@ export const useSaveProfile = ({
 }: {
   onAction: (action: FormAction<UserProfile>) => void;
 }): {
-  snackbarState: SnackbarState;
   isLoading: boolean;
   onAction: (action: FormAction<UserProfile>) => void;
 } => {
-  const { state: snackbarState, showSnackbar } = useSnackbar();
+  const { onInfo, onSuccess, onFailure } = useSnackbar();
 
   const [mutationFn, { loading }] = useMutation<
     { updateOneUser: UserProfile },
@@ -52,17 +51,17 @@ export const useSaveProfile = ({
   const onSave = React.useCallback(
     async (profile: UserProfile) => {
       if (!user?.id) return;
-      showSnackbar('Saving Profile...', 'info');
+      onInfo('Saving Profile...');
       try {
         await mutationFn({
           variables: { query: { _id: user?.id ?? '' }, set: adaptProfile(profile) },
         });
-        showSnackbar('Profile Saved Successfully :)', 'success');
+        onSuccess('Profile Saved Successfully :)');
       } catch {
-        showSnackbar('Some error Ocurred :(', 'error');
+        onFailure('Some error Ocurred :(');
       }
     },
-    [mutationFn, showSnackbar, user?.id],
+    [mutationFn, onFailure, onInfo, onSuccess, user?.id],
   );
 
   const onAction = React.useCallback(
@@ -79,7 +78,6 @@ export const useSaveProfile = ({
   );
 
   return {
-    snackbarState,
     isLoading: loading,
     onAction,
   };

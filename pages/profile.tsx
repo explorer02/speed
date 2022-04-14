@@ -3,7 +3,7 @@ import * as React from 'react';
 
 // components
 import { ProfileForm } from 'components/profile/ProfileForm';
-import { CommonPageLayout, SLOT_NAMES } from 'containers/CommonPageLayout';
+import { CommonPageLayout, SLOT_NAMES } from 'containers/pageLayout/CommonPageLayout';
 
 // types
 import { NextPage } from 'next';

@@ -3,7 +3,6 @@ import { memo } from 'react';
 
 // components
 import { Box } from '@mui/material';
-import { SnackBarOverlay } from 'reusable/snackbarOverlay';
 
 // hooks
 import { useProfileForm } from './useProfileForm';
@@ -18,29 +17,22 @@ import { FIELD_MAP } from './fields';
 const ProfileForm = ({ sx }: { sx?: SxProps }): JSX.Element => {
   const { value, onAction: _onAction, isLoading } = useProfileForm();
 
-  const {
-    isLoading: isSavingUserProfile,
-    snackbarState,
-    onAction,
-  } = useSaveProfile({
+  const { isLoading: isSavingUserProfile, onAction } = useSaveProfile({
     onAction: _onAction,
   });
 
   return (
-    <>
-      <SnackBarOverlay {...snackbarState} />
-      <Box sx={sx}>
-        <Form
-          loading={isLoading || isSavingUserProfile}
-          layout={LAYOUT}
-          fieldMap={FIELD_MAP}
-          onAction={onAction}
-          value={value}
-          py={5}
-          config={{ submit: { label: 'Update' } }}
-        />
-      </Box>
-    </>
+    <Box sx={sx}>
+      <Form
+        loading={isLoading || isSavingUserProfile}
+        layout={LAYOUT}
+        fieldMap={FIELD_MAP}
+        onAction={onAction}
+        value={value}
+        py={5}
+        config={{ submit: { label: 'Update' } }}
+      />
+    </Box>
   );
 };
 

@@ -5,8 +5,8 @@ import _isEmpty from 'lodash/isEmpty';
 import { Credentials } from 'realm-web';
 
 // hooks
-import { SnackbarState, useSnackbar } from 'reusable/snackbarOverlay';
 import { useLoginInfo } from 'contexts/LoginContext';
+import { useSnackbar } from 'contexts/snackbarContext';
 
 // constants
 import { FormAction, useForm } from 'reusable/form';
@@ -31,19 +31,18 @@ type UseLoginForm = (params: {
   onAction: (action: FormAction<State>) => void;
   values: State;
   isSubmitDisabled: boolean;
-  snackbarState: SnackbarState;
   loading: boolean;
 };
 
 export const useLoginForm: UseLoginForm = ({ isLoginMode, onSuccess, setLoginMode }) => {
-  const { state: snackbarState, showSnackbar } = useSnackbar();
+  const { onInfo, onSuccess: triggerOnSuccess, onFailure } = useSnackbar();
   const [loading, setLoading] = useState(false);
 
   const { setLoginState } = useLoginInfo();
 
   const handleLogin = useCallback(
     async (values: State) => {
-      showSnackbar('Logging in', 'info');
+      onInfo('Logging in');
       setLoading(true);
       try {
         const user = await RealmApp.logIn(Credentials.emailPassword(values.email, values.password));
@@ -58,7 +57,7 @@ export const useLoginForm: UseLoginForm = ({ isLoginMode, onSuccess, setLoginMod
           });
         }
 
-        showSnackbar('Success!', 'success');
+        triggerOnSuccess('Success!');
 
         setTimeout(() => {
           setLoginState({ isLoggedIn: true, user });
@@ -67,29 +66,29 @@ export const useLoginForm: UseLoginForm = ({ isLoginMode, onSuccess, setLoginMod
           }, 300);
         }, 200);
       } catch (err: any) {
-        showSnackbar(err?.error, 'error');
+        onFailure(err?.error);
       } finally {
         setLoading(false);
       }
     },
-    [onSuccess, setLoginState, showSnackbar],
+    [onFailure, onInfo, onSuccess, setLoginState, triggerOnSuccess],
   );
 
   const handleRegister = useCallback(
     async (values: State) => {
-      showSnackbar('Creating new User...', 'info');
+      onInfo('Creating new User...');
       setLoading(true);
       try {
         await RealmApp.emailPasswordAuth.registerUser(values);
-        showSnackbar('Success! Please check your email and confirm it', 'success');
+        triggerOnSuccess('Success! Please check your email and confirm it');
         setLoginMode();
       } catch (err: any) {
-        showSnackbar(err?.error, 'error');
+        onFailure(err?.error);
       } finally {
         setLoading(false);
       }
     },
-    [setLoginMode, showSnackbar],
+    [onFailure, onInfo, setLoginMode, triggerOnSuccess],
   );
 
   const { values, onAction, isValidated } = useForm({
@@ -98,5 +97,5 @@ export const useLoginForm: UseLoginForm = ({ isLoginMode, onSuccess, setLoginMod
     validator,
   });
 
-  return { onAction, values, isSubmitDisabled: !isValidated, snackbarState, loading };
+  return { onAction, values, isSubmitDisabled: !isValidated, loading };
 };

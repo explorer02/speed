@@ -5,6 +5,8 @@ import { ReactNode } from 'react';
 import { PageLayout, SLOT_NAMES as BASE_SLOT_NAMES } from './PageLayout';
 import { Header } from 'components/app/header';
 import { Sidebar } from 'components/app/sidebar';
+import NextNProgress from 'nextjs-progressbar';
+import { blue } from '@mui/material/colors';
 
 export const CommonPageLayout = ({
   title,
@@ -13,15 +15,18 @@ export const CommonPageLayout = ({
   title: string;
   children: ReactNode;
 }): JSX.Element => (
-  <PageLayout>
-    <PageLayout.Slot name={BASE_SLOT_NAMES.HEADER}>
-      <Header title={title} />
-    </PageLayout.Slot>
-    <PageLayout.Slot name={BASE_SLOT_NAMES.SIDEBAR}>
-      <Sidebar />
-    </PageLayout.Slot>
-    {children}
-  </PageLayout>
+  <>
+    <NextNProgress color={blue[400]} />
+    <PageLayout>
+      <PageLayout.Slot name={BASE_SLOT_NAMES.HEADER}>
+        <Header title={title} />
+      </PageLayout.Slot>
+      <PageLayout.Slot name={BASE_SLOT_NAMES.SIDEBAR}>
+        <Sidebar />
+      </PageLayout.Slot>
+      {children}
+    </PageLayout>
+  </>
 );
 
 export const SLOT_NAMES = {

@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 
 // hooks
 import { useUpdateOrderStatus } from 'hooks/UpdateOrderStatus';
-import { SnackbarState, useSnackbar } from 'reusable/snackbarOverlay';
+import { useSnackbar } from 'contexts/snackbarContext';
 
 // constants
 import { ACTION_TYPES } from '../constants';
@@ -14,12 +14,11 @@ import { OnAction } from '../types';
 
 type UseOrderActions = (params: { order: Order }) => {
   onAction: OnAction;
-  snackbarState: SnackbarState;
 };
 
 export const useOrderActions: UseOrderActions = ({ order }) => {
   const [updateOrderStatus] = useUpdateOrderStatus();
-  const { state: snackbarState, showSnackbar } = useSnackbar();
+  const { onSuccess, onFailure } = useSnackbar();
 
   const onAction: OnAction = useCallback(
     async (action) => {
@@ -27,17 +26,17 @@ export const useOrderActions: UseOrderActions = ({ order }) => {
         case ACTION_TYPES.MOVE_ORDER:
           try {
             await updateOrderStatus(order._id, action.payload.status);
-            showSnackbar('Status Updated', 'success');
+            onSuccess('Status Updated');
           } catch (e: any) {
-            showSnackbar(e?.message ?? 'Some Error Ocurred', 'error');
+            onFailure(e?.message ?? 'Some Error Ocurred');
           }
           break;
         default:
           break;
       }
     },
-    [order._id, showSnackbar, updateOrderStatus],
+    [onFailure, onSuccess, order._id, updateOrderStatus],
   );
 
-  return { onAction, snackbarState };
+  return { onAction };
 };

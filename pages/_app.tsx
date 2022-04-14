@@ -16,18 +16,21 @@ import { AdminProvider } from 'contexts/AdminContext';
 
 // types
 import { AppProps } from 'next/app';
+import { SnackbarProvider } from 'contexts/snackbarContext';
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => (
   <AppThemeProvider>
-    <LoginProvider>
-      <AdminProvider>
-        <ProtectRoute>
-          <SelectedOrderProvider>
-            <Component {...pageProps} />
-          </SelectedOrderProvider>
-        </ProtectRoute>
-      </AdminProvider>
-    </LoginProvider>
+    <SnackbarProvider>
+      <LoginProvider>
+        <AdminProvider>
+          <ProtectRoute>
+            <SelectedOrderProvider>
+              <Component {...pageProps} />
+            </SelectedOrderProvider>
+          </ProtectRoute>
+        </AdminProvider>
+      </LoginProvider>
+    </SnackbarProvider>
   </AppThemeProvider>
 );
 
