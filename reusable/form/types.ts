@@ -26,8 +26,10 @@ export type FormAction<T> =
     }
   | {
       type: typeof FORM_ACTIONS.ON_RESET;
-    }
-  
+      payload?: {
+        value: T;
+      };
+    };
 
 export type FormProps<T> = {
   layout: Layout;

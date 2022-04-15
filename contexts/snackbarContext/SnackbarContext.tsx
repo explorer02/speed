@@ -30,9 +30,9 @@ export const SnackbarProvider = ({ children }: { children: JSX.Element }): JSX.E
   const contextValue: SnackbarUtils = useMemo(
     () => ({
       onSuccess: (msg) => showSnackbar(msg, 'success'),
-      onWarning: (msg) => showSnackbar(msg, 'success'),
-      onFailure: (msg) => showSnackbar(msg, 'success'),
-      onInfo: (msg) => showSnackbar(msg, 'success'),
+      onWarning: (msg) => showSnackbar(msg, 'warning'),
+      onFailure: (msg) => showSnackbar(msg, 'error'),
+      onInfo: (msg) => showSnackbar(msg, 'info'),
     }),
     [showSnackbar],
   );

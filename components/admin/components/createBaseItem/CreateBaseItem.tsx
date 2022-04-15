@@ -2,13 +2,13 @@
 import { Form } from 'reusable/form';
 
 // hooks
-import { useCreateItem } from './hooks/useCreateItem';
+import { useCreateBaseItem } from './hooks/useCreateBaseItem';
 
 // constants
 import { FIELD_MAP, LAYOUT } from './formConfig';
 
-export const CreateItem = (): JSX.Element => {
-  const { onAction, values, isValidated } = useCreateItem();
+export const CreateBaseItem = (): JSX.Element => {
+  const { onAction, values, isValidated, loading } = useCreateBaseItem();
 
   return (
     <Form
@@ -16,8 +16,9 @@ export const CreateItem = (): JSX.Element => {
       layout={LAYOUT}
       onAction={onAction}
       value={values}
+      loading={loading}
       sx={{ width: 600 }}
-      config={{ submit: { disabled: !isValidated } }}
+      config={{ submit: { disabled: !isValidated, label: 'Create' } }}
     />
   );
 };

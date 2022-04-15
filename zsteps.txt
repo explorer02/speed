@@ -26,3 +26,5 @@ Next Steps
 17) Availability page create order
 18) order type - ONLINE, OFFLINE
 19) font size
+
+dynamic load components

@@ -78,7 +78,9 @@ export const FormControlSelectInput = (props: Props): JSX.Element => {
       <InputLabel disabled={disabled || loading}>{label}</InputLabel>
       <Select value={value} label={label} onChange={handleChange}>
         {options.map((option) => (
-          <MenuItem value={valueGetter(option)}>{labelGetter(option)}</MenuItem>
+          <MenuItem key={valueGetter(option)} value={valueGetter(option)}>
+            {labelGetter(option)}
+          </MenuItem>
         ))}
       </Select>
       {helperText && <FormHelperText>{helperText}</FormHelperText>}

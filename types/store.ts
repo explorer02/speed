@@ -9,13 +9,15 @@ export type Store = {
   items?: Item[];
 };
 
+export type BaseItem = {
+  _id: string;
+  label: string;
+  unit: string;
+  description: string;
+};
+
 export type Item = {
-  item: {
-    _id: string;
-    label: string;
-    unit: string;
-    description: string;
-  };
+  item: BaseItem;
   _id: string;
   quantity: number;
   price: number;

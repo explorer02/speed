@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { gql, FetchResult, useMutation } from '@apollo/client';
 
 const MUTATION = gql`
-  mutation CreateItem($data: ItemInsertInput!) {
+  mutation CreateBaseItem($data: ItemInsertInput!) {
     insertOneItem(data: $data) {
       _id
     }
@@ -19,14 +19,14 @@ type TVariables = {
   };
 };
 
-type UseCreateItemMutation = () => {
+type UseCreateBaseItemMutation = () => {
   saveData: (
     vars: TVariables['data'],
   ) => Promise<FetchResult<TData, Record<string, any>, Record<string, any>>>;
   loading: boolean;
 };
 
-export const useCreateItemMutation: UseCreateItemMutation = () => {
+export const useCreateBaseItemMutation: UseCreateBaseItemMutation = () => {
   const [mutationFn, { loading }] = useMutation<TData, TVariables>(MUTATION);
 
   const saveData = useCallback(

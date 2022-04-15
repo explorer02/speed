@@ -28,11 +28,12 @@ export const AdminContainer = (): JSX.Element => {
     <Box>
       <Box display="flex" flexDirection="column" gap={2}>
         {ADMIN_ITEMS.map((item) => (
-          <Box {...centerVertically} gap={4}>
+          <Box {...centerVertically} gap={4} key={item.category}>
             <Typography width={70}>{item.category}</Typography>
             <ButtonGroup inputMode="text">
               {item.items.map((_item) => (
                 <Button
+                  key={_item.id}
                   variant={_item.id === selectedItemId ? 'contained' : 'outlined'}
                   onClick={(): void => setSelectedItemId(_item.id)}
                 >

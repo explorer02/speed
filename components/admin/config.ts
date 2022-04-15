@@ -1,6 +1,7 @@
 // components
-import { CreateItem } from './components/createItem';
+import { CreateBaseItem } from './components/createBaseItem';
 import { ViewOrder } from './components/viewOrder';
+import { UpdateBaseItem } from './components/updateBaseItem';
 
 // types
 import { KeyTMap, ValueOf } from 'types/generic';
@@ -33,10 +34,12 @@ export const ADMIN_ITEMS_MAP: KeyTMap<ValueOf<typeof ADMIN_ITEM_ID_MAP>, AdminIt
   [ADMIN_ITEM_ID_MAP.CREATE_BASE_ITEMS]: {
     id: ADMIN_ITEM_ID_MAP.CREATE_BASE_ITEMS,
     label: 'Create Base Item',
+    Component: CreateBaseItem,
   },
   [ADMIN_ITEM_ID_MAP.UPDATE_BASE_ITEM]: {
     id: ADMIN_ITEM_ID_MAP.UPDATE_BASE_ITEM,
     label: 'Update Base Item',
+    Component: UpdateBaseItem,
   },
   [ADMIN_ITEM_ID_MAP.CREATE_ITEM]: {
     id: ADMIN_ITEM_ID_MAP.CREATE_ITEM,
@@ -45,7 +48,6 @@ export const ADMIN_ITEMS_MAP: KeyTMap<ValueOf<typeof ADMIN_ITEM_ID_MAP>, AdminIt
   [ADMIN_ITEM_ID_MAP.CREATE_ITEM]: {
     id: ADMIN_ITEM_ID_MAP.CREATE_ITEM,
     label: 'Create Item',
-    Component: CreateItem,
   },
   [ADMIN_ITEM_ID_MAP.UPDATE_ITEMS]: {
     id: ADMIN_ITEM_ID_MAP.UPDATE_ITEMS,

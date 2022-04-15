@@ -72,7 +72,7 @@ const Option = <T extends StringAnyMap>({
 
 export type AutoCompleteProps<T extends StringAnyMap> = {
   options: T[];
-  selectedOptions: T | T[];
+  selectedOptions?: T | T[];
   onOptionChange: (item: T | T[]) => void;
   idKey: keyof T & string;
   loading?: boolean;
@@ -92,6 +92,7 @@ export type AutoCompleteProps<T extends StringAnyMap> = {
     Label?: Override<StringAnyMap>;
     Input?: Override<StringAnyMap>;
   };
+  emptyItem?: T;
 };
 
 export const AutoComplete = <T extends StringAnyMap>({
@@ -112,6 +113,7 @@ export const AutoComplete = <T extends StringAnyMap>({
   disableCloseOnSelect,
   disabled,
   overrides,
+  emptyItem,
 }: AutoCompleteProps<T>): JSX.Element => {
   const handleChange: UseAutocompleteProps<T, boolean, boolean, undefined>['onChange'] =
     useCallback(
@@ -127,14 +129,16 @@ export const AutoComplete = <T extends StringAnyMap>({
   );
 
   const adaptedValues = useMemo(
-    () => (multiple ? _castArray(selectedOptions) : selectedOptions),
+    () => (multiple ? _castArray(selectedOptions).filter(Boolean) : selectedOptions),
     [multiple, selectedOptions],
   );
 
   const filterOptions = useCallback(
     (_options: T[]) => {
       const selectedOptionsId = new Set<string>(
-        _castArray(selectedOptions).map((item) => item[idKey]),
+        _castArray(selectedOptions)
+          .filter(Boolean)
+          .map((item) => item[idKey]),
       );
       return _options.filter((item) => !selectedOptionsId.has(item[idKey]));
     },
@@ -159,7 +163,7 @@ export const AutoComplete = <T extends StringAnyMap>({
         multiple={multiple}
         includeInputInList={includeInputInList}
         filterOptions={filterOptions}
-        value={adaptedValues}
+        value={adaptedValues ?? emptyItem}
         filterSelectedOptions={filterSelectedOptions}
         disableCloseOnSelect={disableCloseOnSelect}
         disabled={disabled}

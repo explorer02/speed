@@ -2,7 +2,7 @@
 import { useCallback } from 'react';
 
 // hooks
-import { useCreateItemMutation } from './useCreateItemMutation';
+import { useCreateBaseItemMutation } from './useCreateBaseItemMutation';
 import { FormAction, useForm } from 'reusable/form';
 import { useSnackbar } from 'contexts/snackbarContext';
 
@@ -18,17 +18,18 @@ const INITIAL_VALUES: State = {
   unit: 'Kg',
 };
 
-type UseCreateItem = () => {
+type UseCreateBaseItem = () => {
   onAction: (action: FormAction<State>) => void;
   values: State;
   isValidated: boolean;
+  loading: boolean;
 };
 
 const validator = (state: State): boolean =>
   !!(state.label.length > 2 && state.description.length > 20);
 
-export const useCreateItem: UseCreateItem = () => {
-  const { saveData } = useCreateItemMutation();
+export const useCreateBaseItem: UseCreateBaseItem = () => {
+  const { saveData, loading } = useCreateBaseItemMutation();
 
   const { onSuccess, onFailure, onInfo } = useSnackbar();
 
@@ -51,5 +52,5 @@ export const useCreateItem: UseCreateItem = () => {
     validator,
   });
 
-  return { onAction, values, isValidated };
+  return { onAction, values, isValidated, loading };
 };

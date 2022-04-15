@@ -27,7 +27,7 @@ type Params<T> = {
 type ReturnType<T> = {
   onAction: (action: FormAction<T>) => void;
   values: T;
-  reset: () => void;
+  reset: (values?: T) => void;
   isValidated: boolean;
 };
 
@@ -57,7 +57,7 @@ export const useForm = <T>({
           break;
 
         case FORM_ACTIONS.ON_RESET:
-          setValues(initialValuesRef.current);
+          setValues(action.payload?.value ?? initialValuesRef.current);
           break;
 
         default:
@@ -67,7 +67,18 @@ export const useForm = <T>({
     [initialValuesRef, onSubmit, setValues, updater, values, valuesRef],
   );
 
-  const reset = useCallback(() => onAction({ type: FORM_ACTIONS.ON_RESET }), [onAction]);
+  const reset = useCallback(
+    (_values?: T) =>
+      onAction({
+        type: FORM_ACTIONS.ON_RESET,
+        payload: _values
+          ? {
+              value: _values,
+            }
+          : undefined,
+      }),
+    [onAction],
+  );
 
   const isValidated = useMemo(() => validator?.(values) ?? true, [validator, values]);
 
