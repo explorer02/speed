@@ -14,7 +14,17 @@ import { FormComponentProps } from '../FieldMap';
 type Props = FormComponentProps & {
   label: string;
   helperText?: string;
-} & Pick<InputProps, 'placeholder' | 'startAdornment' | 'disabled' | 'type'>;
+} & Pick<
+    InputProps,
+    | 'placeholder'
+    | 'startAdornment'
+    | 'disabled'
+    | 'type'
+    | 'autoComplete'
+    | 'multiline'
+    | 'maxRows'
+    | 'minRows'
+  >;
 
 export const FormControlTextInput = (props: Props): JSX.Element => {
   const {
@@ -26,8 +36,7 @@ export const FormControlTextInput = (props: Props): JSX.Element => {
     disabled = false,
     type = 'text',
     loading,
-    startAdornment,
-    placeholder,
+    ...rest
   } = props;
 
   const latestProps = useLatest(props);
@@ -58,8 +67,7 @@ export const FormControlTextInput = (props: Props): JSX.Element => {
         onChange={handleChange}
         label={label}
         type={type}
-        startAdornment={startAdornment}
-        placeholder={placeholder}
+        {...rest}
       />
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>

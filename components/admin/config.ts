@@ -1,10 +1,15 @@
-import { KeyTMap, ValueOf } from 'types/generic';
+// components
+import { CreateItem } from './components/createItem';
 import { ViewOrder } from './components/viewOrder';
 
+// types
+import { KeyTMap, ValueOf } from 'types/generic';
+
 export const ADMIN_ITEM_ID_MAP = {
-  UPDATE_ITEMS: 'UPDATE_ITEMS',
-  UPDATE_BASE_ITEMS: 'UPDATE_BASE_ITEMS',
+  CREATE_BASE_ITEMS: 'CREATE_BASE_ITEM',
+  UPDATE_BASE_ITEM: 'UPDATE_BASE_ITEM',
   CREATE_ITEM: 'CREATE_ITEM',
+  UPDATE_ITEMS: 'UPDATE_ITEMS',
   CREATE_OFFLINE_ORDER: 'CREATE_OFFLINE_ORDER',
   UPDATE_ORDERS: 'UPDATE_ORDERS',
   VIEW_ORDERS: 'VIEW_ORDERS',
@@ -25,17 +30,26 @@ export type AdminCategory = {
 };
 
 export const ADMIN_ITEMS_MAP: KeyTMap<ValueOf<typeof ADMIN_ITEM_ID_MAP>, AdminItem> = {
-  [ADMIN_ITEM_ID_MAP.UPDATE_ITEMS]: {
-    id: ADMIN_ITEM_ID_MAP.UPDATE_ITEMS,
-    label: 'Update Items',
+  [ADMIN_ITEM_ID_MAP.CREATE_BASE_ITEMS]: {
+    id: ADMIN_ITEM_ID_MAP.CREATE_BASE_ITEMS,
+    label: 'Create Base Item',
   },
-  [ADMIN_ITEM_ID_MAP.UPDATE_BASE_ITEMS]: {
-    id: ADMIN_ITEM_ID_MAP.UPDATE_BASE_ITEMS,
-    label: 'Update Base Items',
+  [ADMIN_ITEM_ID_MAP.UPDATE_BASE_ITEM]: {
+    id: ADMIN_ITEM_ID_MAP.UPDATE_BASE_ITEM,
+    label: 'Update Base Item',
   },
   [ADMIN_ITEM_ID_MAP.CREATE_ITEM]: {
     id: ADMIN_ITEM_ID_MAP.CREATE_ITEM,
     label: 'Create Item',
+  },
+  [ADMIN_ITEM_ID_MAP.CREATE_ITEM]: {
+    id: ADMIN_ITEM_ID_MAP.CREATE_ITEM,
+    label: 'Create Item',
+    Component: CreateItem,
+  },
+  [ADMIN_ITEM_ID_MAP.UPDATE_ITEMS]: {
+    id: ADMIN_ITEM_ID_MAP.UPDATE_ITEMS,
+    label: 'Update Items',
   },
   [ADMIN_ITEM_ID_MAP.CREATE_OFFLINE_ORDER]: {
     id: ADMIN_ITEM_ID_MAP.CREATE_OFFLINE_ORDER,
@@ -68,9 +82,10 @@ export const ADMIN_ITEMS: AdminCategory[] = [
   {
     category: 'Items',
     items: [
-      ADMIN_ITEMS_MAP.UPDATE_ITEMS,
-      ADMIN_ITEMS_MAP.UPDATE_BASE_ITEMS,
+      ADMIN_ITEMS_MAP.CREATE_BASE_ITEM,
+      ADMIN_ITEMS_MAP.UPDATE_BASE_ITEM,
       ADMIN_ITEMS_MAP.CREATE_ITEM,
+      ADMIN_ITEMS_MAP.UPDATE_ITEMS,
     ],
   },
   {
