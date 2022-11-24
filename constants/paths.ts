@@ -4,5 +4,6 @@ export const ORDER_PATH = '/order';
 export const CREATE_ORDER_PATH = '/order/new';
 export const PROFILE_PATH = '/profile';
 export const LOCATE_PATH = '/locate';
+export const CONFIRM_PATH = '/confirmUser';
 
-export const UNPROTECTED_PATHS = [HOME_PATH, LOCATE_PATH];
+export const UNPROTECTED_PATHS = [HOME_PATH, LOCATE_PATH, CONFIRM_PATH];
