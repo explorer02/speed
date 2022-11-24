@@ -36,6 +36,7 @@ const MapRenderer = ({
 
   return (
     <Box {...expandXY} borderRadius={3} overflow="hidden">
+      {/* @ts-ignore */}
       <GoogleMapReact
         bootstrapURLKeys={{ key: MAP_API_KEY }}
         defaultCenter={DEFAULT_CENTER}

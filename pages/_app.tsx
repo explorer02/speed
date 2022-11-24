@@ -21,6 +21,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => (
     <LoginProvider>
       <ProtectRoute>
         <SelectedOrderProvider>
+          {/* @ts-ignore */}
           <Component {...pageProps} />
         </SelectedOrderProvider>
       </ProtectRoute>
